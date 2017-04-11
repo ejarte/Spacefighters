@@ -14,6 +14,7 @@
 #include <SDL_image.h>
 #include <SDL_net.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 
 
