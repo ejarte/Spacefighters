@@ -3,12 +3,20 @@ and may not be redistributed without written permission.*/
 
 //Using SDL and standard IO
 #include <SDL.h>
-#undef main
+#include <SDL_mixer.h>
+#include <SDL_image.h>
+#include <SDL_net.h>
 #include <stdio.h>
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
+
+void loop()
+{
+	while(1)
+	{ }
+}
 
 int main(int argc, char* args[])
 {
@@ -44,6 +52,7 @@ int main(int argc, char* args[])
 
 			//Wait two seconds
 			SDL_Delay(2000);
+			loop();
 		}
 	}
 
