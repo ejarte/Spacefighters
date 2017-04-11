@@ -4,6 +4,7 @@
 int main()
 {
 	printf("Hello World!!!!!!!!\n");
+	printf("Ny line!");
 	printf("Dags att gå hem.");
 	getch();
 	return 0;
