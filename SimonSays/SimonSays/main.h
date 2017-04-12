@@ -8,10 +8,10 @@
 #define BTNWIDTH 100
 #include "libaries.h"
 #include "init_sdl.h"
+#include "events.h"
 
 //deklererar variabler
 SDL_Renderer* renderer; //variabeln för att uppdatera fönstret
-SDL_Event mainEvent;	//variabeln som upptäcker om användaren stänger ned fönstret
 SDL_Window* window;		//fönstret
 bool quit;				//om true så stängs spelloopen av
 
