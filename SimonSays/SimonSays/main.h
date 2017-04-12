@@ -20,5 +20,6 @@ SDL_Rect green_rect;
 SDL_Rect red_rect;
 SDL_Rect blue_rect;
 
+void clearImages();
 
 // TODO: reference additional headers your program requires here
