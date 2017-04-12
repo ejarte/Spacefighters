@@ -15,7 +15,7 @@ int main(int argc, char* args[])
 
 	//Skapar ett fönster i fullskärmläge
 	window = SDL_CreateWindow("SimonSays", 100, 100, 600, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-	
+
 	if (window == NULL)
 	{
 		printf("Error, Window can't be desplayed");
@@ -79,7 +79,7 @@ int main(int argc, char* args[])
 
 		SDL_RenderClear(renderer); //Clears the screen
 
-		//Ritar ut bilderna på fönstret
+								   //Ritar ut bilderna på fönstret
 		SDL_RenderCopy(renderer, yellow_box, NULL, &yellow_rect); //Null eftersom vi inte ska croppa bilden
 		SDL_RenderCopy(renderer, green_box, NULL, &green_rect);
 		SDL_RenderCopy(renderer, red_box, NULL, &red_rect);
