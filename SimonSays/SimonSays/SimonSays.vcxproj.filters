@@ -26,7 +26,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimonSays.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
