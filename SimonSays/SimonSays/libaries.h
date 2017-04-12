@@ -1,3 +1,5 @@
+//De bibliotek som används
+
 #include <stdio.h>
 #include <tchar.h>
 #include <SDL.h>

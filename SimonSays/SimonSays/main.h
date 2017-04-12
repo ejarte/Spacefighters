@@ -9,15 +9,16 @@
 #include "libaries.h"
 #include "init_sdl.h"
 
-SDL_Renderer* renderer;
-SDL_Event mainEvent;
-SDL_Window* window;
-bool quit;
+//deklererar variabler
+SDL_Renderer* renderer; //variabeln för att uppdatera fönstret
+SDL_Event mainEvent;	//variabeln som upptäcker om användaren stänger ned fönstret
+SDL_Window* window;		//fönstret
+bool quit;				//om true så stängs spelloopen av
 
 SDL_Rect yellow_rect; //rutan där bilden kommer finnas
 SDL_Rect green_rect;
 SDL_Rect red_rect;
-SDL_Rect blue_rect; //rutan där bilden kommer finnas
+SDL_Rect blue_rect;
 
 
 // TODO: reference additional headers your program requires here
