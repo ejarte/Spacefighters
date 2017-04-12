@@ -15,7 +15,7 @@ int main(int argc, char* args[])
 
 	//Skapar ett fönster i fullskärmläge
 	window = SDL_CreateWindow("SimonSays", 100, 100, 600, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-	
+
 	if (window == NULL)
 	{
 		printf("Error, Window can't be desplayed");
@@ -30,7 +30,7 @@ int main(int argc, char* args[])
 	//laddar in bilderna
 
 	SDL_Texture* yellow_box = NULL;
-	yellow_box = IMG_LoadTexture(renderer, "yellowsquare.bmp"); //laddar den gula bilden i yellow_box
+	yellow_box = IMG_LoadTexture(renderer, "images/yellowsquare.bmp"); //laddar den gula bilden i yellow_box
 
 	SDL_Rect yellow_rect; //rutan där bilden kommer finnas
 	yellow_rect.x = 10;
@@ -39,7 +39,7 @@ int main(int argc, char* args[])
 	yellow_rect.h = BTNHEIGHT;  //Höjd
 
 	SDL_Texture* green_box = NULL;
-	green_box = IMG_LoadTexture(renderer, "greensquare.bmp");
+	green_box = IMG_LoadTexture(renderer, "images/greensquare.bmp");
 
 	SDL_Rect green_rect;
 	green_rect.x = 120;
@@ -48,7 +48,7 @@ int main(int argc, char* args[])
 	green_rect.h = BTNHEIGHT;
 
 	SDL_Texture* red_box = NULL;
-	red_box = IMG_LoadTexture(renderer, "redsquare.bmp");
+	red_box = IMG_LoadTexture(renderer, "images/redsquare.bmp");
 
 	SDL_Rect red_rect;
 	red_rect.x = 10;
@@ -57,7 +57,7 @@ int main(int argc, char* args[])
 	red_rect.h = BTNHEIGHT;
 
 	SDL_Texture* blue_box = NULL;
-	blue_box = IMG_LoadTexture(renderer, "bluesquare.bmp"); //laddar den gula bilden i yellow_box
+	blue_box = IMG_LoadTexture(renderer, "images/bluesquare.bmp"); //laddar den gula bilden i yellow_box
 
 	SDL_Rect blue_rect; //rutan där bilden kommer finnas
 	blue_rect.x = 120;
@@ -87,6 +87,13 @@ int main(int argc, char* args[])
 
 		SDL_RenderPresent(renderer);
 	}
+
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyTexture(yellow_box);
+	SDL_DestroyTexture(green_box);
+	SDL_DestroyTexture(red_box);
+	SDL_DestroyTexture(blue_box);
 
 	return 0;
 
