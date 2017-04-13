@@ -9,10 +9,9 @@
 #include "libaries.h"
 #include "init_sdl.h"
 #include "events.h"
+#include "graphics_lib.h"
 
 //deklererar variabler
-SDL_Renderer* renderer; //variabeln för att uppdatera fönstret
-SDL_Window* window;		//fönstret
 bool run_program;		//om false så stängs programet av
 
 SDL_Rect yellow_rect; //rutan där bilden kommer finnas

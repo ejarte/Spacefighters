@@ -3,6 +3,9 @@
 *	Version:	0.01
 */
 
+#ifndef EVENTS_H
+#define EVENTS_H
+
 #include "libaries.h"
 
 #define STATE_RELEASED					99		// Flag for Released Key/Button
@@ -27,4 +30,6 @@ bool keyEventPressed(SDL_Scancode sc);
 bool quitEventTriggered();
 
 void refreshEventHandler();
-void initEventHandler();			
+void initEventHandler();	
+
+#endif

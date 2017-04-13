@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="events.h" />
+    <ClInclude Include="graphics_lib.h" />
     <ClInclude Include="init_sdl.h" />
     <ClInclude Include="libaries.h" />
     <ClInclude Include="main.h" />
@@ -170,6 +171,8 @@
     <ClCompile Include="draw.c" />
     <ClCompile Include="end.c" />
     <ClCompile Include="events.c" />
+    <ClCompile Include="game_state.c" />
+    <ClCompile Include="graphics_lib.c" />
     <ClCompile Include="init_sdl.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>

@@ -1,22 +1,5 @@
 #include "main.h"
-
-void initWindow()
-{
-
-	SDL_Init(SDL_INIT_VIDEO);
-
-	//Skapar ett fönster i fullskärmläge
-	window = NULL;
-	window = SDL_CreateWindow("SimonSays", 100, 100, 600, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-
-	if (window == NULL)
-	{
-		printf("Error, Window can't be desplayed");
-		return(0); //avslutar programmet
-	}
-
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-}
+#include "graphics_lib.h"
 
 void initImages()
 {
@@ -34,7 +17,7 @@ void initImages()
 	}
 
 	yellow_box = NULL;
-	yellow_box = IMG_LoadTexture(renderer, "images/yellowsquare.bmp"); //laddar den gula bilden i yellow_box
+	loadTexture("images/yellowsquare.bmp", &yellow_box); //laddar den gula bilden i yellow_box
 
 	yellow_rect.x = screenW / 2 - (boxW);
 	yellow_rect.y = 10 + (boxH * 0.2);
@@ -42,7 +25,7 @@ void initImages()
 	yellow_rect.h = boxH;  //Höjd
 
 	green_box = NULL;
-	green_box = IMG_LoadTexture(renderer, "images/greensquare.bmp");
+	loadTexture("images/greensquare.bmp", &green_box); //laddar den gröna bilden i green_box
 
 	green_rect.x = 10 + (screenW / 2);
 	green_rect.y = 10 + (boxH * 0.2);
@@ -50,7 +33,7 @@ void initImages()
 	green_rect.h = boxH;
 
 	red_box = NULL;
-	red_box = IMG_LoadTexture(renderer, "images/redsquare.bmp");
+	loadTexture("images/redsquare.bmp", &red_box); //laddar den röda bilden i red_box
 
 	red_rect.x = screenW / 2 - (boxW);
 	red_rect.y = 20 + boxH + (boxH * 0.2);
@@ -58,7 +41,7 @@ void initImages()
 	red_rect.h = boxH;
 
 	blue_box = NULL;
-	blue_box = IMG_LoadTexture(renderer, "images/bluesquare.bmp"); //laddar den gula bilden i yellow_box
+	loadTexture("images/bluesquare.bmp", &blue_box); //laddar den gula bilden i yellow_box
 
 	blue_rect.x = 10 + (screenW / 2);
 	blue_rect.y = 20 + boxH + (boxH * 0.2);;
