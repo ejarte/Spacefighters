@@ -13,7 +13,7 @@
 //deklererar variabler
 SDL_Renderer* renderer; //variabeln för att uppdatera fönstret
 SDL_Window* window;		//fönstret
-bool quit;				//om true så stängs spelloopen av
+bool run_program;		//om false så stängs programet av
 
 SDL_Rect yellow_rect; //rutan där bilden kommer finnas
 SDL_Rect green_rect;

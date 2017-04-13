@@ -1,6 +1,7 @@
 //De bibliotek som används
 
 #include <stdio.h>
+#include <string.h>
 #include <tchar.h>
 #include <SDL.h>
 #include <SDL_mixer.h>

@@ -2,7 +2,6 @@
 
 void initWindow()
 {
-	quit = false;
 
 	SDL_Init(SDL_INIT_VIDEO);
 
