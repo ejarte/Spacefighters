@@ -11,6 +11,50 @@
 #define TRIGGER_EVENT_MOUSE_PRESSED		3
 #define TRIGGER_EVENT_MOUSE_RELEASED	4
 
+void lookEvents()
+{
+	// Enables/disables chat on return key
+	if (keyEventPressed(SDL_SCANCODE_RETURN)) {
+		if (isTextEventEnabled()) {
+			puts("Chat disabled.");
+			disableTextInput();
+		}
+		else {
+			puts("Chat enabled");
+			enableTextInput();
+		}
+	}
+
+	// if the chat is enabled and a text event was triggered it gets the text input
+	if (textEvent()) {
+		puts(getTextInput());
+	}
+
+	if (mouseEventHeld(SDL_BUTTON_LEFT))
+		puts("Held: Left mouse");
+
+	if (mouseEventPressed(SDL_BUTTON_LEFT))
+		printf("Left mouse pressed - %d\n", getTimeStamp(STATE_PRESSED, SDL_BUTTON_LEFT));
+
+
+	if (mouseEventReleased(SDL_BUTTON_LEFT))
+		printf("Left mouse released - %d\n", getTimeStamp(STATE_RELEASED, SDL_BUTTON_LEFT));
+
+	if (keyEventHeld(SDL_SCANCODE_W))
+		puts("Held: W");
+
+	if (keyEventPressed(SDL_SCANCODE_W))
+		printf("W pressed - %d\n", getTimeStamp(STATE_PRESSED, SDL_SCANCODE_W));
+
+	if (keyEventReleased(SDL_SCANCODE_W))
+		printf("W released - %d\n", getTimeStamp(STATE_RELEASED, SDL_SCANCODE_W));
+
+	if (quitEventTriggered()) {
+		run_program = false;
+		puts("quit was sent");
+	}
+
+}
 
 // Event data encapsulation
 struct EventData {	
@@ -30,7 +74,6 @@ struct TextEventData {
 struct	EventData event_data;
 struct TextEventData txt_event_data;
 
-char *text_input;		// String for recieved text event
 bool quit_event;		// Flag for quit event
 
 bool isTextEventEnabled()
