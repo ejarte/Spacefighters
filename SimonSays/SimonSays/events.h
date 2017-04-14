@@ -7,6 +7,7 @@
 #define EVENTS_H
 
 #include "libaries.h"
+#include "main.h"
 
 #define STATE_RELEASED					99		// Flag for Released Key/Button
 #define STATE_PRESSED					98		// Flag for Pressed Key/Button
@@ -16,6 +17,18 @@ bool textEvent();
 char* getTextInput();
 void disableTextInput();
 void enableTextInput();
+void lookState();
+
+SDL_Point p;			//musens position
+
+
+//variabler och funktioner kopplat till knapparna som hanteras i event.c
+char yellowPath[30];
+char greenPath[30];
+char bluePath[30];
+char redPath[30];
+void initNormal();
+void checkButtonClicked();
 
 int getTimeStamp(int flag, SDL_Scancode sc);
 

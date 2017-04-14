@@ -56,8 +56,5 @@
     <ClCompile Include="graphics_lib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game_state.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

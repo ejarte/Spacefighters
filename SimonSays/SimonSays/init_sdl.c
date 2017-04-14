@@ -17,7 +17,7 @@ void initImages()
 	}
 
 	yellow_box = NULL;
-	loadTexture("images/yellowsquare.bmp", &yellow_box); //laddar den gula bilden i yellow_box
+	loadTexture(yellowPath, &yellow_box); //laddar den gula bilden i yellow_box
 
 	yellow_rect.x = screenW / 2 - (boxW);
 	yellow_rect.y = 10 + (boxH * 0.2);
@@ -25,7 +25,7 @@ void initImages()
 	yellow_rect.h = boxH;  //Höjd
 
 	green_box = NULL;
-	loadTexture("images/greensquare.bmp", &green_box); //laddar den gröna bilden i green_box
+	loadTexture(greenPath, &green_box); //laddar den gröna bilden i green_box
 
 	green_rect.x = 10 + (screenW / 2);
 	green_rect.y = 10 + (boxH * 0.2);
@@ -33,7 +33,7 @@ void initImages()
 	green_rect.h = boxH;
 
 	red_box = NULL;
-	loadTexture("images/redsquare.bmp", &red_box); //laddar den röda bilden i red_box
+	loadTexture(redPath, &red_box); //laddar den röda bilden i red_box
 
 	red_rect.x = screenW / 2 - (boxW);
 	red_rect.y = 20 + boxH + (boxH * 0.2);
@@ -41,7 +41,7 @@ void initImages()
 	red_rect.h = boxH;
 
 	blue_box = NULL;
-	loadTexture("images/bluesquare.bmp", &blue_box); //laddar den gula bilden i yellow_box
+	loadTexture(bluePath, &blue_box); //laddar den gula bilden i yellow_box
 
 	blue_rect.x = 10 + (screenW / 2);
 	blue_rect.y = 20 + boxH + (boxH * 0.2);;
