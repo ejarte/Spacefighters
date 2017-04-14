@@ -2,7 +2,6 @@
 
 #include "libaries.h"
 #include "graphics_lib.h"
-#include "main.h"		// gillar inte main.h ^^
 
 void initWindow()
 {

@@ -5,6 +5,7 @@ and may not be redistributed without written permission.*/
 
 #include "graphics_lib.h"
 #include "game_state.h"
+#include "shared.h"
 
 int main(int argc, char* args[])
 {
@@ -12,7 +13,7 @@ int main(int argc, char* args[])
 	initEventHandler();
 	initNormal();
 
-	bool run_program = true;
+	run_program = true;
 
 	while (run_program)	// körs tills användaren trycker på X uppe i fönstret
 	{

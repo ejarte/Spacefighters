@@ -164,6 +164,7 @@
     <ClInclude Include="game_state.h" />
     <ClInclude Include="graphics_lib.h" />
     <ClInclude Include="libaries.h" />
+    <ClInclude Include="shared.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 #include "game_state.h"
+#include "shared.h"
 
 int boxW;
 int boxH;
