@@ -9,7 +9,7 @@ void initWindow()
 
 	//Skapar ett fönster i fullskärmläge
 	window = NULL;
-	window = SDL_CreateWindow("SimonSays", 100, 100, 600, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("SimonSays", 100, 100, 600, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN);
 
 	if (window == NULL) {
 		printf("Error, Window can't be desplayed\n");
