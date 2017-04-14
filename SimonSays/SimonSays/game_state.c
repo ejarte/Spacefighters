@@ -29,6 +29,7 @@ SDL_Rect playerRect;
 
 int frameWidth, frameHeight;
 int textureWidth, textureHeight;
+int posX, posY;
 
 void buttonSound()
 {
@@ -91,16 +92,23 @@ void lookState()  //gameloop
 			//	printf("Left mouse pressed - %d\n", getTimeStamp(STATE_PRESSED, SDL_BUTTON_LEFT));
 
 	if (mouseEventReleased(SDL_BUTTON_LEFT))
-		//printf("Left mouse released - %d\n", getTimeStamp(STATE_RELEASED, SDL_BUTTON_LEFT));
+		printf("Left mouse released - %d\n", getTimeStamp(STATE_RELEASED, SDL_BUTTON_LEFT));
+	
+	if (keyEventPressed(SDL_SCANCODE_W))
+		spaceship_rect.y += 5;
+	//	printf("W pressed - %d\n", getTimeStamp(STATE_PRESSED, SDL_SCANCODE_W));
 
 	if (keyEventHeld(SDL_SCANCODE_W))
-		puts("Held: W");
+		spaceship_rect.y -= 5;
 
-	if (keyEventPressed(SDL_SCANCODE_W))
-		printf("W pressed - %d\n", getTimeStamp(STATE_PRESSED, SDL_SCANCODE_W));
+	if (keyEventHeld(SDL_SCANCODE_S))
+		spaceship_rect.y += 5;
 
-	if (keyEventReleased(SDL_SCANCODE_W))
-		printf("W released - %d\n", getTimeStamp(STATE_RELEASED, SDL_SCANCODE_W));
+	if (keyEventHeld(SDL_SCANCODE_A))
+		spaceship_rect.x -= 5;
+
+	if (keyEventHeld(SDL_SCANCODE_D))
+		spaceship_rect.x += 5;
 
 	if (quitEventTriggered()) {
 		setNextState(STATE_EXIT);
@@ -121,17 +129,29 @@ void spaceShipSetup()
 	playerRect.x = playerRect.y = 0;
 	playerRect.w = frameWidth;
 	playerRect.h = frameHeight;
+
+	posX = 50;
+	posY = 50;
+
+	spaceship_rect.x = posX;
+	spaceship_rect.y = posY;
+	spaceship_rect.h = 100;
+	spaceship_rect.w = 50;
 }
 
 void animateSpaceship()
 {
 	SDL_RenderClear(renderer); //Clears the screen
 
-	frame++;
-	if (frame == 4)
-		frame = 0;
-
-	SDL_RenderCopy(renderer, currentImage, &rects[frame], &rects[0]);
+	frameTime++;
+	if (frameTime == 2)
+	{
+		frame++;
+		if (frame == 4)
+			frame = 0;
+		frameTime = 0;
+	}
+	SDL_RenderCopy(renderer, currentImage, &rects[frame], &spaceship_rect);
 	SDL_RenderPresent(renderer);
 }
 
