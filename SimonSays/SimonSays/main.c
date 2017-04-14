@@ -5,7 +5,6 @@ and may not be redistributed without written permission.*/
 
 #include "graphics_lib.h"
 #include "game_state.h"
-#include "shared.h"
 
 int main(int argc, char* args[])
 {
