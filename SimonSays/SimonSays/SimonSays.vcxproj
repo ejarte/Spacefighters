@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDLBIB\SDL2_net-2.0.1\include;C:\SDLBIB\SDL2_mixer-2.0.1\include;C:\SDLBIB\SDL2_image-2.0.1\include;C:\SDLBIB\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDLBIB\SDL2_net-2.0.1\lib\x86;C:\SDLBIB\SDL2_mixer-2.0.1\lib\x86;C:\SDLBIB\SDL2_image-2.0.1\lib\x86;C:\SDLBIB\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SDLBIB\SDL2_ttf-2.0.14\include;C:\SDLBIB\SDL2_net-2.0.1\include;C:\SDLBIB\SDL2_mixer-2.0.1\include;C:\SDLBIB\SDL2_image-2.0.1\include;C:\SDLBIB\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDLBIB\SDL2_ttf-2.0.14\lib\x86;C:\SDLBIB\SDL2_net-2.0.1\lib\x86;C:\SDLBIB\SDL2_mixer-2.0.1\lib\x86;C:\SDLBIB\SDL2_image-2.0.1\lib\x86;C:\SDLBIB\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -107,7 +107,7 @@
       </StackReserveSize>
       <StackCommitSize>
       </StackCommitSize>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_net.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

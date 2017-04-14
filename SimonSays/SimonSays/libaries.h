@@ -9,3 +9,4 @@
 #include <SDL_net.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <SDL_ttf.h>
