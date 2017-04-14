@@ -1,4 +1,5 @@
 #pragma once
+
 #include "libaries.h"
 #include "graphics_lib.h"
 #include "main.h"		// gillar inte main.h ^^
@@ -32,30 +33,27 @@ void renderCopy(SDL_Texture* texture, const SDL_Rect* source, SDL_Rect* dest)
 	SDL_RenderCopy(renderer, texture, source, dest);
 }
 
-/* Saknar TTF lib men detta renderer text
-
 void loadFont(const char *filepath, int fontsize, TTF_Font** font)
 {
 	(*font) = TTF_OpenFont(filepath, fontsize);
-	if  ((*font) == NULL)
-		printf("TTF_ERROR: %s", TTF_GetError())
+	if ((*font) == NULL)
+		printf("TTF_ERROR: %s", TTF_GetError());
 }
 
 void createTextureText(char *text, TTF_Font *font, SDL_Color textcolor, SDL_Texture **ptr_texture)
 {
-	SDL_Surface *surfac = TTF_RenderText_Solid(font, text, textcolor);
+	SDL_Surface *surface = TTF_RenderText_Solid(font, text, textcolor);
 	*ptr_texture = SDL_CreateTextureFromSurface(renderer, surface);
 	SDL_FreeSurface(surface);
 }
 
 void createTextAndRect(int x, int y, char* text, SDL_Color textcolor, TTF_Font* font, SDL_Texture **ptr_texture, SDL_Rect *ptr_rect)
 {
-	SDL_Surface *surfac = TTF_RenderText_Solid(font, text, textcolor);
+	SDL_Surface *surface = TTF_RenderText_Solid(font, text, textcolor);
 	*ptr_texture = SDL_CreateTextureFromSurface(renderer, surface);
-	rect->x = x;
-	rect->y = y;
-	rect->w = surface->w;
-	rect->h = surface->h;
+	ptr_rect->x = x;
+	ptr_rect->y = y;
+	ptr_rect->w = surface->w;
+	ptr_rect->h = surface->h;
 	SDL_FreeSurface(surface);
 }
-*/

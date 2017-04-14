@@ -1,13 +1,12 @@
 /*	Author(s):	Tiago Redaelli
-*	Contact:	tiago.redaelli@gmail.com
-*	Version:	0.01
+*	Modified:	14-04-2017
+*	Version:	0.02
 */
 
 #ifndef EVENTS_H
 #define EVENTS_H
 
 #include "libaries.h"
-#include "main.h"
 
 #define STATE_RELEASED					99		// Flag for Released Key/Button
 #define STATE_PRESSED					98		// Flag for Pressed Key/Button
@@ -23,12 +22,19 @@ SDL_Point p;			//musens position
 
 
 //variabler och funktioner kopplat till knapparna som hanteras i event.c
+/*
 char yellowPath[30];
 char greenPath[30];
 char bluePath[30];
 char redPath[30];
+*/
 void initNormal();
 void checkButtonClicked();
+
+SDL_Point getMousePos();
+int getMousex();
+int getMouseY();
+
 
 int getTimeStamp(int flag, SDL_Scancode sc);
 

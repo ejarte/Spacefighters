@@ -21,13 +21,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="init_sdl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="libaries.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="events.h">
@@ -36,24 +30,21 @@
     <ClInclude Include="graphics_lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="init_sdl.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="events.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="draw.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="end.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="graphics_lib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_state.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

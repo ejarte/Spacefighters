@@ -2,8 +2,9 @@
 and may not be redistributed without written permission.*/
 
 //Using SDL and standard IO
-#include "main.h"
+
 #include "graphics_lib.h"
+#include "game_state.h"
 
 int main(int argc, char* args[])
 {
@@ -11,7 +12,7 @@ int main(int argc, char* args[])
 	initEventHandler();
 	initNormal();
 
-	run_program = true;
+	bool run_program = true;
 
 	while (run_program)	// körs tills användaren trycker på X uppe i fönstret
 	{
