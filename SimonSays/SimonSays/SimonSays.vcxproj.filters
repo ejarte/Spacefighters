@@ -33,9 +33,6 @@
     <ClInclude Include="game_state.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shared.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="state_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -3,41 +3,32 @@
 
 int boxW;
 int boxH;
-SDL_Texture* yellow_box;
-SDL_Texture* green_box;
-SDL_Texture* red_box;
-SDL_Texture* blue_box;
 
-SDL_Rect yellow_rect; //rutan där bilden kommer finnas
-SDL_Rect green_rect;
-SDL_Rect red_rect;
-SDL_Rect blue_rect;
+SDL_Texture* spaceship_box;
+
+SDL_Rect spaceship_rect;
 
 char yellowPath[30];
 char greenPath[30];
 char bluePath[30];
 char redPath[30];
+char spaceShip_path[30];
 
-//test
+int frame = 0;
+int frameTime = 0;
+
+SDL_Rect rects[3]; //alla frames i rymdskeppet
 
 Mix_Music *bgm; //longer then 10 sec
 Mix_Chunk *soundEffect;  //ljudeffekter
 
-#define YELLOW_NORMAL "images/yellowsquare.bmp"
-#define YELLOW_HOVER "images/yellowsquare.bmp"
-#define YELLOW_CLICKED "images/yellowsquare_light.bmp"
+#define SPACESHIP "images/spaceship.png"
 
-#define GREEN_NORMAL "images/greensquare.bmp"
-#define GREEN_HOVER "images/greensquare.bmp"
-#define GREEN_CLICKED "images/greensquare_light.bmp"
+SDL_Texture *currentImage;
+SDL_Rect playerRect;
 
-#define BLUE_NORMAL "images/bluesquare.bmp"
-#define BLUE_HOVER "images/bluesquare.bmp"
-#define BLUE_CLICKED "images/bluesquare_light.bmp"
-
-#define RED_NORMAL "images/redsquare.bmp"
-#define RED_HOVER "images/redsquare.bmp"
-#define RED_CLICKED "images/redsquare_light.bmp"
+int frameWidth, frameHeight;
+int textureWidth, textureHeight;
 
 void buttonSound()
 {
@@ -48,16 +39,7 @@ void buttonSound()
 void checkButtonClicked()
 {
 
-	if (SDL_PointInRect(&p, &yellow_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
-	{
-		buttonSound();
-	} else if (SDL_PointInRect(&p, &green_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
-	{
-		buttonSound();
-	} else if (SDL_PointInRect(&p, &blue_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
-	{
-		buttonSound();
-	} else if (SDL_PointInRect(&p, &red_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
+	if (SDL_PointInRect(&p, &spaceship_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
 	{
 		buttonSound();
 	}
@@ -66,43 +48,15 @@ void checkButtonClicked()
 
 void checkButtonPressedDown()
 {
-
-	if (SDL_PointInRect(&p, &yellow_rect) && mouseEventHeld(SDL_BUTTON_LEFT))
+	if (SDL_PointInRect(&p, &spaceship_rect) && mouseEventHeld(SDL_BUTTON_LEFT))
 	{
-		strcpy(yellowPath, YELLOW_CLICKED);
+		strcpy(spaceShip_path, SPACESHIP);
 	}
-	else
-		strcpy(yellowPath, YELLOW_NORMAL);
-
-	if (SDL_PointInRect(&p, &green_rect) && mouseEventHeld(SDL_BUTTON_LEFT))
-	{
-		strcpy(greenPath, GREEN_CLICKED);
-	}
-	else
-		strcpy(greenPath, GREEN_NORMAL);
-
-	if (SDL_PointInRect(&p, &blue_rect) && mouseEventHeld(SDL_BUTTON_LEFT))
-	{
-		strcpy(bluePath, BLUE_CLICKED);
-	}
-	else
-		strcpy(bluePath, BLUE_NORMAL);
-
-	if (SDL_PointInRect(&p, &red_rect) && mouseEventHeld(SDL_BUTTON_LEFT))
-	{
-		strcpy(redPath, RED_CLICKED);
-	}
-	else
-		strcpy(redPath, RED_NORMAL);
-	
 }
 
 void initNormal()
 {
-	strcpy(yellowPath, YELLOW_NORMAL);
-	strcpy(greenPath, GREEN_NORMAL);
-	strcpy(bluePath, BLUE_NORMAL);
-	strcpy(redPath, RED_NORMAL);
+	strcpy(spaceShip_path, SPACESHIP);
 }
 
 void lookState()  //gameloop
@@ -153,66 +107,55 @@ void lookState()  //gameloop
 	}
 }
 
-
-void initImages()
+void spaceShipSetup()
 {
-	//laddar in bilderna
-	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
+	currentImage = IMG_LoadTexture(renderer, spaceShip_path);
+	setrects(rects);
+	SDL_Rect* CurrentClip = &rects[0];
 
-	if (boxW < boxH)
-	{
-		boxW = screenW / 4;
-		boxH = boxW;
-	}
-	else
-	{
-		boxH = screenH / 4;
-		boxW = boxH;
-	}
+	SDL_QueryTexture(currentImage, NULL, NULL, &textureWidth, &textureHeight);
 
-	yellow_box = NULL;
-	loadTexture(yellowPath, &yellow_box); //laddar den gula bilden i yellow_box
+	frameWidth = textureWidth / 4;
+	frameHeight = textureHeight / 2;
 
-	yellow_rect.x = screenW / 2 - (boxW);
-	yellow_rect.y = 10 + (boxH * 0.2);
-	yellow_rect.w = boxW;  //Bredd
-	yellow_rect.h = boxH;  //Höjd
-
-	green_box = NULL;
-	loadTexture(greenPath, &green_box); //laddar den gröna bilden i green_box
-
-	green_rect.x = 10 + (screenW / 2);
-	green_rect.y = 10 + (boxH * 0.2);
-	green_rect.w = boxW;
-	green_rect.h = boxH;
-
-	red_box = NULL;
-	loadTexture(redPath, &red_box); //laddar den röda bilden i red_box
-
-	red_rect.x = screenW / 2 - (boxW);
-	red_rect.y = 20 + boxH + (boxH * 0.2);
-	red_rect.w = boxW;
-	red_rect.h = boxH;
-
-	blue_box = NULL;
-	loadTexture(bluePath, &blue_box); //laddar den gula bilden i yellow_box
-
-	blue_rect.x = 10 + (screenW / 2);
-	blue_rect.y = 20 + boxH + (boxH * 0.2);
-	blue_rect.w = boxW;  //Bredd
-	blue_rect.h = boxH;  //10 + (screenW / 2)
+	playerRect.x = playerRect.y = 0;
+	playerRect.w = frameWidth;
+	playerRect.h = frameHeight;
 }
 
-void drawScreen()
+void animateSpaceship()
 {
 	SDL_RenderClear(renderer); //Clears the screen
-							   //Ritar ut bilderna på fönstret
-	SDL_RenderCopy(renderer, yellow_box, NULL, &yellow_rect); //Null eftersom vi inte ska croppa bilden
-	SDL_RenderCopy(renderer, green_box, NULL, &green_rect);
-	SDL_RenderCopy(renderer, red_box, NULL, &red_rect);
-	SDL_RenderCopy(renderer, blue_box, NULL, &blue_rect);
 
+	frame++;
+	if (frame == 4)
+		frame = 0;
+
+	SDL_RenderCopy(renderer, currentImage, &rects[frame], &rects[0]);
 	SDL_RenderPresent(renderer);
+}
+
+void setrects(SDL_Rect* clip)
+{
+	clip[0].x = 0;
+	clip[0].y = 0;
+	clip[0].w = 99;
+	clip[0].h = 154;
+
+	clip[1].x = 99;
+	clip[1].y = 0;
+	clip[1].w = 99;
+	clip[1].h = 154;
+
+	clip[2].x = 198;
+	clip[2].y = 0;
+	clip[2].w = 99;
+	clip[2].h = 154;
+
+	clip[3].x = 297;
+	clip[3].y = 0;
+	clip[3].w = 99;
+	clip[3].h = 154;
 }
 
 void clearPointers()
@@ -230,13 +173,8 @@ void clearPointers()
 
 void clearImages()
 {
-	SDL_DestroyTexture(yellow_box);
-	SDL_DestroyTexture(green_box);
-	SDL_DestroyTexture(red_box);
-	SDL_DestroyTexture(blue_box);
+	SDL_DestroyTexture(spaceship_box);
 }
-
-
 
 void initGameState()
 {
@@ -247,7 +185,7 @@ void initGameState()
 void onGameRunning()
 {
 	lookState();
-	initImages();				//initierar bilder
-	drawScreen();				//ritar upp bilder m.m. på fönstret
+	frameTime++;
+	animateSpaceship();				//initierar bilder
 	clearImages();				//rensar bilderna från ram
 }

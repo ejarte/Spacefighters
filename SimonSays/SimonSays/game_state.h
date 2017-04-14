@@ -6,7 +6,6 @@
 
 void onGameRunning();
 void initGameState();
-void drawScreen();
 void clearPointers();
 void clearImages();
 void initImages();
@@ -14,3 +13,6 @@ void checkButtonClicked();
 void buttonSound();
 void checkButtonPressedDown();
 void checkButtonClicked();
+void spaceShipSetup();
+void setrects(SDL_Rect* clip);
+void animateSpaceship();

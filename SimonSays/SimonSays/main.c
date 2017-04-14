@@ -13,6 +13,7 @@ int main(int argc, char* args[])
 	initWindow();
 	initEventHandler();
 	initNormal();
+	spaceShipSetup();
 
 	bool run = true;
 

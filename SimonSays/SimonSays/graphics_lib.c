@@ -6,20 +6,23 @@
 void initWindow()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+	SDL_Surface* screen, *image;
 
 	//Skapar ett fönster i fullskärmläge
 	window = NULL;
-	window = SDL_CreateWindow("SimonSays", 100, 100, 600, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN);
+	window = SDL_CreateWindow("SimonSays", 100, 100, 600, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	//window_col
 
 	if (window == NULL) {
 		printf("Error, Window can't be desplayed\n");
 		exit(-1);
 	}
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		printf("Error, Sound cannot be loaded");
 
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 }
 
 // Loads a texture with a file
