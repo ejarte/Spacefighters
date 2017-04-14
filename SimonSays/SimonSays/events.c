@@ -4,7 +4,6 @@
 */
 
 #include "events.h"
-#include "shared.h"
 
 #define EV_MAX_SCANCODES				260	// Array Size
 #define TRIGGER_EVENT_NONE				0		

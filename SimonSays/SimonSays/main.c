@@ -3,7 +3,9 @@ and may not be redistributed without written permission.*/
 
 //Using SDL and standard IO
 
+#include "events.h";
 #include "graphics_lib.h"
+#include "state_handler.h"
 #include "game_state.h"
 
 int main(int argc, char* args[])
@@ -12,18 +14,21 @@ int main(int argc, char* args[])
 	initEventHandler();
 	initNormal();
 
-	run_program = true;
+	bool run = true;
 
-	while (run_program)	// körs tills användaren trycker på X uppe i fönstret
+	setNextState(STATE_GAME_RUNNING);
+
+	while (run)	// körs tills användaren trycker på X uppe i fönstret
 	{
 		refreshEventHandler();		// mappar användarinput
-		lookState();
-
-		initImages();				//initierar bilder
-		drawScreen();				//ritar upp bilder m.m. på fönstret
-		clearImages();				//rensar bilderna från ram
+		if (getNextState() == STATE_EXIT) {
+			run = false;
+		}
+		else {
+			executeNextState();
+		}
+		SDL_Delay(30);
 	}
-
 	clearPointers();		//Tar bort pekarna ur minnet för säkerhets skull
 
 	return 0;

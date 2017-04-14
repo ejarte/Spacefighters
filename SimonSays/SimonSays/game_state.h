@@ -4,7 +4,7 @@
 #include "graphics_lib.h"
 #include "events.h"
 
-
+void onGameRunning();
 void initGameState();
 void drawScreen();
 void clearPointers();

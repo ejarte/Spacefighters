@@ -1,5 +1,5 @@
 #include "game_state.h"
-#include "shared.h"
+#include "state_handler.h"
 
 int boxW;
 int boxH;
@@ -147,8 +147,7 @@ void lookState()  //gameloop
 		printf("W released - %d\n", getTimeStamp(STATE_RELEASED, SDL_SCANCODE_W));
 
 	if (quitEventTriggered()) {
-		run_program = false;
-		puts("quit was sent");
+		setNextState(STATE_EXIT);
 	}
 }
 
@@ -241,4 +240,12 @@ void initGameState()
 {
 
 
+}
+
+void onGameRunning()
+{
+	lookState();
+	initImages();				//initierar bilder
+	drawScreen();				//ritar upp bilder m.m. på fönstret
+	clearImages();				//rensar bilderna från ram
 }

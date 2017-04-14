@@ -163,12 +163,14 @@
     <ClInclude Include="events.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="graphics_lib.h" />
+    <ClInclude Include="state_handler.h" />
     <ClInclude Include="libaries.h" />
     <ClInclude Include="shared.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="events.c" />
+    <ClCompile Include="state_handler.c" />
     <ClCompile Include="game_state.c" />
     <ClCompile Include="graphics_lib.c" />
     <ClCompile Include="main.c" />

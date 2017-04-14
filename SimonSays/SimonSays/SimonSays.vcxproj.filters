@@ -36,6 +36,9 @@
     <ClInclude Include="shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="state_handler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game_state.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state_handler.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
