@@ -5,7 +5,7 @@
 
 void initWindow()
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
 	//Skapar ett fönster i fullskärmläge
 	window = NULL;
@@ -16,6 +16,10 @@ void initWindow()
 		exit(-1);
 	}
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		printf("Error, Sound cannot be loaded");
+
 }
 
 // Loads a texture with a file

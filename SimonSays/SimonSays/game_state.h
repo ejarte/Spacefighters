@@ -11,3 +11,6 @@ void clearPointers();
 void clearImages();
 void initImages();
 void checkButtonClicked();
+void buttonSound();
+void checkButtonPressedDown();
+void checkButtonClicked();

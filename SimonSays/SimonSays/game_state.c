@@ -18,6 +18,9 @@ char greenPath[30];
 char bluePath[30];
 char redPath[30];
 
+Mix_Music *bgm; //longer then 10 sec
+Mix_Chunk *soundEffect;  //ljudeffekter
+
 #define YELLOW_NORMAL "images/yellowsquare.bmp"
 #define YELLOW_HOVER "images/yellowsquare.bmp"
 #define YELLOW_CLICKED "images/yellowsquare_light.bmp"
@@ -34,7 +37,32 @@ char redPath[30];
 #define RED_HOVER "images/redsquare.bmp"
 #define RED_CLICKED "images/redsquare_light.bmp"
 
+void buttonSound()
+{
+		soundEffect = Mix_LoadWAV("soundeffects/buttonpop.wav");
+		Mix_PlayChannel(-1, soundEffect, 0);
+}
+
 void checkButtonClicked()
+{
+
+	if (SDL_PointInRect(&p, &yellow_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
+	{
+		buttonSound();
+	} else if (SDL_PointInRect(&p, &green_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
+	{
+		buttonSound();
+	} else if (SDL_PointInRect(&p, &blue_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
+	{
+		buttonSound();
+	} else if (SDL_PointInRect(&p, &red_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
+	{
+		buttonSound();
+	}
+
+}
+
+void checkButtonPressedDown()
 {
 
 	if (SDL_PointInRect(&p, &yellow_rect) && mouseEventHeld(SDL_BUTTON_LEFT))
@@ -64,6 +92,7 @@ void checkButtonClicked()
 	}
 	else
 		strcpy(redPath, RED_NORMAL);
+	
 }
 
 void initNormal()
@@ -89,7 +118,9 @@ void lookState()  //gameloop
 	}
 
 	SDL_GetMouseState(&p.x, &p.y);
-	checkButtonClicked(); //change colour of button if it is pressed
+	checkButtonPressedDown(); //change colour of button if it is pressed
+
+	checkButtonClicked(); //play sound if button is pressed
 
 						  // if the chat is enabled and a text event was triggered it gets the text input
 	if (textEvent()) {
@@ -99,12 +130,12 @@ void lookState()  //gameloop
 	if (mouseEventHeld(SDL_BUTTON_LEFT))
 		//puts("Held: Left mouse");
 
-		if (mouseEventPressed(SDL_BUTTON_LEFT))
+	if (mouseEventPressed(SDL_BUTTON_LEFT))
+		Mix_PlayChannel(0, soundEffect, 1);
 			//	printf("Left mouse pressed - %d\n", getTimeStamp(STATE_PRESSED, SDL_BUTTON_LEFT));
 
-
-			if (mouseEventReleased(SDL_BUTTON_LEFT))
-				printf("Left mouse released - %d\n", getTimeStamp(STATE_RELEASED, SDL_BUTTON_LEFT));
+	if (mouseEventReleased(SDL_BUTTON_LEFT))
+		//printf("Left mouse released - %d\n", getTimeStamp(STATE_RELEASED, SDL_BUTTON_LEFT));
 
 	if (keyEventHeld(SDL_SCANCODE_W))
 		puts("Held: W");
@@ -189,6 +220,11 @@ void clearPointers()
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	clearImages();
+	Mix_FreeChunk(soundEffect);
+	Mix_FreeMusic(bgm);
+
+	Mix_Quit();
+	SDL_Quit();
 }
 
 void clearImages()
