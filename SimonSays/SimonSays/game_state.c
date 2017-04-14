@@ -18,6 +18,8 @@ char greenPath[30];
 char bluePath[30];
 char redPath[30];
 
+//test
+
 Mix_Music *bgm; //longer then 10 sec
 Mix_Chunk *soundEffect;  //ljudeffekter
 
