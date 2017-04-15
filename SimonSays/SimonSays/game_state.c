@@ -1,23 +1,21 @@
 #include "game_state.h"
 #include "state_handler.h"
 
-int boxW;
-int boxH;
+#define MAXSPEED 16
+#define DRAG 0.98
+#define ACC 1
 
-SDL_Texture* spaceship_box;
+typedef struct Spaceship
+{
+	float speedx;
+	float acc;
+	int x;
+	int y;
+	float drag;
+	float speedy;
+} Player;
 
-SDL_Rect spaceship_rect;
-
-char yellowPath[30];
-char greenPath[30];
-char bluePath[30];
-char redPath[30];
-char spaceShip_path[30];
-
-int frame = 0;
-int frameTime = 0;
-
-SDL_Rect rects[3]; //alla frames i rymdskeppet
+Player Jacob = {0, 1.05, 50, 100, 0.98, 0};
 
 Mix_Music *bgm; //longer then 10 sec
 Mix_Chunk *soundEffect;  //ljudeffekter
@@ -30,6 +28,13 @@ SDL_Rect playerRect;
 int frameWidth, frameHeight;
 int textureWidth, textureHeight;
 int posX, posY;
+
+SDL_Rect rects[3]; //alla frames i rymdskeppet
+SDL_Texture* spaceship_box;
+SDL_Rect spaceship_rect;
+char spaceShip_path[30];
+int frame = 0;
+int frameTime = 0;
 
 void buttonSound()
 {
@@ -84,35 +89,67 @@ void lookState()  //gameloop
 		puts(getTextInput());
 	}
 
-	if (mouseEventHeld(SDL_BUTTON_LEFT))
+	//if (mouseEventHeld(SDL_BUTTON_LEFT))
 		//puts("Held: Left mouse");
 
 	if (mouseEventPressed(SDL_BUTTON_LEFT))
-		Mix_PlayChannel(0, soundEffect, 1);
-			//	printf("Left mouse pressed - %d\n", getTimeStamp(STATE_PRESSED, SDL_BUTTON_LEFT));
+	{
+		buttonSound();
+	}
 
 	if (mouseEventReleased(SDL_BUTTON_LEFT))
 		printf("Left mouse released - %d\n", getTimeStamp(STATE_RELEASED, SDL_BUTTON_LEFT));
 	
-	if (keyEventPressed(SDL_SCANCODE_W))
-		spaceship_rect.y += 5;
-	//	printf("W pressed - %d\n", getTimeStamp(STATE_PRESSED, SDL_SCANCODE_W));
+
+	//if (keyEventPressed(SDL_SCANCODE_W))
+	//	spaceship_rect.y += 5;			//up
 
 	if (keyEventHeld(SDL_SCANCODE_W))
-		spaceship_rect.y -= 5;
-
+	{
+		Jacob.speedy -= ACC;
+	}
 	if (keyEventHeld(SDL_SCANCODE_S))
-		spaceship_rect.y += 5;
-
+	{
+		Jacob.speedy += ACC;			//down
+	}
 	if (keyEventHeld(SDL_SCANCODE_A))
-		spaceship_rect.x -= 5;
-
+	{
+		Jacob.speedx -= ACC;				//left
+	}
 	if (keyEventHeld(SDL_SCANCODE_D))
-		spaceship_rect.x += 5;
+	{
+		Jacob.speedx += ACC;			//right
+	}
+
 
 	if (quitEventTriggered()) {
 		setNextState(STATE_EXIT);
 	}
+}
+
+void movementSpaceship()
+{
+	//controlling maxspeed
+	if (Jacob.speedy > MAXSPEED)
+	{
+		Jacob.speedy = MAXSPEED;
+	}
+	else if (Jacob.speedy < -MAXSPEED)
+		Jacob.speedy = -MAXSPEED;
+
+	if (Jacob.speedx > MAXSPEED)
+	{
+		Jacob.speedx = MAXSPEED;
+	}
+	else if (Jacob.speedx < -MAXSPEED)
+		Jacob.speedx = -MAXSPEED;
+
+	Jacob.speedx *= DRAG;
+	Jacob.speedy *= DRAG;
+
+	//moving the spaceship
+	spaceship_rect.x += Jacob.speedx;
+	spaceship_rect.y += Jacob.speedy;
 }
 
 void spaceShipSetup()
@@ -123,20 +160,21 @@ void spaceShipSetup()
 
 	SDL_QueryTexture(currentImage, NULL, NULL, &textureWidth, &textureHeight);
 
-	frameWidth = textureWidth / 4;
+/*	frameWidth = textureWidth / 4;
 	frameHeight = textureHeight / 2;
 
-	playerRect.x = playerRect.y = 0;
 	playerRect.w = frameWidth;
-	playerRect.h = frameHeight;
+	playerRect.h = frameHeight; */
 
 	posX = 50;
 	posY = 50;
 
-	spaceship_rect.x = posX;
-	spaceship_rect.y = posY;
+	spaceship_rect.x = Jacob.x;
+	spaceship_rect.y = Jacob.y;
 	spaceship_rect.h = 100;
 	spaceship_rect.w = 50;
+
+
 }
 
 void animateSpaceship()
@@ -181,7 +219,7 @@ void setrects(SDL_Rect* clip)
 void clearPointers()
 {
 	//Tar bort pekarna ur minnet för säkerhets skull
-	SDL_DestroyWindow(window);
+	//SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	clearImages();
 	Mix_FreeChunk(soundEffect);
@@ -194,6 +232,7 @@ void clearPointers()
 void clearImages()
 {
 	SDL_DestroyTexture(spaceship_box);
+
 }
 
 void initGameState()
@@ -207,5 +246,6 @@ void onGameRunning()
 	lookState();
 	frameTime++;
 	animateSpaceship();				//initierar bilder
+	movementSpaceship();
 	clearImages();				//rensar bilderna från ram
 }
