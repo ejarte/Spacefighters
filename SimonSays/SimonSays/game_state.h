@@ -3,6 +3,8 @@
 #include "libaries.h"
 #include "graphics_lib.h"
 #include "events.h"
+#include "state_handler.h"
+
 
 void onGameRunning();
 void initGameState();

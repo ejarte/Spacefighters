@@ -1,5 +1,4 @@
 #include "game_state.h"
-#include "state_handler.h"
 
 #define MAXSPEED 16
 #define DRAG 0.98
@@ -64,7 +63,7 @@ void buttonSound()
 
 void checkButtonClicked()
 {
-
+	SDL_Point p = getMousePos();
 	if (SDL_PointInRect(&p, &spaceship_rect) && mouseEventPressed(SDL_BUTTON_LEFT))
 	{
 		buttonSound();
@@ -74,6 +73,7 @@ void checkButtonClicked()
 
 void checkButtonPressedDown()
 {
+	SDL_Point p = getMousePos();
 	if (SDL_PointInRect(&p, &spaceship_rect) && mouseEventHeld(SDL_BUTTON_LEFT))
 	{
 		strcpy(spaceShip_path, SPACESHIP);
@@ -98,8 +98,8 @@ void lookState()  //gameloop
 			enableTextInput();
 		}
 	}
+	SDL_Point p = getMousePos();
 
-	SDL_GetMouseState(&p.x, &p.y);
 	checkButtonPressedDown(); //change colour of button if it is pressed
 
 	checkButtonClicked(); //play sound if button is pressed
@@ -214,6 +214,9 @@ void animateSpaceship()
 			frame = 0;
 		frameTime = 0;
 	}
+
+	SDL_Point p = getMousePos();
+
 	angle = angleShip(spaceship_rect, p);  //får ut vinkeln mellan rymdskeppet och muspekaren
 
 	SDL_RenderCopyEx(renderer, currentImage, &rects[frame], &spaceship_rect, angle, &center, flip); //ritar ut skeppet i fönstret

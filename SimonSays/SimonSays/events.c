@@ -138,6 +138,10 @@ void refreshEventHandler() {
 	txt_event_data.str_input = malloc(30);
 	txt_event_data.str_input[0] = '\0';
 
+	/* Update mouse point */
+
+	SDL_GetMouseState(&mouse_point.x, &mouse_point.y);
+
 	/* Poll for new events */
 
 	while (SDL_PollEvent(&event)) {

@@ -18,15 +18,6 @@ void disableTextInput();
 void enableTextInput();
 void lookState();
 
-SDL_Point p;			//musens position
-
-//variabler och funktioner kopplat till knapparna som hanteras i event.c
-/*
-char yellowPath[30];
-char greenPath[30];
-char bluePath[30];
-char redPath[30];
-*/
 void initNormal();
 void checkButtonClicked();
 
