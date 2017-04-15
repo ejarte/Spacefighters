@@ -20,7 +20,6 @@ void lookState();
 
 SDL_Point p;			//musens position
 
-
 //variabler och funktioner kopplat till knapparna som hanteras i event.c
 /*
 char yellowPath[30];

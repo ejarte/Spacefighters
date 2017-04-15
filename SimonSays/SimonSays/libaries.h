@@ -11,3 +11,4 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <SDL_ttf.h>
+#include <math.h>

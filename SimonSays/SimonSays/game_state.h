@@ -17,3 +17,4 @@ void spaceShipSetup();
 void setrects(SDL_Rect* clip);
 void animateSpaceship();
 void movementSpaceship();
+float angleShip();

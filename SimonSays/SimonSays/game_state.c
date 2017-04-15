@@ -36,6 +36,20 @@ char spaceShip_path[30];
 int frame = 0;
 int frameTime = 0;
 
+float angle = 100.0f; // set the angle.
+SDL_Point center = { 8, 8 }; // the center where the texture will be rotated.
+SDL_RendererFlip flip = SDL_FLIP_NONE; // the flip of the texture.
+
+float angleShip(SDL_Rect pSpaceShip, SDL_Point pmouse)
+{
+	float newAngle, delta_y, delta_x;
+	delta_y = pSpaceShip.y - pmouse.y;
+	delta_x = pSpaceShip.x - pmouse.x;
+	newAngle = (atan2(delta_y, delta_x) * 180.0000) / M_PI; //får ut vinkeln i grader mellan muspekaren och bilden
+
+	return newAngle - 90; // 90 eftersom annars så pekar skeppets sida mot muspekaren
+}
+
 void buttonSound()
 {
 		soundEffect = Mix_LoadWAV("soundeffects/buttonpop.wav");
@@ -89,12 +103,11 @@ void lookState()  //gameloop
 		puts(getTextInput());
 	}
 
-	//if (mouseEventHeld(SDL_BUTTON_LEFT))
-		//puts("Held: Left mouse");
+	if (mouseEventHeld(SDL_BUTTON_LEFT))
+		buttonSound();
 
 	if (mouseEventPressed(SDL_BUTTON_LEFT))
 	{
-		buttonSound();
 	}
 
 	if (mouseEventReleased(SDL_BUTTON_LEFT))
@@ -189,7 +202,9 @@ void animateSpaceship()
 			frame = 0;
 		frameTime = 0;
 	}
-	SDL_RenderCopy(renderer, currentImage, &rects[frame], &spaceship_rect);
+	angle = angleShip(spaceship_rect, p);  //får ut vinkeln mellan rymdskeppet och muspekaren
+
+	SDL_RenderCopyEx(renderer, currentImage, &rects[frame], &spaceship_rect, angle, &center, flip); //ritar ut skeppet i fönstret
 	SDL_RenderPresent(renderer);
 }
 
