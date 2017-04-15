@@ -17,4 +17,5 @@ void spaceShipSetup();
 void setrects(SDL_Rect* clip);
 void animateSpaceship();
 void movementSpaceship();
-float angleShip();
+float angleShip(SDL_Rect spaceshippos, SDL_Point mousepos);
+void initSky();

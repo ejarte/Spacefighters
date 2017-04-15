@@ -21,6 +21,12 @@ Mix_Music *bgm; //longer then 10 sec
 Mix_Chunk *soundEffect;  //ljudeffekter
 
 #define SPACESHIP "images/spaceship.png"
+#define SKY "images/bakgrund_himmel.gif"
+
+SDL_Rect background_rect;
+SDL_Texture* background_box;
+char background_path[30];
+SDL_Texture *backgroundImage;
 
 SDL_Texture *currentImage;
 SDL_Rect playerRect;
@@ -74,7 +80,7 @@ void checkButtonPressedDown()
 	}
 }
 
-void initNormal()
+void initNormal() // the standard image for spaceship
 {
 	strcpy(spaceShip_path, SPACESHIP);
 }
@@ -173,7 +179,7 @@ void spaceShipSetup()
 
 	SDL_QueryTexture(currentImage, NULL, NULL, &textureWidth, &textureHeight);
 
-/*	frameWidth = textureWidth / 4;
+/*	frameWidth = textureWidth / 4;  //ifall man vill automatisera själva uppdelningen av bilderna i spriteshheet istället för att manuellt skriva in
 	frameHeight = textureHeight / 2;
 
 	playerRect.w = frameWidth;
@@ -194,6 +200,12 @@ void animateSpaceship()
 {
 	SDL_RenderClear(renderer); //Clears the screen
 
+	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
+	background_rect.w = screenW;
+	background_rect.h = screenH;
+
+	SDL_RenderCopy(renderer, backgroundImage, NULL, &background_rect);
+
 	frameTime++;
 	if (frameTime == 2)
 	{
@@ -208,7 +220,7 @@ void animateSpaceship()
 	SDL_RenderPresent(renderer);
 }
 
-void setrects(SDL_Rect* clip)
+void setrects(SDL_Rect* clip)  // här är själva storleken och positionerna på varje spritesheetbild som används
 {
 	clip[0].x = 0;
 	clip[0].y = 0;
@@ -247,7 +259,14 @@ void clearPointers()
 void clearImages()
 {
 	SDL_DestroyTexture(spaceship_box);
+	SDL_DestroyTexture(background_box);
+}
 
+void initSky()  //initierar backgrundsbilden
+{
+	strcpy(background_path, SKY);
+	backgroundImage = IMG_LoadTexture(renderer, background_path);
+	background_rect.x = background_rect.y = 0;
 }
 
 void initGameState()

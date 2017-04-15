@@ -14,6 +14,7 @@ int main(int argc, char* args[])
 	initEventHandler();
 	initNormal();
 	spaceShipSetup();
+	initSky();
 
 	bool run = true;
 
