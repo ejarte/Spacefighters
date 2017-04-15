@@ -146,6 +146,11 @@ void refreshEventHandler() {
 
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
+			case SDL_WINDOWEVENT: 
+				if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+					// Not yet implemented
+					printf("window resized!\n");
+				} break;
 			case SDL_MOUSEMOTION: break;	
 				// Not yet implemented 
 

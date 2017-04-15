@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libaries.h"
-#include "graphics_lib.h"
+#include "graphics.h"
 #include "events.h"
 #include "state_handler.h"
 

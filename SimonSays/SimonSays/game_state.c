@@ -1,4 +1,5 @@
 #include "game_state.h"
+#include "world.h"
 
 #define MAXSPEED 16
 #define DRAG 0.98
@@ -167,8 +168,16 @@ void movementSpaceship()
 	Jacob.speedy *= DRAG;
 
 	//moving the spaceship
-	spaceship_rect.x += Jacob.speedx;
-	spaceship_rect.y += Jacob.speedy;
+
+	int newX = spaceship_rect.x + Jacob.speedx;
+	int newY = spaceship_rect.y + Jacob.speedy;
+	if (isInsideWorld(newX, newY)) {
+		spaceship_rect.x = newX;
+		spaceship_rect.y = newY;
+	} 
+	else {
+		printf("Trying to go beyond space!!!\n");
+	}
 }
 
 void spaceShipSetup()

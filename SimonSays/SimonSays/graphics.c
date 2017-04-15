@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libaries.h"
-#include "graphics_lib.h"
+#include "graphics.h"
 
 void initWindow()
 {
@@ -23,6 +23,16 @@ void initWindow()
 		printf("Error, Sound cannot be loaded");
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+}
+
+int getWindowHeight()
+{
+	return screenH;
+}
+
+int getWindowWidth()
+{
+	return screenW;
 }
 
 // Loads a texture with a file

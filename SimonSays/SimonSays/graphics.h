@@ -1,15 +1,14 @@
-#ifndef GRAPHICS_LIB_H
-#define GRAPHICS_LIB_H
+#pragma once
 
 #include "libaries.h"
 
 SDL_Renderer*	renderer; //variabeln för att uppdatera fönstret
 SDL_Window*		window;		//fönstret
 
-int screenW;
+int screenW;				// Dessa bör flyttas in till graphics_lib.c
 int screenH;
 SDL_DisplayMode DM;
 
 void initWindow();
-
-#endif
+int getWindowHeight();
+int getWindowWidth();
