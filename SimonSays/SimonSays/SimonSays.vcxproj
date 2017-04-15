@@ -160,6 +160,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="effects.h" />
     <ClInclude Include="events.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="graphics.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="world.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="effects.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="state_handler.c" />
     <ClCompile Include="game_state.c" />

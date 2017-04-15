@@ -4,7 +4,7 @@
 
 void initWindow()
 {
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);	// Audio!!!
 	SDL_Surface* screen, *image;
 
 	//Skapar ett fönster i fullskärmläge
@@ -33,6 +33,11 @@ int getWindowWidth()
 {
 	return screenW;
 }
+
+
+
+
+
 
 // Loads a texture with a file
 

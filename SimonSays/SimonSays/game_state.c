@@ -1,3 +1,8 @@
+/*	Author(s):	Jacob Ekeh
+*	Modified:	14-04-2017
+*	Version:	0.02
+*/
+
 #include "game_state.h"
 #include "world.h"
 
@@ -58,7 +63,7 @@ float angleShip(SDL_Rect pSpaceShip, SDL_Point pmouse)
 
 void buttonSound()
 {
-		soundEffect = Mix_LoadWAV("soundeffects/buttonpop.wav");
+		soundEffect = Mix_LoadWAV("sounds/buttonpop.wav");
 		Mix_PlayChannel(-1, soundEffect, 0);
 }
 
@@ -258,14 +263,14 @@ void setrects(SDL_Rect* clip)  // här är själva storleken och positionerna på va
 void clearPointers()
 {
 	//Tar bort pekarna ur minnet för säkerhets skull
-	//SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
+	//SDL_DestroyWindow(window);	
+	SDL_DestroyRenderer(renderer);	// graphics.c
 	clearImages();
-	Mix_FreeChunk(soundEffect);
-	Mix_FreeMusic(bgm);
+	Mix_FreeChunk(soundEffect);			// audio.c
+	Mix_FreeMusic(bgm);					// audio.c
 
-	Mix_Quit();
-	SDL_Quit();
+	Mix_Quit();		// audio.c
+	SDL_Quit();		// main.c
 }
 
 void clearImages()

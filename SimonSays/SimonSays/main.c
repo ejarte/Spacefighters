@@ -32,6 +32,7 @@ int main(int argc, char* args[])
 		}
 		SDL_Delay(30);
 	}
+
 	clearPointers();		//Tar bort pekarna ur minnet för säkerhets skull
 
 	return 0;
