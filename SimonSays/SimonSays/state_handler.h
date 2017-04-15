@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "libaries.h"
+#include "libraries.h"
 
 #define STATE_EXIT				0
 #define STATE_GAME_RUNNING		1

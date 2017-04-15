@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libaries.h"
+#include "libraries.h"
 
 SDL_Renderer*	renderer; //variabeln för att uppdatera fönstret
 SDL_Window*		window;		//fönstret

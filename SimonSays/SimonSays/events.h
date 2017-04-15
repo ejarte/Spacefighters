@@ -6,7 +6,7 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
-#include "libaries.h"
+#include "libraries.h"
 
 #define STATE_RELEASED					99		// Flag for Released Key/Button
 #define STATE_PRESSED					98		// Flag for Pressed Key/Button

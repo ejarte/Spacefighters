@@ -1,5 +1,5 @@
 #pragma once
 
-#include "libaries.h"
+#include "libraries.h"
 
 bool isInsideWorld(int x, int y);

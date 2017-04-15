@@ -1,6 +1,5 @@
 #pragma once
 
-#include "libaries.h"
 #include "graphics.h"
 
 void initWindow()

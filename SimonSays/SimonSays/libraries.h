@@ -1,8 +1,6 @@
 //De bibliotek som används
-#ifndef LIBRARIES_H
-#define LIBRARIES_H
+#pragma once
 
-libraries
 #include <stdio.h>
 #include <string.h>
 #include <tchar.h>
@@ -13,6 +11,4 @@ libraries
 #include <stdio.h>
 #include <stdbool.h>
 #include <SDL_ttf.h>
-
-#endif 
-
+#include <math.h>

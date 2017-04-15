@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libaries.h"
+#include "libraries.h"
 #include "graphics.h"
 #include "events.h"
 #include "state_handler.h"

@@ -3,7 +3,5 @@
 
 bool isInsideWorld(int x, int y)
 {
-	int w = getWindowWidth();
-	int h = getWindowHeight();
-	return (x > 0 && x < w && y > 0 && y < h);
+	return (x > 0 && x < getWindowWidth() && y > 0 && y < getWindowHeight());
 }
