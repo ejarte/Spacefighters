@@ -7,16 +7,6 @@
 SDL_Rect background_rect;
 SDL_Texture* background_texture;
 
-// Sprites
-Spaceship *spaceship[10];
-SDL_Texture* spaceship_texture;
-SDL_Rect spaceship_rect;
-
-Sprite *spaceship_sprite;
-SDL_Rect spaceship_rect;		// Spaceship rect
-
-SDL_Rect tempRect;				// Clip rect
-
 Sprite *s1;
 SDL_Rect s1_display_rect;
 SDL_Rect s1_display_rect_2;
@@ -75,8 +65,8 @@ int frTime = 0;
 
 void gameRender()
 {
+	// Animation relaterat
 	frTime++;
-
 	if (frTime == 2)
 	{
 		frame_col_1++;

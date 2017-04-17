@@ -1,6 +1,6 @@
 /*	Author(s):	Tiago Redaelli
-*	Modified:	17-04-2017
-*	Version:	0.01
+*	Modified:	18-04-2017
+*	Version:	0.02
 * 
 *	Documentation of API is in the sprite.h file.
 */
