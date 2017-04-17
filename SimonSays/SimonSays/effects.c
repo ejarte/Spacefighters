@@ -1,6 +1,7 @@
 #include "effects.h"
 #include "graphics.h"
 
+/*
 #define SPEFF_COUNT				2	// List size: Number of effects
 
 struct SpecialEffectType effect[SPEFF_COUNT];
@@ -91,3 +92,4 @@ void playEffect(struct SpecialEffect speff)
 	}
 }
 
+*/

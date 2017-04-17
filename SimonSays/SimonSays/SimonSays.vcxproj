@@ -162,9 +162,12 @@
   <ItemGroup>
     <ClInclude Include="effects.h" />
     <ClInclude Include="events.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="libraries.h" />
+    <ClInclude Include="spaceship.h" />
+    <ClInclude Include="sprite.h" />
     <ClInclude Include="state_handler.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="world.h" />
@@ -172,6 +175,9 @@
   <ItemGroup>
     <ClCompile Include="effects.c" />
     <ClCompile Include="events.c" />
+    <ClCompile Include="game.c" />
+    <ClCompile Include="spaceship.c" />
+    <ClCompile Include="sprite.c" />
     <ClCompile Include="state_handler.c" />
     <ClCompile Include="game_state.c" />
     <ClCompile Include="graphics.c" />

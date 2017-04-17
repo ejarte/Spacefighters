@@ -5,6 +5,7 @@
 
 #include "game_state.h"
 #include "world.h"
+#include "spaceship.h"
 
 #define MAXSPEED 16
 #define DRAG 0.98
@@ -185,8 +186,19 @@ void movementSpaceship()
 	}
 }
 
+
+//
+	Spaceship *s1;
+
 void spaceShipSetup()
 {
+	s1 = createSpaceship();
+	spaceship_setCameraX(s1, 50);
+	spaceship_setCameraY(s1, 100);
+	spaceship_setWidth(s1, 5);
+	spaceship_setHeight(s1, 10);
+	spaceship_loadShipTexture(s1, "images/spaceship.png");
+
 	currentImage = IMG_LoadTexture(renderer, spaceShip_path);
 	setrects(rects);
 	SDL_Rect* CurrentClip = &rects[0];
@@ -221,7 +233,7 @@ void animateSpaceship()
 	SDL_RenderCopy(renderer, backgroundImage, NULL, &background_rect);
 
 	frameTime++;
-	if (frameTime == 2)
+	if (frameTime == 10)
 	{
 		frame++;
 		if (frame == 4)
@@ -232,8 +244,9 @@ void animateSpaceship()
 	SDL_Point p = getMousePos();
 
 	angle = angleShip(spaceship_rect, p);  //får ut vinkeln mellan rymdskeppet och muspekaren
-
-	SDL_RenderCopyEx(renderer, currentImage, &rects[frame], &spaceship_rect, angle, &center, flip); //ritar ut skeppet i fönstret
+	// Test Tiago
+	SDL_RenderCopyEx(renderer, spaceship_getShipTexture(s1), &rects[frame], &spaceship_rect, angle, &center, flip); //ritar ut skeppet i fönstret
+	
 	SDL_RenderPresent(renderer);
 }
 
@@ -294,6 +307,7 @@ void initGameState()
 
 void onGameRunning()
 {
+
 	lookState();
 	frameTime++;
 	animateSpaceship();				//initierar bilder

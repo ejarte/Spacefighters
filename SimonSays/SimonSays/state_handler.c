@@ -6,6 +6,7 @@
 */
 
 #include "state_handler.h"
+#include "game.h"
 #include "game_state.h"
 
 
@@ -14,7 +15,7 @@ int state_next;
 void executeNextState()
 {
 	switch (state_next) {
-		case STATE_GAME_RUNNING: onGameRunning(); break;
+		case STATE_GAME_RUNNING: gameLoop(); break;
 		default: break;
 	}
 }
