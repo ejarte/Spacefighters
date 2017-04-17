@@ -2,6 +2,7 @@
 *	Modified:	17-04-2017
 *	Version:	0.01
 * 
+*	Documentation of API is in the sprite.h file.
 */
 
 #include "sprite.h"
@@ -28,8 +29,17 @@ Sprite *createSprite(char* filepath, int columns, int rows)
 	SDL_QueryTexture(s->texture, NULL, NULL, &(s->textureWidth), &(s->textureHeight));
 	s->frameWidth = s->textureWidth / columns;
 	s->frameHeight = s->textureHeight / rows;
+
+	// Debug
+	printf("%d %d \n", s->frameWidth, s->frameHeight);
+	
 	s->clip = malloc(columns * sizeof(SDL_Rect));
 	s->numOfFrames = malloc(rows * sizeof(int));
+
+	for (int r = 0; r < rows; r++) {		// Default number of frames initiated per row
+		s->numOfFrames[r] = columns;
+	}
+
 	for (int c = 0; c < columns; c++) {
 		s->clip[c] = malloc(rows * sizeof(SDL_Rect));
 		for (int r = 0; r < rows; r++) {
@@ -57,17 +67,53 @@ void destroySprite(Sprite *ptr_sprite)
 
 void sprite_setRowFrameCount(Sprite *ptr_sprite, int row, int value)
 {
+	if (row >= ptr_sprite->row || row < 0) {
+		printf("ERROR: IndexOutOfBounds (row): %d.\n", row);
+		return;
+	}
+	if (value >= ptr_sprite->col || value < 0) {
+		printf("ERROR: IndexOutOfBounds (value): %d.\n", value);
+		return;
+	}
 	ptr_sprite->numOfFrames[row] = value;
 }
 
 int sprite_getRowFrameCount(Sprite *ptr_sprite, int row)
 {
+	if (row >= ptr_sprite->row || row < 0) {
+		printf("ERROR: IndexOutOfBounds (row): %d.\n", row);
+		return 0;
+	}
 	return ptr_sprite->numOfFrames[row];
 }
 
 SDL_Rect sprite_getClipRect(Sprite *ptr_sprite, int col, int row)
 {
+	if (row >= ptr_sprite->row || row < 0) {
+		printf("ERROR: sprite_getClipRect, IndexOutOfBounds (row): %d.\n", row);
+	}
+	if (col >= ptr_sprite->col || col < 0) {
+		printf("ERROR: sprite_getClipRect, IndexOutOfBounds (col): %d.\n", col);
+	}
 	return ptr_sprite->clip[col][row];
+}
+
+SDL_Texture *sprite_getTexture(Sprite *ptr_sprite)
+{
+	if (ptr_sprite->texture == NULL) {
+		printf("ERROR: sprite_getTexture, No media loaded.\n");
+	}
+	return ptr_sprite->texture;
+}
+
+int sprite_getRows(Sprite  *ptr_sprite)
+{
+	return ptr_sprite->row;
+}
+
+int sprite_getColumns(Sprite  *ptr_sprite)
+{
+	return ptr_sprite->col;
 }
 
 int sprite_getFrameWidth(Sprite *ptr_sprite)
@@ -88,9 +134,4 @@ int sprite_getTextureWidth(Sprite *ptr_sprite)
 int sprite_getTextureHeight(Sprite *ptr_sprite)
 {
 	return ptr_sprite->textureHeight;
-}
-
-SDL_Texture *sprite_getTexture(Sprite *ptr_sprite)
-{
-	return ptr_sprite->texture;
 }

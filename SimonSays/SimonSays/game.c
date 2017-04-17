@@ -17,6 +17,13 @@ SDL_Rect spaceship_rect;		// Spaceship rect
 
 SDL_Rect tempRect;				// Clip rect
 
+Sprite *s1;
+SDL_Rect s1_display_rect;
+SDL_Rect s1_display_rect_2;
+
+Sprite *s2;
+SDL_Rect s2_display_rect;
+
 void initGame()
 {
 	// Background
@@ -24,36 +31,33 @@ void initGame()
 	background_rect.x = background_rect.y = 0;
 	SDL_GetRendererOutputSize(renderer, &background_rect.w, &background_rect.h);
 
+
 	// Sprites
 
-	/*
-	spaceship_sprite = createSprite("images/explosion1.png", 64, 64, 5, 5);
-	sprite_setRowFrameCount(spaceship_sprite, 0, 5);
-	sprite_setRowFrameCount(spaceship_sprite, 1, 5);
-	sprite_setRowFrameCount(spaceship_sprite, 2, 5);
-	sprite_setRowFrameCount(spaceship_sprite, 3, 5);
-	sprite_setRowFrameCount(spaceship_sprite, 4, 5);
-	*/
+	s1 = createSprite("images/wind_eff_001.png", 5, 6);
+	// The iamge coordinates.
+	s1_display_rect.x = 0;
+	s1_display_rect.y = 0;
+	// Configures the display size to match the image frame
+	s1_display_rect.w = sprite_getFrameWidth(s1);				
+	s1_display_rect.h = sprite_getFrameHeight(s1);
 
-	spaceship_sprite = createSprite("images/wind_eff_001.png", 5, 6);
-	sprite_setRowFrameCount(spaceship_sprite, 0, 1);
-	sprite_setRowFrameCount(spaceship_sprite, 1, 1);
-	sprite_setRowFrameCount(spaceship_sprite, 2, 1);
-	sprite_setRowFrameCount(spaceship_sprite, 3, 1);
-	sprite_setRowFrameCount(spaceship_sprite, 4, 1);
-	sprite_setRowFrameCount(spaceship_sprite, 5, 1);
+	// Copy of sprite (s1) on another rect
+	s1_display_rect_2.x = 500;
+	s1_display_rect_2.y = 0;
+	s1_display_rect_2.w = sprite_getFrameWidth(s1);
+	s1_display_rect_2.h = sprite_getFrameHeight(s1);
 
-
-	spaceship_rect.x = background_rect.w/2 - 99/2;
-	spaceship_rect.y = background_rect.h / 2 - 154/2;
-	spaceship_rect.w = 99;
-	spaceship_rect.h = 99;
+	s2 = createSprite("images/explosion1.png", 5, 5);
+	s2_display_rect.x = 1000;
+	s2_display_rect.y = 500;
+	s2_display_rect.w = sprite_getFrameWidth(s2);
+	s2_display_rect.h = sprite_getFrameHeight(s2);
 }
 
 bool hasRunOnce = false;
 
-void gameLoop()
-{
+void gameLoop() {
 	if (!hasRunOnce) {
 		hasRunOnce = true;
 		initGame();
@@ -61,9 +65,13 @@ void gameLoop()
 	gameRender();
 }
 
-int frameTime_t = 0;
-int frame_row = 0;
-int frame_col = 0;
+int frame_row_1 = 0;
+int frame_row_2 = 0;
+
+int frame_col_1 = 0;
+int frame_col_2 = 0;
+
+int frTime = 0;
 
 void gameRender()
 {
@@ -75,24 +83,39 @@ void gameRender()
 	SDL_RenderClear(renderer); 
 	SDL_RenderCopy(renderer, background_texture, NULL, &background_rect);
 	
-	frameTime_t++;
-	if (frameTime_t == 10)
+	frTime++;
+
+	if (frTime == 2)
 	{
-		frame_col++;
-		if (frame_col == 5) {
-			frame_col = 0;
-			frame_row++;
-			if (frame_row == 6) {
-				frame_row = 0;
+		frame_col_1++;
+		frame_col_2++;
+
+		// Gröna cirklar
+		if (frame_col_1 == sprite_getColumns(s1)) {
+			frame_col_1 = 0;
+			frame_row_1++;
+			if (frame_row_1 == sprite_getRows(s1)) {
+				frame_row_1 = 0;
 			}
 		}
-		frameTime_t = 0;
+
+		// Explosion
+		if (frame_col_2 == sprite_getColumns(s2)) {
+			frame_col_2 = 0;
+			frame_row_2++;
+			if (frame_row_2 == sprite_getRows(s2)) {
+				frame_row_2 = 0;
+			}
+		}
+		frTime = 0;
 	}
 
-	printf("%d\n", frame_col);
-	SDL_Rect rect = sprite_getClipRect(spaceship_sprite, frame_col, frame_row);
-
-
-	SDL_RenderCopy(renderer, sprite_getTexture(spaceship_sprite), &rect, &spaceship_rect);
+	// Gröna cirklar
+	SDL_Rect rect1 = sprite_getClipRect(s1, frame_col_1, frame_row_1);
+	SDL_RenderCopy(renderer, sprite_getTexture(s1), &rect1, &s1_display_rect);
+	SDL_RenderCopy(renderer, sprite_getTexture(s1), &rect1, &s1_display_rect_2);
+	// Explosion
+	SDL_Rect rect2 = sprite_getClipRect(s2, frame_col_2, frame_row_2);
+	SDL_RenderCopy(renderer, sprite_getTexture(s2), &rect2, &s2_display_rect);
 	SDL_RenderPresent(renderer);
 }
