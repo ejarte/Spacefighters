@@ -34,7 +34,7 @@ void initGame()
 
 	// Sprites
 
-	s1 = createSprite("images/wind_eff_001.png", 5, 6);
+	s1 = createSprite(renderer, "images/wind_eff_001.png", 5, 6);
 	// The iamge coordinates.
 	s1_display_rect.x = 0;
 	s1_display_rect.y = 0;
@@ -48,7 +48,7 @@ void initGame()
 	s1_display_rect_2.w = sprite_getFrameWidth(s1);
 	s1_display_rect_2.h = sprite_getFrameHeight(s1);
 
-	s2 = createSprite("images/explosion1.png", 5, 5);
+	s2 = createSprite(renderer, "images/explosion1.png", 5, 5);
 	s2_display_rect.x = 1000;
 	s2_display_rect.y = 500;
 	s2_display_rect.w = sprite_getFrameWidth(s2);
@@ -75,14 +75,6 @@ int frTime = 0;
 
 void gameRender()
 {
-	// Adjuct background to screen dimensions
-	SDL_GetRendererOutputSize(renderer, &background_rect.w, &background_rect.h);
-	
-	// Update screen
-
-	SDL_RenderClear(renderer); 
-	SDL_RenderCopy(renderer, background_texture, NULL, &background_rect);
-	
 	frTime++;
 
 	if (frTime == 2)
@@ -110,12 +102,16 @@ void gameRender()
 		frTime = 0;
 	}
 
-	// Gröna cirklar
-	SDL_Rect rect1 = sprite_getClipRect(s1, frame_col_1, frame_row_1);
-	SDL_RenderCopy(renderer, sprite_getTexture(s1), &rect1, &s1_display_rect);
-	SDL_RenderCopy(renderer, sprite_getTexture(s1), &rect1, &s1_display_rect_2);
+	// Adjuct background to screen dimensions
+	SDL_GetRendererOutputSize(renderer, &background_rect.w, &background_rect.h);
+	// Clear Screen
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, background_texture, NULL, &background_rect);
+	// Green circles
+	sprite_RenderCopy(renderer, s1, frame_col_1, frame_row_1, s1_display_rect);
+	sprite_RenderCopy(renderer, s1, frame_col_1, frame_row_1, s1_display_rect_2);
 	// Explosion
-	SDL_Rect rect2 = sprite_getClipRect(s2, frame_col_2, frame_row_2);
-	SDL_RenderCopy(renderer, sprite_getTexture(s2), &rect2, &s2_display_rect);
+	sprite_RenderCopy(renderer, s2, frame_col_2, frame_row_2, s2_display_rect);
+	// Present Screen
 	SDL_RenderPresent(renderer);
 }

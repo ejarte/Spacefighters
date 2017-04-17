@@ -30,16 +30,28 @@ void sprite_setRowFrameCount(Sprite *ptr_sprite, int row, int value);			// <--- 
 int sprite_getRowFrameCount(Sprite *ptr_sprite, int row);						// <--- Can be used for configuring animations
 
 /*
+* Renders a sprite frame [col][row] onto a destination rect.
+*/
+void sprite_RenderCopy(SDL_Renderer* renderer, Sprite *ptr_sprite, int col, int row, SDL_Rect dsrect);  // <--- Renders sprite frame [col][row] onto destination rect
+
+
+/* 
+		You don't really need to use anything below this...
+*/
+
+
+/*
 * Returns a clip (rect) of a frame on that coordinate [columns][row]
 * Used to render the texture.
 */
-SDL_Rect sprite_getClipRect(Sprite *ptr_sprite, int col, int row);				// <--- Frame to render
+SDL_Rect sprite_getClipRect(Sprite *ptr_sprite, int col, int row);				// 
+
+/*
+* Returns the stored texture.
+*/
+SDL_Texture *sprite_getTexture(Sprite *ptr_sprite);							
 
 
-SDL_Texture *sprite_getTexture(Sprite *ptr_sprite);								// <--- Rendering texture
-
-
-/* This section is mostly used for debugging and is pretty self explanatory */
 int sprite_getRows(Sprite  *ptr_sprite);
 int sprite_getColumns(Sprite  *ptr_sprite);
 int sprite_getFrameWidth(Sprite *ptr_sprite);									

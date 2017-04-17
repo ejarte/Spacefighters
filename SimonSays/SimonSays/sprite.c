@@ -6,7 +6,6 @@
 */
 
 #include "sprite.h"
-#include "graphics.h"
 
 struct Sprite_type {
 	int frameWidth;
@@ -20,7 +19,7 @@ struct Sprite_type {
 	SDL_Rect** clip;
 };
 
-Sprite *createSprite(char* filepath, int columns, int rows)
+Sprite *createSprite(SDL_Renderer* renderer, char* filepath, int columns, int rows)
 {
 	Sprite *s = malloc(sizeof(Sprite));
 	s->texture = IMG_LoadTexture(renderer, filepath);
@@ -29,10 +28,6 @@ Sprite *createSprite(char* filepath, int columns, int rows)
 	SDL_QueryTexture(s->texture, NULL, NULL, &(s->textureWidth), &(s->textureHeight));
 	s->frameWidth = s->textureWidth / columns;
 	s->frameHeight = s->textureHeight / rows;
-
-	// Debug
-	printf("%d %d \n", s->frameWidth, s->frameHeight);
-	
 	s->clip = malloc(columns * sizeof(SDL_Rect));
 	s->numOfFrames = malloc(rows * sizeof(int));
 
@@ -97,6 +92,13 @@ SDL_Rect sprite_getClipRect(Sprite *ptr_sprite, int col, int row)
 	}
 	return ptr_sprite->clip[col][row];
 }
+
+void sprite_RenderCopy(SDL_Renderer* renderer, Sprite *ptr_sprite, int col, int row, SDL_Rect dsrect)
+{
+	SDL_Rect srect = sprite_getClipRect(ptr_sprite, col, row);
+	SDL_RenderCopy(renderer, ptr_sprite->texture, &srect, &dsrect);
+}
+
 
 SDL_Texture *sprite_getTexture(Sprite *ptr_sprite)
 {
