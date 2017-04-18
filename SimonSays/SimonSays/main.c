@@ -7,6 +7,7 @@ and may not be redistributed without written permission.*/
 #include "graphics.h"
 #include "state_handler.h"
 #include "game_state.h"
+#include "audio.h"
 
 int main(int argc, char* args[])
 {
@@ -16,6 +17,9 @@ int main(int argc, char* args[])
 	spaceShipSetup();
 	initSky();
 
+	// Audio
+	initAudio();
+	music_play("audio/music/SPACE.mp3", 1);
 	
 	bool run = true;
 

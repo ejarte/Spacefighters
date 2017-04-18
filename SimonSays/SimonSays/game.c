@@ -14,13 +14,14 @@ SDL_Rect s1_display_rect_2;
 Sprite *s2;
 SDL_Rect s2_display_rect;
 
+Sprite *s3;
+
 void initGame()
 {
 	// Background
 	background_texture = IMG_LoadTexture(renderer, "images/bakgrund_himmel.gif");
 	background_rect.x = background_rect.y = 0;
 	SDL_GetRendererOutputSize(renderer, &background_rect.w, &background_rect.h);
-
 
 	// Sprites
 
@@ -30,8 +31,10 @@ void initGame()
 	// Copy of sprite (s1) on another rect
 	s1_display_rect_2 = createRect(500, 0, sprite_getFrameWidth(s1), sprite_getFrameHeight(s1));
 
-	s2 = createSprite(renderer, "images/explosion1.png", 5, 5, createColor(0, 0, 0, 0));
+	s2 = createSprite(renderer, "images/skybusterexplosion.png", 4, 5, createColor(0, 0, 0, 0));
 	s2_display_rect = createRect(1000, 500, sprite_getFrameWidth(s2), sprite_getFrameHeight(s2));
+
+
 }
 
 bool hasRunOnce = false;

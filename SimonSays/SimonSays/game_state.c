@@ -233,7 +233,7 @@ void animateSpaceship()
 	SDL_RenderCopy(renderer, backgroundImage, NULL, &background_rect);
 
 	frameTime++;
-	if (frameTime == 10)
+	if (frameTime == 2)
 	{
 		frame++;
 		if (frame == 4)

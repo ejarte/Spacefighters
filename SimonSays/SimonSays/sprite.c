@@ -30,7 +30,7 @@ Sprite *createSprite(SDL_Renderer* renderer, char* filepath, int columns, int ro
 		SDL_SetColorKey(s_loadedSurface, SDL_TRUE, SDL_MapRGB(s_loadedSurface->format, colorKey.r, colorKey.g, colorKey.b));
 		s->texture = SDL_CreateTextureFromSurface(renderer, s_loadedSurface);
 		if (s->texture == NULL) {
-			printf("SDL_Error: %s\n", SDL_GetError());
+			printf("Error: Unable to load texture. SDL_Error: %s\n", SDL_GetError());
 		}
 
 		SDL_FreeSurface(s_loadedSurface);
