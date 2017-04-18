@@ -9,7 +9,7 @@ typedef struct Sprite_type Sprite;
 *
 * Returns a pointer to a new sprite sheet almost fully configured. 
 */
-Sprite *createSprite(char* filepath, int columns, int rows);					// <--- Creating
+Sprite *createSprite(SDL_Renderer* renderer, char* filepath, int columns, int rows, SDL_Color colorKey);				// <--- Creating
 
 /*
 * Destroys a Sprite Sheet

@@ -24,16 +24,13 @@ void initGame()
 
 	// Sprites
 
-	// colorKey färgen som ska döljas om det inte funkar utan 
-	// Om det inte behövs skriver man bara NULL istället
-	SDL_Color s1_colorKey = createColor(0, 0, 0, 0);	
-	s1 = createSprite(renderer, "images/wind_eff_001.png", 5, 6, s1_colorKey);
+	s1 = createSprite(renderer, "images/wind_eff_001.png", 5, 6, createColor(0, 0, 0, 0));
 	// Skapar en display rect med x, y, w, h
 	s1_display_rect = createRect(0, 0, sprite_getFrameWidth(s1), sprite_getFrameHeight(s1));
 	// Copy of sprite (s1) on another rect
 	s1_display_rect_2 = createRect(500, 0, sprite_getFrameWidth(s1), sprite_getFrameHeight(s1));
 
-	s2 = createSprite(renderer, "images/explosion1.png", 5, 5, NULL);
+	s2 = createSprite(renderer, "images/explosion1.png", 5, 5, createColor(0, 0, 0, 0));
 	s2_display_rect = createRect(1000, 500, sprite_getFrameWidth(s2), sprite_getFrameHeight(s2));
 }
 
