@@ -14,15 +14,27 @@ struct Sprite_type {
 	int row;
 	int* numOfFrames;
 	int textureWidth;
-	int textureHeight;
-	SDL_Texture* texture;
-	SDL_Rect** clip;
+	int textureHeight;			
+	SDL_Texture* texture;			// Texture 
+	SDL_Rect** clip;				// Frame
 };
 
-Sprite *createSprite(SDL_Renderer* renderer, char* filepath, int columns, int rows)
+Sprite *createSprite(SDL_Renderer* renderer, char* filepath, int columns, int rows, SDL_Color colorKey)
 {
 	Sprite *s = malloc(sizeof(Sprite));
-	s->texture = IMG_LoadTexture(renderer, filepath);
+	SDL_Surface *s_loadedSurface = IMG_Load(filepath);
+	if (s_loadedSurface == NULL) {
+		printf("ERROR: Unable to load texture %s. SDL_Image Error: %s\n", filepath, IMG_GetError());
+	}
+	else {
+		SDL_SetColorKey(s_loadedSurface, SDL_TRUE, SDL_MapRGB(s_loadedSurface->format, colorKey.r, colorKey.g, colorKey.b));
+		s->texture = SDL_CreateTextureFromSurface(renderer, s_loadedSurface);
+		if (s->texture == NULL) {
+			printf("SDL_Error: %s\n", SDL_GetError());
+		}
+
+		SDL_FreeSurface(s_loadedSurface);
+	}
 	s->col = columns;
 	s->row = rows;
 	SDL_QueryTexture(s->texture, NULL, NULL, &(s->textureWidth), &(s->textureHeight));
@@ -52,6 +64,9 @@ Sprite *createSprite(SDL_Renderer* renderer, char* filepath, int columns, int ro
 
 void destroySprite(Sprite *ptr_sprite)
 {
+	if (ptr_sprite->texture != NULL) {
+		SDL_DestroyTexture(ptr_sprite->texture);
+	}
 	for (int c = 0; c < ptr_sprite->col; c++) {
 		free(ptr_sprite->clip[c]);
 	}
@@ -95,6 +110,7 @@ SDL_Rect sprite_getClipRect(Sprite *ptr_sprite, int col, int row)
 
 void sprite_RenderCopy(SDL_Renderer* renderer, Sprite *ptr_sprite, int col, int row, SDL_Rect dsrect)
 {
+	// Renders to screen
 	SDL_Rect srect = sprite_getClipRect(ptr_sprite, col, row);
 	SDL_RenderCopy(renderer, ptr_sprite->texture, &srect, &dsrect);
 }

@@ -176,6 +176,7 @@
     <ClCompile Include="effects.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="libraries.c" />
     <ClCompile Include="spaceship.c" />
     <ClCompile Include="sprite.c" />
     <ClCompile Include="state_handler.c" />

@@ -83,5 +83,8 @@
     <ClCompile Include="sprite.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="libraries.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

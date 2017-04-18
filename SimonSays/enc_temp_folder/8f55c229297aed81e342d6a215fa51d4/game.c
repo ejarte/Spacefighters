@@ -93,8 +93,14 @@ void gameRender()
 	// Green circles
 	sprite_RenderCopy(renderer, s1, frame_col_1, frame_row_1, s1_display_rect);
 	sprite_RenderCopy(renderer, s1, frame_col_1, frame_row_1, s1_display_rect_2);
+
+
 	// Explosion
 	sprite_RenderCopy(renderer, s2, frame_col_2, frame_row_2, s2_display_rect);
+	
+	//SDL_RenderClear(renderer);
+	//SDL_SetRenderTarget(renderer, NULL);
+	
 	// Present Screen
 	SDL_RenderPresent(renderer);
 }

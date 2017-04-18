@@ -12,3 +12,7 @@
 #include <stdbool.h>
 #include <SDL_ttf.h>
 #include <math.h>
+
+SDL_Color createColor(int r, int g, int b, int a);
+
+SDL_Rect createRect(int x, int y, int w, int h);
