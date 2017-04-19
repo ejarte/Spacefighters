@@ -160,8 +160,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animation.h" />
     <ClInclude Include="audio.h" />
-    <ClInclude Include="effects.h" />
+    <ClInclude Include="effect.h" />
     <ClInclude Include="events.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="game_state.h" />
@@ -174,8 +175,9 @@
     <ClInclude Include="world.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="animation.c" />
     <ClCompile Include="audio.c" />
-    <ClCompile Include="effects.c" />
+    <ClCompile Include="effect.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="libraries.c" />

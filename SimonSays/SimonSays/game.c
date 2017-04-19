@@ -2,6 +2,8 @@
 #include "spaceship.h"
 #include "graphics.h"
 #include "sprite.h"
+#include "animation.h"
+#include "effect.h"
 
 // Background
 SDL_Rect background_rect;
@@ -14,7 +16,10 @@ SDL_Rect s1_display_rect_2;
 Sprite *s2;
 SDL_Rect s2_display_rect;
 
-Sprite *s3;
+Animation *a1;
+Animation *a2;
+
+Effect *e1;
 
 void initGame()
 {
@@ -34,6 +39,28 @@ void initGame()
 	s2 = createSprite(renderer, "images/skybusterexplosion.png", 4, 5, createColor(0, 0, 0, 0));
 	s2_display_rect = createRect(1000, 500, sprite_getFrameWidth(s2), sprite_getFrameHeight(s2));
 
+	int t_frameTime = 2;	// Så ni ser vad det är för något
+
+	// Antal frames samt frame time i in parametern
+	a1 = createAnimation(5*6, t_frameTime);
+	for (int r = 0; r < 6; r++) {
+		for (int c = 0; c < 5 ; c++) {
+			anim_addFrameColRow(a1, c, r);
+		}
+	}
+
+	a2 = createAnimation(4*5, t_frameTime);
+	for (int r = 0; r < 5; r++) {
+		for (int c = 0; c < 4; c++) {
+			anim_addFrameColRow(a2, c, r);
+		}
+	}
+
+	// false = repeterar
+	// true kör bara en gång
+	e1 = createEffect(&s2, a2, true);      
+	
+	printf("effect created\n");
 
 }
 
@@ -47,42 +74,30 @@ void gameLoop() {
 	gameRender();
 }
 
-int frame_row_1 = 0;
-int frame_row_2 = 0;
+/*
+soundEffect = Mix_LoadWAV("sounds/buttonpop.wav");
+Mix_PlayChannel(-1, soundEffect, 0);
 
-int frame_col_1 = 0;
-int frame_col_2 = 0;
+*/
 
-int frTime = 0;
+
+SDL_Rect disp_rect;
+
+bool has_reset = false;
 
 void gameRender()
 {
-	// Animation relaterat
-	frTime++;
-	if (frTime == 2)
-	{
-		frame_col_1++;
-		frame_col_2++;
+	//Mix_Chunk* soundEffect2 = Mix_LoadWAV("audio/sounds/granade1.wav");
+	//Mix_PlayChannel(-1, soundEffect2, 0);
+	//playSound(-1, "audio/sounds/granade1.wav", 0);
+	//SDL_Delay(2000);
+	//return;
 
-		// Gröna cirklar
-		if (frame_col_1 == sprite_getColumns(s1)) {
-			frame_col_1 = 0;
-			frame_row_1++;
-			if (frame_row_1 == sprite_getRows(s1)) {
-				frame_row_1 = 0;
-			}
-		}
+	// Ticka animationer
+	//anim_tick(a1);
 
-		// Explosion
-		if (frame_col_2 == sprite_getColumns(s2)) {
-			frame_col_2 = 0;
-			frame_row_2++;
-			if (frame_row_2 == sprite_getRows(s2)) {
-				frame_row_2 = 0;
-			}
-		}
-		frTime = 0;
-	}
+
+	//anim_tick(a2);
 
 	// Adjuct background to screen dimensions
 	SDL_GetRendererOutputSize(renderer, &background_rect.w, &background_rect.h);
@@ -90,11 +105,28 @@ void gameRender()
 	SDL_RenderClear(renderer);
 	// Background
 	SDL_RenderCopy(renderer, background_texture, NULL, &background_rect);
+	
+	
 	// Green circles
-	sprite_RenderCopy(renderer, s1, frame_col_1, frame_row_1, s1_display_rect);
-	sprite_RenderCopy(renderer, s1, frame_col_1, frame_row_1, s1_display_rect_2);
+	
+	//sprite_RenderCopy(renderer, s1, anim_getCurCol(a1), anim_getCurRow(a1), s1_display_rect);
+
+	disp_rect = createRect(0, 0, sprite_getFrameWidth(s1), sprite_getFrameHeight(s1));
+	if (e1 != NULL) {
+		effect_tick(e1);
+		effect_render(renderer, e1, disp_rect);
+	}
+
+
+	//if (SDL_GetTicks() > 3000 && !has_reset) {
+	//	effect_reset(e1);
+	//	has_reset = true;
+	//}
+
+
+	//sprite_RenderCopy(renderer, s1, anim_getCurCol(a1), anim_getCurRow(a1), s1_display_rect_2);
 	// Explosion
-	sprite_RenderCopy(renderer, s2, frame_col_2, frame_row_2, s2_display_rect);
+	//sprite_RenderCopy(renderer, s2, anim_getCurCol(a2), anim_getCurRow(a2), s2_display_rect);
 	// Present Screen
 	SDL_RenderPresent(renderer);
 }

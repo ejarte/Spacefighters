@@ -16,7 +16,7 @@ struct Sprite_type {
 	int textureWidth;
 	int textureHeight;			
 	SDL_Texture* texture;			// Texture 
-	SDL_Rect** clip;				// Frame
+	SDL_Rect** clip;				// Frame[][]
 };
 
 Sprite *createSprite(SDL_Renderer* renderer, char* filepath, int columns, int rows, SDL_Color colorKey)
@@ -152,4 +152,12 @@ int sprite_getTextureWidth(Sprite *ptr_sprite)
 int sprite_getTextureHeight(Sprite *ptr_sprite)
 {
 	return ptr_sprite->textureHeight;
+}
+
+void sprite_print(Sprite *ptr_sprite)
+{
+	printf("frameWidth\t%d\n", ptr_sprite->frameWidth);
+	printf("frameHeight\t%d\n", ptr_sprite->frameHeight);
+	printf("columns\t%d\n", ptr_sprite->col);
+	printf("rows\t%d\n", ptr_sprite->col);
 }

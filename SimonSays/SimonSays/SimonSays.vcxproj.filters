@@ -39,19 +39,22 @@
     <ClInclude Include="libraries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="effects.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="spaceship.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="audio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="audio.h">
+    <ClInclude Include="effect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,22 +77,25 @@
     <ClCompile Include="graphics.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="effects.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="spaceship.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="game.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libraries.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="audio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="spaceship.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

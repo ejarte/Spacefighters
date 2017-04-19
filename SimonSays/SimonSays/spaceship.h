@@ -13,6 +13,8 @@ void spaceship_setWidth(Spaceship *ptr_ship, int w);
 int spaceship_getWidth(Spaceship *ptr_ship);
 void spaceship_setHeight(Spaceship *ptr_ship, int h);
 int spaceship_getHeight(Spaceship *ptr_ship);
+
+// Dessa referenser måste bort ^_^
 void spaceship_loadShipTexture(Spaceship *ptr_ship, char* path);
 SDL_Texture *spaceship_getShipTexture(Spaceship *ptr_ship);
 void spaceship_copySpriteSheet(Spaceship *ptr_ship, SDL_Rect** rects, int *rowFrameCount, int columns, int rows);

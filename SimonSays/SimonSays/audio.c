@@ -1,6 +1,7 @@
 #include "audio.h"
 
 #define MAX_TRACKS 15
+#define MAX_SOUNDS 100
 
 typedef struct Music {
 	Mix_Music* track[MAX_TRACKS];
@@ -8,7 +9,14 @@ typedef struct Music {
 	int index;
 };
 
+typedef struct Sound {
+	Mix_Chunk* sound[MAX_SOUNDS];
+	char *filepath[MAX_SOUNDS];
+	int index;
+};
+
 struct Music music;
+struct Sound sound;
 
 void initAudio()
 {
@@ -18,17 +26,20 @@ void initAudio()
 		printf("Error: ", Mix_GetError());
 
 	music.index = 0;
+	sound.index = 0;
 }
 
-void music_play(char *filepath, int repeats)
+void playMusic(char *filepath, int repeats)
 {
 	bool found = false;
+	// First searches in the existing track list for the filepath
 	for (int i = 0; i < music.index; i++) {
 		if (strcmp(filepath, music.filepath[i])) {
 			found = true;
 			Mix_PlayMusic(music.track[i], 1);
 		}
 	}
+	// If it's not found it tries to load the track and adds it to the list
 	if (!found) {
 		if (music.index < MAX_TRACKS) {
 			music.track[music.index] = Mix_LoadMUS(filepath);
@@ -47,3 +58,8 @@ void music_play(char *filepath, int repeats)
 }
 
 
+void playSound(char *filepath, int channel, int loops)
+{
+	bool found = false;
+
+}

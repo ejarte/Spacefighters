@@ -19,12 +19,13 @@ int main(int argc, char* args[])
 
 	// Audio
 	initAudio();
-	music_play("audio/music/SPACE.mp3", 1);
-	
+	SDL_Delay(50);
+	playMusic("audio/music/SPACE.mp3", -1);
+	SDL_Delay(50);
 	bool run = true;
 
 	setNextState(STATE_GAME_RUNNING);
-
+	
 	while (run)	// körs tills användaren trycker på X uppe i fönstret
 	{
 		refreshEventHandler();		// mappar användarinput
@@ -32,7 +33,8 @@ int main(int argc, char* args[])
 			run = false;
 		}
 		else {
-			executeNextState();
+			gameLoop();
+			//executeNextState();
 		}
 		SDL_Delay(30);
 	}

@@ -58,3 +58,4 @@ int sprite_getFrameWidth(Sprite *ptr_sprite);
 int sprite_getFrameHeight(Sprite *ptr_sprite);
 int sprite_getTextureWidth(Sprite *ptr_sprite);
 int sprite_getTextureHeight(Sprite *ptr_sprite);
+void sprite_print(Sprite *ptr_sprite);

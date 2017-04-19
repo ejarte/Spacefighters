@@ -230,5 +230,4 @@ void initEventHandler()
 	txt_event_data.str_input[0] = '\0';
 	disableTextInput();
 	quit_event = false;		
-
 }
