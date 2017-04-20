@@ -124,6 +124,7 @@ SDL_Texture *sprite_getTexture(Sprite *ptr_sprite)
 	return ptr_sprite->texture;
 }
 
+
 int sprite_getRows(Sprite  *ptr_sprite)
 {
 	return ptr_sprite->row;

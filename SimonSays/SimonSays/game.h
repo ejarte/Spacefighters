@@ -4,4 +4,5 @@
 
 void initGame();
 void gameLoop();
+void gameLogic();
 void gameRender();

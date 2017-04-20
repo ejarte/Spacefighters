@@ -13,9 +13,9 @@ int main(int argc, char* args[])
 {
 	initWindow();
 	initEventHandler();
-	initNormal();
-	spaceShipSetup();
-	initSky();
+	//initNormal();
+	//spaceShipSetup();
+	//initSky();
 
 	// Audio
 	initAudio();
@@ -33,13 +33,12 @@ int main(int argc, char* args[])
 			run = false;
 		}
 		else {
-			gameLoop();
-			//executeNextState();
+			executeNextState();
 		}
-		SDL_Delay(30);
+		SDL_Delay(20);
 	}
 
-	clearPointers();		//Tar bort pekarna ur minnet för säkerhets skull
+	//clearPointers();		//Tar bort pekarna ur minnet för säkerhets skull
 
 	return 0;
 

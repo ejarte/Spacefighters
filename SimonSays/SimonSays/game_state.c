@@ -3,6 +3,7 @@
 *	Version:	0.02
 */
 
+/*
 #include "game_state.h"
 #include "world.h"
 #include "spaceship.h"
@@ -203,14 +204,14 @@ void spaceShipSetup()
 	setrects(rects);
 	SDL_Rect* CurrentClip = &rects[0];
 
-	SDL_QueryTexture(currentImage, NULL, NULL, &textureWidth, &textureHeight);
+	//SDL_QueryTexture(currentImage, NULL, NULL, &textureWidth, &textureHeight);
 
 /*	frameWidth = textureWidth / 4;  //ifall man vill automatisera själva uppdelningen av bilderna i spriteshheet istället för att manuellt skriva in
 	frameHeight = textureHeight / 2;
 
 	playerRect.w = frameWidth;
 	playerRect.h = frameHeight; */
-
+/*
 	posX = 50;
 	posY = 50;
 
@@ -221,6 +222,8 @@ void spaceShipSetup()
 
 
 }
+*/
+/*
 
 void animateSpaceship()
 {
@@ -245,7 +248,7 @@ void animateSpaceship()
 
 	angle = angleShip(spaceship_rect, p);  //får ut vinkeln mellan rymdskeppet och muspekaren
 	// Test Tiago
-	SDL_RenderCopyEx(renderer, spaceship_getShipTexture(s1), &rects[frame], &spaceship_rect, angle, &center, flip); //ritar ut skeppet i fönstret
+	SDL_RenderCopyEx(renderer, spaceship_getShipTexture(s1), &rects[frame], &spaceship_rect, 180., &center, flip); //ritar ut skeppet i fönstret
 	
 	SDL_RenderPresent(renderer);
 }
@@ -272,7 +275,7 @@ void setrects(SDL_Rect* clip)  // här är själva storleken och positionerna på va
 	clip[3].w = 99;
 	clip[3].h = 154;
 }
-
+/*
 void clearPointers()
 {
 	//Tar bort pekarna ur minnet för säkerhets skull
@@ -280,7 +283,7 @@ void clearPointers()
 	SDL_DestroyRenderer(renderer);	// graphics.c
 	clearImages();
 	Mix_FreeChunk(soundEffect);			// audio.c
-	Mix_FreeMusic(bgm);					// audio.c
+	//Mix_FreeMusic(bgm);					// audio.c
 
 	Mix_Quit();		// audio.c
 	SDL_Quit();		// main.c
@@ -314,3 +317,5 @@ void onGameRunning()
 	movementSpaceship();
 	clearImages();				//rensar bilderna från ram
 }
+
+*/
