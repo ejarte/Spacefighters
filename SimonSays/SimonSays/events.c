@@ -37,7 +37,7 @@ SDL_Point getMousePos()
 	return mouse_point;
 }
 
-int getMousex()
+int getMouseX()
 {
 	return mouse_point.x;
 }

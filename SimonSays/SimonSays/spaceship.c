@@ -14,6 +14,8 @@ struct Spaceship_type {
 	// Representation
 	Object* body;
 
+	// Position
+	SDL_Point* p;
 
 	// Speed
 	double max_speed;
@@ -38,6 +40,7 @@ Spaceship *createSpaceship(Object *body)
 	s->speed_x = 0;
 	s->speed_y = 0;
 	s->mobile = true;
+	s->p = object_getPosPtr(body);
 	return s;
 }
 
@@ -76,6 +79,23 @@ void spaceship_setBody(Spaceship* s,  Object* o)
 Object* spaceship_getBody(Spaceship* s)
 {
 	return s->body;
+}
+
+// Position
+
+int spaceship_getX(Spaceship* s) {
+	return s->p->x;
+}
+
+int spaceship_getY(Spaceship* s) {
+	return s->p->y;
+}
+
+// Facing Angle
+
+void spaceship_setFacingAngle(Spaceship*s, double angle)
+{
+	object_setFacingAngle(s->body, angle);
 }
 
 // Speed 

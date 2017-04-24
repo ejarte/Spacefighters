@@ -36,19 +36,19 @@ struct Object_type {
 	double facingAngle;			// The objects facing angle							+
 	double* facingAnglePtr;		// A pointer to the object facing angle				
 	double facingIMG_offset;	// This is to calibrate the image to the game facing angle so that 0 is always north when using facingAngle.
-	int w;
-	int h;
-	int type_id;				
-	int obj_id;
+	int w;						// Object width
+	int h;						// Object height
+	int type_id;				// Unique object type id
+	int obj_id;					// Unique object id, used to find object[i]
 	bool showObj;				// flag to show/hide the object from palyers
 	bool activeAnim;			// flag for pausing/resuming current animation
-	bool collisionEnabled;
-	Collision* collision;
+	bool collisionEnabled;		// flag for enabling/disabling collision
+	Collision* collision;		// struct pointer containing collision dat
 };
 
 Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingIMGOffset, Sprite *s, Animation *a)
 {
-	Object* o = malloc(sizeof(Object));
+	Object* o = malloc(sizeof(Object));	// Allokerar 
 	o->pos_center = malloc(sizeof(SDL_Point));
 	o->type_id = type;
 	o->pos_center->x = x;
@@ -121,7 +121,7 @@ void object_setPosPtr(Object* o, SDL_Point* p)
 	o->pos_center = p;
 }
 
-// Facing Angle \\
+// Facing Angle 
 
 void object_addFacingAngle(Object *o, double angle)
 {
@@ -218,15 +218,13 @@ void object_render(SDL_Renderer* renderer, Object *o)
 
 void object_tick(Object* o)
 {
+	// Tickar animationen
 	if (o->activeAnim)
 		anim_tick(o->anim);
-
+	
+	// Förändrar postionen i x och y led
 	if (o->delta_x != 0 || o->delta_y != 0) {
-	//	o->tick += 1;
-	//	if (o->tick == o->cyclesPerDelta) {
-		//	o->tick = 0;
-			object_setPos(o, o->pos_center->x + o->delta_x, o->pos_center->y + o->delta_y);
-		//}
+		object_setPos(o, o->pos_center->x + o->delta_x, o->pos_center->y + o->delta_y);
 	}
 }
 
@@ -240,6 +238,11 @@ void object_setSprite(Object *o, Sprite *s)
 void object_setAnimation(Object *o, Animation* a, bool activeAnimation)
 {
 	o->anim = copyAnimationType(a);
+}
+
+Animation* object_getAnimation(Object *o)
+{
+	return o->anim;
 }
 
 void object_pauseAnimation(Object *o)

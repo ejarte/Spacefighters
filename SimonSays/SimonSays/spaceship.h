@@ -11,6 +11,15 @@ Spaceship* copySpaceship(Spaceship* srcs, int x, int y, double facing);
 void destroySpaceship(Spaceship* s);
 void spaceship_setBody(Spaceship *s, Object* body);
 Object *spaceship_getBody(Spaceship *s);
+
+// Position
+
+int spaceship_getX(Spaceship* s);
+int spaceship_getY(Spaceship* s);
+
+// Facing Angle
+void spaceship_setFacingAngle(Spaceship*s, double angle);
+
 // Speed
 void spaceship_setDrag(Spaceship* s, double drag);
 void spaceship_setAcceleration(Spaceship* s, double acc);

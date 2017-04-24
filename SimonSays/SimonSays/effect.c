@@ -1,51 +1,55 @@
 #include "effect.h"
+#include "object.h"
 
-struct Effect_type {
-	Animation *anim;
-	Sprite **sprite;
-	bool finished;
-	bool oneShot;
-	bool render;
+#define MAX_EFFECTS 300
+bool effect_initialized = false;
+
+struct Effects {
+	Effect* eff[MAX_EFFECTS];
+	int size;
 };
 
-Effect *createEffect(Sprite **s, Animation *anim_type, bool oneShot)
+struct Effects effects;
+
+// Thread for checking if the effect is ready to be removed
+void periodicEffect() 
 {
-	Effect *e = malloc(sizeof(Effect));
-	e->sprite = s;
-	e->anim = copyAnimationType(anim_type);
-	e->finished = false;
-	e->oneShot = oneShot;
-	e->render = true;
-	return e;
+	for (int i = 0; i < effects.size; i++) {
+		// 
+	}
+}
+
+struct Effect_type {
+	Object* object;
+	bool oneShot;
+	int index;
+};
+
+Effect *createEffect(Object *o, bool oneShot)
+{
+	Effect* lastCreatedEffect = malloc(sizeof(Effect));	// allocates memory for effect
+	if (effect_initialized == false) {
+		effect_initialized = true;
+		effects.size = 0;
+	}
+	int i = effects.size;								// gets the current index
+	effects.eff[i] = lastCreatedEffect;					// indexes the last created effect
+	effects.eff[i]->object = o;							// effect now points to a object to show on the screen
+	effects.size++;										// increase the size of the effect index
+	if (effects.size == 1) {							// Start a new thread to check if the effect is ready to be cleaned up
+		// SDL_Thread *thread_server = SDL_CreateThread(startServer, "startServer", (int*)NULL);
+	}
+	return lastCreatedEffect;							// returns the last created effect.
 }
 
 void destroyEffect(Effect *e)
 {
+	destroyObject(e->object);
 	free(e);
 }
 
-void effect_tick(Effect *e)
+Object* effect_getObject(Effect* e)
 {
-	anim_tick(e->anim);
-	// If the animation is flagged as oneShot stop rendering it
-	if (anim_isFinished(e->anim) && e->oneShot == true) {
-		e->finished = true;
-		e->render = false;
-	}
+	return e->object;
 }
 
-void effect_render(SDL_Renderer* renderer, Effect *e, SDL_Rect disp_rect)
-{
-	if (e->render == true) {
-		Sprite **s = e->sprite;
-		Sprite *s2 = *s;
-		sprite_RenderCopy(renderer, s2, anim_getCurCol(e->anim), anim_getCurRow(e->anim), disp_rect);
-	}
-}
-
-void effect_reset(Effect *e)
-{
-	e->finished = false;
-	e->render = true;
-	e->anim = copyAnimationType(e->anim);
-}

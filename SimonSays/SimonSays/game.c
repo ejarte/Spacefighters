@@ -11,9 +11,18 @@
 #include "collision.h"
 
 // Background
-SDL_Rect background_rect;
-SDL_Texture* background_texture;
+//SDL_Rect background_sky_rect;
+//SDL_Texture* background_sky_texture;
 
+
+SDL_Rect background_rect;
+
+SDL_Rect back_rect;
+SDL_Texture *backgroundImage;
+
+SDL_Rect stars_rect;
+SDL_Texture* stars_box;
+SDL_Texture *starsImage;
 
 // old test 
 Effect *e1; 
@@ -31,15 +40,24 @@ Sprite* sprite[100];
 Animation* animation[100];
 Spaceship* spaceship[20];
 
+/*
+#define STARS "images/skyForeground.png"
+#define SKY "images/skyBackground.png"
+
+*/
+
+
 void game_init()
 {
 	// Object Indexer
 	initObjectIndex();
 
 	// Background
-	background_texture = IMG_LoadTexture(renderer, "images/bakgrund_himmel.gif");
+	backgroundImage = IMG_LoadTexture(renderer, "images/skyBackground.png");
 	background_rect.x = background_rect.y = 0;
-	SDL_GetRendererOutputSize(renderer, &background_rect.w, &background_rect.h);
+	starsImage = IMG_LoadTexture(renderer, "images/skyForeground.png");
+	stars_rect.x = stars_rect.y = 0;
+	stars_rect.w = stars_rect.h = 800;
 
 	// Sprites
 	// Green wind effect
@@ -105,14 +123,11 @@ void game_init()
 		tempObj = createObject(OBJ_TYPE_ASTEROID, 600, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[10]);
 		tempObj = createObject(OBJ_TYPE_ASTEROID, 660, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[11]);
 		tempObj = createObject(OBJ_TYPE_ASTEROID, 720, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[12]);
+		object_setDeltaX(tempObj, 1);
+		object_setDeltaY(tempObj, -2);
+	
 
 	// Pre-existing Objects
-
-		//Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingOffset, Sprite *s, Animation *a);
-
-
-		//o1 = createObject(OBJ_TYPE_GREENWIND, 100, 100, sprite_getFrameWidth(s1), sprite_getFrameHeight(s1), 1., s1, a1, true, true);
-		//o2 = createObject(OBJ_TYPE_EXPLOSION, 800, 600, sprite_getFrameWidth(s2), sprite_getFrameHeight(s2), 1., s2, a2, true, true);
 
 		//object_disableCollision(o3);
 
@@ -163,35 +178,6 @@ void game_init()
 		spaceship_setAcceleration(spaceship[1], acceleration);
 		spaceship_setMaxSpeed(spaceship[1], max_speed);
 
-		// Declaration
-		//spaceship[0] = createSpaceship(x, y, facing, body);
-		//spaceship_setWeight(spaceship[0], weight);
-
-		//spaceship[1] = createSpaceship(999, 500, 120, createObjectCopy(body, 600, 600, 180));
-
-		//int* i = object_getPointerToX(body);
-
-
-		//printf("HERE\n\n\n");
-		//object_setPosXY(body, 100, 100);
-		//printf("%d\n", &i);
-		//SDL_Delay(4000);
-
-		//object_setTexture(body, s2);
-		//object_setB
-
-		//object_print(body);	
-
-		// Collision test
-
-		//c = createCollisionBox(500, 500, 50, 50);
-		//cc = createCollisionBox(600, 500, 50, 50);
-
-		//collision_setBoxHeight(cc, 100);
-
-		//collision_setBoxWidth(cc, 100);
-
-
 }
 
 void game_execute() {
@@ -203,6 +189,7 @@ void game_execute() {
 void game_events()
 {
 	Object* tempObj;
+	//int x, y;
 
 	if (quitEventTriggered()) {
 		setNextState(STATE_EXIT);
@@ -226,6 +213,33 @@ void game_events()
 			printf("recording message... Cannot move.\n");
 		}
 		else {
+			if (mouseEventPressed(SDL_BUTTON_LEFT)) {
+
+				// Test av projektil
+
+				SDL_Point mouse = getMousePos();
+				SDL_Point player;
+				// lägg in funktionalitet fär att hämta x och y direkt från spaceship_
+				tempObj = spaceship_getBody(spaceship[0]);
+				player.x = object_getX(tempObj);
+				player.y = object_getY(tempObj);
+
+				//int spaceship_getX(Spaceship* s);
+				//int spaceship_getY(Spaceship* s);
+				int bulletSpeed = 15;
+				double distance = distanceBetweenPoints(mouse, player);
+				double dx = (double) (mouse.x - player.x)/distance;
+				double dy = (double) (mouse.y - player.y)/distance;
+				dx *= bulletSpeed;
+				dy *= bulletSpeed;
+
+				printf("%d %d\n", dx, dy);
+				tempObj = createObject(OBJ_TYPE_ASTEROID, player.x, player.y, sprite_getFrameWidth(sprite[5]) / 10, sprite_getFrameHeight(sprite[5]) / 10, 0, 0, sprite[5], animation[9]);
+				object_setDeltaX(tempObj, dx);
+				object_setDeltaY(tempObj, dy);
+			}
+
+
 			// Movement ship A
 			if (keyEventHeld(SDL_SCANCODE_W)) {
 				spaceship_deaccelerateY(spaceship[0]);
@@ -270,10 +284,20 @@ void game_update()
 {
 	Object* tempObj;
 
+	// Rotate spaceship
+	double newAngle, dx, dy;
+	dx = spaceship_getX(spaceship[0]) - getMouseX();
+	dy = spaceship_getY(spaceship[0]) - getMouseY();
+	newAngle = (atan2(dx, dy) * 180.0)/M_PI *-1;			// får ut vinkeln i grader mellan muspekaren och bilden
+
+	tempObj = spaceship_getBody(spaceship[0]);
+	object_setFacingAngle(tempObj, newAngle);
+
+
 	// Move spaceship if inside world
 	for (int i = 0; i < 2; i++) {
 		tempObj = spaceship_getBody(spaceship[i]);
-		printf(":::%d %d\n", object_getX(tempObj), object_getY(tempObj));
+
 		if (isInsideWorld(object_getX(tempObj), object_getY(tempObj))) {
 			spaceship_move(spaceship[i]);
 		}
@@ -299,6 +323,8 @@ void game_update()
 				}
 			}
 		}
+
+
 		// Rotate blackhole
 		if (object_getTypeId(object[i]) == OBJ_TYPE_BLACKHOLE) {
 			object_addFacingAngle(object[i], 0.5);
@@ -309,11 +335,50 @@ void game_update()
 void game_render()
 {
 	// Size
-	SDL_GetRendererOutputSize(renderer, &background_rect.w, &background_rect.h);
 	// Clear previous display
 	SDL_RenderClear(renderer);
 
-	SDL_RenderCopy(renderer, background_texture, NULL, &background_rect);
+	Object* tempObj;
+	int newX, newY;
+	tempObj = spaceship_getBody(spaceship[0]);
+	newX = object_getX(tempObj);
+	//newY = 
+
+
+	// Stars
+
+	//printf("newX::: %d %d")
+
+	stars_rect.x = object_getX(tempObj) / 10;
+	stars_rect.y = object_getY(tempObj) / 10;
+	// Back
+	back_rect.x = object_getX(tempObj) / 15;
+	back_rect.y = object_getY(tempObj) / 15;
+
+	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
+	background_rect.w = screenW;
+	background_rect.h = screenH;
+
+	back_rect.w = background_rect.w;
+	back_rect.h = background_rect.h;
+
+	SDL_RenderCopy(renderer, backgroundImage, &back_rect, &background_rect);
+	SDL_RenderCopy(renderer, starsImage, &stars_rect, &background_rect);
+
+
+	// 
+	/*
+	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
+	background_rect.w = screenW;
+	background_rect.h = screenH;
+
+	back_rect.w = background_rect.w;
+	back_rect.h = background_rect.h;
+
+	SDL_RenderCopy(renderer, backgroundImage, &back_rect, &background_rect);
+	SDL_RenderCopy(renderer, starsImage, &stars_rect , &background_rect);
+	*/
+
 
 	// Handle all objects in the game
 	for (int i = 0; i < getObjectIndexMax(); i++) {

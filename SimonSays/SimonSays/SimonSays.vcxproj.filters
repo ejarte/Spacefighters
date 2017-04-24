@@ -54,9 +54,6 @@
     <ClInclude Include="sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="effect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,9 +93,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="animation.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="effect.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sprite.c">

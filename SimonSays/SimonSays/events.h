@@ -16,10 +16,11 @@ bool textEvent();
 char* getTextInput();
 void disableTextInput();
 void enableTextInput();
-SDL_Point getMousePos();
-int getMousex();
-int getMouseY();
 
+// Mouse
+SDL_Point getMousePos();
+int getMouseX();
+int getMouseY();
 
 int getTimeStamp(int flag, SDL_Scancode sc);
 

@@ -70,6 +70,8 @@ void object_render(SDL_Renderer* renderer, Object *o);
 
 // Delta X & Y
 
+// Ska vi använda oss av vektorer istället?
+
 void object_setDeltaX(Object *o, int delta);
 
 void object_setDeltaY(Object *o, int delta);
@@ -85,6 +87,8 @@ void object_clearDeltaXY(Object *o);
 void object_setSprite(Object *o, Sprite *s);
 
 void object_setAnimation(Object *o, Animation* a, bool activeAnimation);
+
+Animation* object_getAnimation(Object *o);
 
 void object_pauseAnimation(Object *o);
 
