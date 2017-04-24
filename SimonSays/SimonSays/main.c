@@ -8,11 +8,16 @@ and may not be redistributed without written permission.*/
 #include "state_handler.h"
 #include "game_state.h"
 #include "audio.h"
+#include "world.h"
+#include "game.h"
 
 int main(int argc, char* args[])
 {
 	initWindow();
 	initEventHandler();
+	initWorld();
+	game_init();
+
 	//initNormal();
 	//spaceShipSetup();
 	//initSky();
@@ -20,8 +25,9 @@ int main(int argc, char* args[])
 	// Audio
 	initAudio();
 	SDL_Delay(50);
-	playMusic("audio/music/SPACE.mp3", -1);
-	SDL_Delay(50);
+	//playMusic("audio/music/SPACE.mp3", -1);
+
+
 	bool run = true;
 
 	setNextState(STATE_GAME_RUNNING);
@@ -35,11 +41,8 @@ int main(int argc, char* args[])
 		else {
 			executeNextState();
 		}
+		// Syncronize frame rate
 		SDL_Delay(20);
 	}
-
-	//clearPointers();		//Tar bort pekarna ur minnet för säkerhets skull
-
 	return 0;
-
 }

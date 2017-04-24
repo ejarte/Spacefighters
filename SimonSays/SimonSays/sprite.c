@@ -157,8 +157,14 @@ int sprite_getTextureHeight(Sprite *ptr_sprite)
 
 void sprite_print(Sprite *ptr_sprite)
 {
+	printf("-----------------------------------------\n");
+	printf("- Sprite --------------------------------\n");
+	printf("-----------------------------------------\n");
 	printf("frameWidth\t%d\n", ptr_sprite->frameWidth);
 	printf("frameHeight\t%d\n", ptr_sprite->frameHeight);
-	printf("columns\t%d\n", ptr_sprite->col);
-	printf("rows\t%d\n", ptr_sprite->col);
+	printf("columns\t\t%d\n", ptr_sprite->col);
+	printf("rows\t\t%d\n", ptr_sprite->col);
+	printf("textureWidth:\t%d\n", ptr_sprite->textureWidth);
+	printf("textureHeight:\t%d\n", ptr_sprite->textureHeight);
+	printf("-----------------------------------------\n");
 }

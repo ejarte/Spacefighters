@@ -15,7 +15,7 @@ int state_next;
 void executeNextState()
 {
 	switch (state_next) {
-		case STATE_GAME_RUNNING: gameLoop(); break;
+		case STATE_GAME_RUNNING: game_execute(); break;
 		default: break;
 	}
 }

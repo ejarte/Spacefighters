@@ -1,265 +1,379 @@
 #include "object.h"
 #include "animation.h"
 #include "sprite.h"
+#include "collision.h"
+/*
+struct Object_type {
+Animation *anim;
+Sprite *sprite;
+SDL_Rect rect;
+int topX;
+int topY;
+int w;
+int h;
 
-struct Collision_Box {
-	int left;
-	int right; 
-	int top;
-	int bottom;
-	bool enabled;
+double scale;
+double facing;
+bool show;				// Show on screen
+bool activeAnimation;	// Play animation
+int type;				// Type id
+int index;				// Object id
+
+struct Collision* collision;
+bool collisionEnabled;
 };
+*/
 
 struct Object_type {
-	Animation *anim;
-	Sprite **sprite;
-	SDL_Rect rect;
-	int x;
-	int y;
+	Animation *anim;			// Animation
+	Sprite *sprite;				// Sprite
+	SDL_Point* pos_center;		// Center position
+	int delta_x;				// Change in x axis
+	int delta_y;				// Change in y axis
+	//int cyclesPerDelta;			// Number of frames before delta x and y is updated
+	//int tick;
+	//SDL_Point* pos_offset;	// Offset from center position x- and y-axis.		// NOT IMPLEMENTED
+	double facingAngle;			// The objects facing angle							+
+	double* facingAnglePtr;		// A pointer to the object facing angle				
+	double facingIMG_offset;	// This is to calibrate the image to the game facing angle so that 0 is always north when using facingAngle.
 	int w;
 	int h;
-	double scale;
-	double facing;
-	bool show;
-	bool activeAnimation;
-	int type;
-	int index;
-	struct Collision_Box collision;
+	int type_id;				
+	int obj_id;
+	bool showObj;				// flag to show/hide the object from palyers
+	bool activeAnim;			// flag for pausing/resuming current animation
+	bool collisionEnabled;
+	Collision_Box* collision;
 };
 
-Object* createObject(int type, int x, int y, int w, int h, double facingAngle, Sprite **s, Animation *a, bool show, bool collision)
+Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingIMGOffset, Sprite *s, Animation *a)
 {
 	Object* o = malloc(sizeof(Object));
-	o->sprite = s;
-	o->type = type;
-	o->scale = 1.;
-	o->anim = (a);
-	o->activeAnimation = show;
-	o->show = show;
-	o->facing = facingAngle;
-	// Dimension
-	o->x = x;
-	o->y = y;
+	o->pos_center = malloc(sizeof(SDL_Point));
+	o->type_id = type;
+	o->pos_center->x = x;
+	o->pos_center->y = y;
+	
 	o->w = w;
 	o->h = h;
+	o->sprite = s;
+	o->facingAngle = facingAngle;
+	o->facingAnglePtr = &o->facingAngle;
+	o->facingIMG_offset = facingIMGOffset;
+	o->showObj = true;
+	object_setAnimation(o, a, true);
 	// Collision
-	o->collision.enabled = collision;
-	o->collision.left = o->x;
-	o->collision.right = o->x + o->w;
-	o->collision.top = o->y;
-	o->collision.bottom = o->y + o->h;
+	o->collisionEnabled = false;
+	o->collision = NULL;
+	// Facing Angle
+	o->facingAngle = facingAngle;
+	o->facingAnglePtr = &o->facingAngle;
+	o->facingIMG_offset = facingIMGOffset;
+	// Delta X & Y 
+	//o->cyclesPerDelta = 5; // Cycles required before it updates position
+	//o->tick = 0;
+	o->delta_x = 0;
+	o->delta_y = 0;
+	// Index
+	// Ändra denna funktion till att ta emot ett objekt
+	o->obj_id = indexObject();
+	object[o->obj_id] = o;
+
 	return o;
 }
 
-void destroyObject(Object *o)
+// Position
+void object_setPos(Object *o, int x, int y)
 {
-	free(o);
+	o->pos_center->x = x;
+	o->pos_center->y = y;
 }
 
-void object_setSprite(Object *o, Sprite **s)
+void object_setX(Object* o, int x)
 {
-	o->sprite = s;
+	o->pos_center->x = x;
 }
 
-void object_setAnimation(Object *o, Animation* a, bool playAnimation)
+void object_setY(Object* o, int y)
 {
-	o->anim = copyAnimationType(a);
-	o->activeAnimation = playAnimation;
+	o->pos_center->y =  y;
 }
 
-void object_pauseAnimation(Object *o)
+int object_getX(Object *o)
 {
-	o->activeAnimation = false;
+	return o->pos_center->x;
 }
 
-void object_resumeAnimation(Object *o)
+int object_getY(Object *o)
 {
-	o->activeAnimation = true;
+	return o->pos_center->y;
 }
 
-void object_tickAnimation(Object *o)
+/* Returns a pointer to the center position, useful for linking one point to this object. */
+SDL_Point* object_getPosPtr(Object* o)
 {
-	anim_tick(o->anim);
+	return o->pos_center;
 }
 
-/*
-void sprite_RenderCopy(SDL_Renderer* renderer, Sprite *ptr_sprite, int col, int row, SDL_Rect dsrect)
+/* links the center point to another pointer useful for attaching this object onto another */
+void object_setPosPtr(Object* o, SDL_Point* p)
 {
-// Renders to screen
-SDL_Rect srect = sprite_getClipRect(ptr_sprite, col, row);
-SDL_RenderCopy(renderer, ptr_sprite->texture, &srect, &dsrect);
-}
-*/
-
-void object_render(SDL_Renderer* renderer, Object *o)
-{
-	if (o->show) {
-		SDL_Rect dsrect = { o->x, o->y, o->w, o->h };
-			
-			//createRect(o->x, o->y, o->w, o->h);
-		Sprite **s = o->sprite;
-		Sprite *s2 = *s;
-		//
-		//SDL_Texture* texture = sprite_getTexture(s2);
-		SDL_Rect srect = sprite_getClipRect(s2, anim_getCurCol(o->anim), anim_getCurRow(o->anim));
-
-		SDL_Point center = {o->w/2, o->h/2};
-
-		//SDL_RenderCopy(renderer, sprite_getTexture(s2), &srect, &dsrect);
-
-		//printf("%d", o->facing);
-		//o->facing += 3.;
-
-		SDL_RenderCopyEx(renderer, sprite_getTexture(s2), &srect, &dsrect, o->facing, &center, SDL_FLIP_NONE);
-
-
-		//SDL_RenderCopyEx(renderer, spaceship_getShipTexture(s1), &rects[frame], &spaceship_rect, 180., &center, flip); //ritar ut skeppet i fönstret
-
-		//sprite_RenderCopy(renderer, s2, anim_getCurCol(o->anim), anim_getCurRow(o->anim), disp_rect);
-	}
+	o->pos_center = p;
 }
 
-void object_addToFacingAngle(Object *o, double angle)
+// Facing Angle \\
+
+void object_addFacingAngle(Object *o, double angle)
 {
-	o->facing += angle;
+	o->facingAngle += angle;
+	o->facingAnglePtr = &o->facingAngle;
 }
 
 void object_setFacingAngle(Object *o, double angle)
 {
-	o->facing = angle;
+	o->facingAngle = angle;
+	o->facingAnglePtr = &o->facingAngle;
 }
 
 double object_getFacingAngle(Object *o)
 {
-	return o->facing;
+	return o->facingAngle;
 }
 
-void object_setPosX(Object *o, int x)
+/* Returns a pointer to the facing angle useful for linking one point to this object. */
+double* object_getFacingAnglePtr(Object* o)
 {
-
-	o->x = x;
-	o->collision.left = o->x;
-	o->collision.right = o->x + o->w;
+	return o->facingAnglePtr;
 }
 
-void object_setPosY(Object *o, int y)
+/* links the facing angle to a pointer, useful when linking two objects together */	
+void object_setFacingAnglePtr(Object* o, double* p)
 {
-	o->y = y;
-	o->collision.top = o->y;
-	o->collision.bottom = o->y + o->h;
+	o->facingAnglePtr = p;
 }
 
-int object_getPosX(Object *o)
+// Collision
+
+void object_disableCollision(Object* o)
 {
-	return o->x;
+	o->collisionEnabled = false;
 }
 
-int object_getPosY(Object *o)
+void object_enableCollision(Object* o)
 {
-	return o->y;
+	o->collisionEnabled = true;
 }
 
-void object_setWidth(Object *o, int w)
+void object_setCollisionBoxDimension(Object* o, int w, int h, int x_offset, int y_offset)
 {
-	o->w = w;
-	o->collision.right = o->x + o->w;
+	// Destroy previous collision box
+	if (o->collision == NULL)
+		destroyCollisionBox(o->collision);
+
+	// Create a new one
+	o->collision = createCollisionBox(o->pos_center, w, h, x_offset, y_offset);
+	o->collisionEnabled = true;
 }
 
-void object_setHeight(Object *o, int h)
+bool object_checkForBoxCollision(Object* o1, Object* o2 )
 {
-	o->h = h;
-	o->collision.bottom = o->y + o->h;
+
+	if (o1->collision == NULL || o2->collision == NULL || o1->collisionEnabled == false || o2->collisionEnabled == false)
+		return false;
+
+	return collision_boxIntersection(o1->collision, o2->collision);
 }
 
-int object_getWidth(Object *o)
-{
-	return o->w;
-}
+// Update
 
-int object_getHeight(Object *o)
+void object_render(SDL_Renderer* renderer, Object *o)
 {
-	return o->h;
-}
+	if (o->showObj) {
+		SDL_Rect dsrect = { o->pos_center->x - o->w/2, o->pos_center->y - o->w / 2, o->w, o->h };
+		SDL_Rect srect = sprite_getClipRect(o->sprite, anim_getCurCol(o->anim), anim_getCurRow(o->anim));
+		SDL_Point center = { o->w / 2, o->h / 2 };
+		double angle = *(o->facingAnglePtr);
+		SDL_RenderCopyEx(renderer, sprite_getTexture(o->sprite), &srect, &dsrect, angle + o->facingIMG_offset, &center, SDL_FLIP_NONE);
 
-void object_setScale(Object *o, float scale)
-{
-	if (scale < 0.1)
-		scale = 0.1;
-
-	if (scale > 5.) {
-		scale = 5.;
+		// DEBUG TEST
+		//if (o->collision != NULL)
+		//	collision_boxRender(renderer, o->collision);
 	}
-
-	int w = o->w;
-	int h = o->h;
-	o->w = o->w*scale;
-	o->h = o->h*scale;
-	o->x = o->x + (w - o->w) / 2;
-	o->y = o->y + (h - o->h) / 2;
-
-	o->scale = scale;
 }
 
-float object_getScale(Object *o)
+void object_tick(Object* o)
 {
-	return o->scale;
+	if (o->activeAnim)
+		anim_tick(o->anim);
+
+	if (o->delta_x != 0 || o->delta_y != 0) {
+	//	o->tick += 1;
+	//	if (o->tick == o->cyclesPerDelta) {
+		//	o->tick = 0;
+			object_setPos(o, o->pos_center->x + o->delta_x, o->pos_center->y + o->delta_y);
+		//}
+	}
+}
+
+// View
+
+void object_setSprite(Object *o, Sprite *s)
+{
+	o->sprite = s;
+}
+
+void object_setAnimation(Object *o, Animation* a, bool activeAnimation)
+{
+	o->anim = copyAnimationType(a);
+}
+
+void object_pauseAnimation(Object *o)
+{
+	o->activeAnim = false;
+}
+
+void object_resumeAnimation(Object *o)
+{
+	o->activeAnim = true;
 }
 
 void object_show(Object *o)
 {
-	o->show = true;
+	o->showObj = true;
 }
 
 void object_hide(Object *o)
 {
-	o->show = false;
+	o->showObj = false;
 }
 
-bool object_isShown(Object *o)
+// Identification
+
+int object_getTypeId(Object *o)
 {
-	return o->show;
+	return o->type_id;
 }
 
-void object_setType(Object *o, int type)
+int object_getObjId(Object *o)
 {
-	o->type = type;
+	return o->obj_id;
 }
 
-int object_getType(Object *o)
+// Delta X & Y
+
+void object_setDeltaX(Object *o, int delta)
 {
-	return o->type;
+	o->delta_x = delta;
 }
 
-void object_setIndex(Object *o, int index)
+void object_setDeltaY(Object *o, int delta)
 {
-	o->index = index;
+	o->delta_y = delta;
 }
 
-int object_getIndex(Object *o)
+int object_getDeltaX(Object *o)
 {
-	return o->index;
+	return o->delta_x;
 }
 
-bool object_hasCollision(Object *o)
+int object_getDeltaY(Object *o)
 {
-	return o->collision.enabled;
+	return o->delta_y;
 }
 
-bool object_setCollision(Object *o, bool flag)
+/* Adds delta_x and delta_y to the objects delta x and y*/
+void object_addToDelta(Object* o, int delta_x, int delta_y)
 {
-	o->collision.enabled = flag;
+	o->delta_x += delta_x;
+	o->delta_y += delta_y;
 }
 
-bool object_checkForBoxCollision(Object* o1, Object* o2)
+void object_clearDeltaXY(Object *o)
 {
-	if (o1->collision.right >= o2->collision.left) 
-		return true;
-	if (o1->collision.left <= o2->collision.right)
-		return true;
-	if (o1->collision.top <= o2->collision.bottom)
-		return true;
-	if (o1->collision.bottom >= o2->collision.top)
-		return true;
+	o->delta_x = o->delta_y = 0;
+}
 
-	return false;
+// Debug
+void object_print(Object *o)
+{
+	printf("Pos(%d,%d)\n", o->pos_center->x, o->pos_center->y);
+}
+
+//================================================================================================================
+// Object Index 
+//================================================================================================================
+
+struct ObjectIndex {
+	int max;							// The highest indexed value
+	int recycled;						// amount of recycled numbers
+	int recycledNumber[MAX_OBJECTS];	// Recycled numbers
+};
+
+struct ObjectIndex obj_index;
+
+bool object_indexer_enabled = false;
+
+void objectIndex_flagEnabled(bool flag)
+{
+	object_indexer_enabled = flag;
+}
+
+void initObjectIndex()
+{
+	for (int i = 0; i < MAX_OBJECTS; i++) {
+		object[i] = NULL;
+	}
+	obj_index.max = 0;
+	obj_index.recycled = 0;
+}
+
+int getObjectIndexMax()
+{
+	return obj_index.max;
+}
+
+int indexObject()
+{
+	// If there are recycled numbers use them first
+	if (obj_index.recycled > 0) {
+		obj_index.recycled--;
+		printf("Object indexed: %d\n", obj_index.recycledNumber[obj_index.recycled]);
+		return obj_index.recycledNumber[obj_index.recycled];
+	}
+
+	// Otherwise generate a new index value 
+	if (obj_index.max < MAX_OBJECTS) {
+		printf("Object indexed: %d\n", obj_index.max);
+		return obj_index.max++;
+	}
+	printf("ERROR: objectIndex_getIndex_____IndexOutOfBounds\n");
+	return -1;
+}
+
+void objectIndex_deindexInt(int index)
+{
+	if (object[index] != NULL) {
+		object[index] = NULL;
+		obj_index.recycledNumber[obj_index.recycled++] = index;
+		printf("Object deindexed: %d\n", index);
+	}
+	else {
+		printf("ERROR: objectIndex_deindexInt_____Attemting to deindex an unallocated index.\n");
+	}
+}
+
+void objectIndex_print()
+{
+	printf("Object Indexer...\n");
+	printf("max = %d\n recycled = %d\n", obj_index.max, obj_index.recycled);
+	printf("Objects:\n");
+	for (int i = 0; i < obj_index.max; i++) {
+		if (object[i] != NULL) {
+			printf("object[%d]\n", i);
+		}
+	}
+	printf("Recycled:\n");
+	for (int i = 0; i < obj_index.recycled; i++) {
+		printf("%d, ", obj_index.recycledNumber[i]);
+	}
 }

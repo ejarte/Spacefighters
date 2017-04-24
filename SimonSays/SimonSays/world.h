@@ -1,8 +1,7 @@
 #pragma once
 
 #include "libraries.h"
-
-struct Camera;
-struct World;
+#include "object.h"
 
 bool isInsideWorld(int x, int y);
+void initWorld();

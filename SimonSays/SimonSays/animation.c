@@ -5,10 +5,10 @@ struct Animation_type {
 	int *sprite_row_seq;
 	int length;
 	int cyclesPerFrame;
-	int index;
+	int index;				// Current row and col
 	int size;
 	int time;
-	bool completed;
+	bool completed;			// Flag
 };
 
 Animation* createAnimation(int length, int cyclesPerFrame)
@@ -25,7 +25,7 @@ Animation* createAnimation(int length, int cyclesPerFrame)
 	return a;
 }
 
-Animation *copyAnimationType(Animation *srcs_a)
+Animation* copyAnimationType(Animation *srcs_a)
 {	
 	Animation *dest_a = createAnimation(srcs_a->length, srcs_a->cyclesPerFrame);
 
@@ -84,10 +84,14 @@ void anim_addFrameColRow(Animation *a, int col, int row)
 
 void anim_print(Animation *a)
 {
+	printf("-----------------------------------------\n");
+	printf("- Animation -----------------------------\n");
+	printf("-----------------------------------------\n");
 	printf("Frame\t| Col\t| Row\t|\n");
 	for (int i = 0; i < a->length; i++) {
 		printf("%d\t| %d\t| %d\t|\n", i, a->sprite_col_seq[i], a->sprite_row_seq[i]);
 	}
+	printf("-----------------------------------------\n");
 }
 
 void anim_tick(Animation *a)

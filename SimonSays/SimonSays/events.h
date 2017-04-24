@@ -16,11 +16,6 @@ bool textEvent();
 char* getTextInput();
 void disableTextInput();
 void enableTextInput();
-void lookState();
-
-void initNormal();
-void checkButtonClicked();
-
 SDL_Point getMousePos();
 int getMousex();
 int getMouseY();
