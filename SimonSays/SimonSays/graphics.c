@@ -9,7 +9,7 @@ void initWindow()
 
 	//Skapar ett fönster i fullskärmläge
 	window = NULL;
-	window = SDL_CreateWindow("SimonSays", 100, 100, 600, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("SimonSays", 100, 100, 1000, 800, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	//window_col
 
 	if (window == NULL) {
@@ -22,6 +22,8 @@ void initWindow()
 		printf("Error, Sound cannot be loaded");
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
+	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
 }
 
 int getWindowHeight()

@@ -268,16 +268,27 @@ void game_events()
 
 void game_update()
 {
-	// Move spaceship
-	spaceship_move(spaceship[0]);
-	spaceship_move(spaceship[1]);
+	Object* tempObj;
+
+	// Move spaceship if inside world
+	for (int i = 0; i < 2; i++) {
+		tempObj = spaceship_getBody(spaceship[i]);
+		printf(":::%d %d\n", object_getX(tempObj), object_getY(tempObj));
+		if (isInsideWorld(object_getX(tempObj), object_getY(tempObj))) {
+			spaceship_move(spaceship[i]);
+		}
+		else {
+			// prevent futher movement
+			object_clearDeltaXY(tempObj);
+		}
+	}
 
 	// Loop through all objects
 	for (int i = 0; i < getObjectIndexMax(); i++) {
 
 		// Collision Detection
 		for (int j = i + 1; j < getObjectIndexMax(); j++) {
-			if (object_checkForBoxCollision(object[i], object[j])) {
+			if (object_checkForCollision(object[i], object[j])) {
 				printf("collision detected between object %d and %d.\n", i, j);
 
 
@@ -294,7 +305,6 @@ void game_update()
 		}
 	}
 }
-
 
 void game_render()
 {

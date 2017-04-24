@@ -43,7 +43,7 @@ struct Object_type {
 	bool showObj;				// flag to show/hide the object from palyers
 	bool activeAnim;			// flag for pausing/resuming current animation
 	bool collisionEnabled;
-	Collision_Box* collision;
+	Collision* collision;
 };
 
 Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingIMGOffset, Sprite *s, Animation *a)
@@ -167,21 +167,39 @@ void object_enableCollision(Object* o)
 void object_setCollisionBoxDimension(Object* o, int w, int h, int x_offset, int y_offset)
 {
 	// Destroy previous collision box
-	if (o->collision == NULL)
-		destroyCollisionBox(o->collision);
+	if (o->collision != NULL)
+		destroyCollision(o->collision);
 
 	// Create a new one
 	o->collision = createCollisionBox(o->pos_center, w, h, x_offset, y_offset);
 	o->collisionEnabled = true;
 }
 
-bool object_checkForBoxCollision(Object* o1, Object* o2 )
+void object_setCollisionCircleDiameter(Object* o, int d, int x_offset, int y_offset)
 {
+	// Destroy previous collision box
+	if (o->collision != NULL)
+		destroyCollision(o->collision);
 
+	// Create a new one
+	o->collision = createCollisionCircle(o->pos_center, d, x_offset, y_offset);
+	o->collisionEnabled = true;
+}
+
+bool object_checkForCollision(Object* o1, Object* o2 )
+{
 	if (o1->collision == NULL || o2->collision == NULL || o1->collisionEnabled == false || o2->collisionEnabled == false)
 		return false;
 
-	return collision_boxIntersection(o1->collision, o2->collision);
+	if (collision_getType(o1) == COLLISION_TYPE_BOX)
+		return collision_boxIntersection(o1->collision, o2->collision);
+	// else 
+	return collision_circleIntersection(o1->collision, o2->collision);
+}
+
+Collision* object_getCollision(Object* o)
+{
+	return o->collision;
 }
 
 // Update
@@ -195,9 +213,6 @@ void object_render(SDL_Renderer* renderer, Object *o)
 		double angle = *(o->facingAnglePtr);
 		SDL_RenderCopyEx(renderer, sprite_getTexture(o->sprite), &srect, &dsrect, angle + o->facingIMG_offset, &center, SDL_FLIP_NONE);
 
-		// DEBUG TEST
-		//if (o->collision != NULL)
-		//	collision_boxRender(renderer, o->collision);
 	}
 }
 

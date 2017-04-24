@@ -2,17 +2,13 @@
 #include "graphics.h"
 #include "object.h"
 
-
-
 void initWorld()
 {
 	
 }
 
-bool isInsideWorld(Object* o)
+bool isInsideWorld(int x, int y)
 {
-	//
-	return true;
-	//return (x > 0 && x < getWindowWidth() && y > 0 && y < getWindowHeight());
+	return (x > 0 && x < getWindowWidth() && y > 0 && y < getWindowHeight());
 }
 

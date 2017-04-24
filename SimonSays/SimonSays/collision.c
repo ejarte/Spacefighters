@@ -1,45 +1,83 @@
 #include "collision.h"
 
-struct Collision_Type_Box {
+struct Collision_Type {
 	SDL_Point* p;
 	int x_offset;
 	int y_offset;
 	int w;
 	int h;
+	int r;
+	int type;
 };
 
-Collision_Box* createCollisionBox(SDL_Point* p, int w, int h, int x_offset, int y_offset)
+Collision* createCollisionBox(SDL_Point* p, int w, int h, int x_offset, int y_offset)
 {
-	Collision_Box* c = malloc(sizeof(Collision_Box));
+	Collision* c = malloc(sizeof(Collision));
 	printf("Box Collision Created...\n");
 	c->w = w;
 	c->h = h;
 	w /= 2;
 	h /= 2;
 	c->p = p;
+
+	// Offset
 	c->x_offset = x_offset;
 	c->y_offset = y_offset;
+
+	// Collision Type
+	c->type = COLLISION_TYPE_BOX;
+
+	// Sets the radius to the largest dimension
+	if (w >= h)
+		c->r = w;
+	else
+		c->r = h;
+
 	return c;
 }
 
-void destroyCollisionBox(Collision_Box* c)
+Collision* createCollisionCircle(SDL_Point* p, int d, int x_offset, int y_offset)
+{
+	Collision* c = malloc(sizeof(Collision));
+	printf("Circle Collision Created...\n");
+
+	c->w = d;
+	c->h = d;
+	d /= 2;
+	c->r = d;
+	c->p = p;
+	c->r = d;
+	// Offset
+	c->x_offset = x_offset;
+	c->y_offset = y_offset;
+	// Collision Type
+	c->type = COLLISION_TYPE_CIRCLE;
+}
+
+void destroyCollision(Collision* c)
 {
 	free(c);
 }
 
-SDL_Rect collision_getRect(Collision_Box* c)
+int collision_getType(Collision* c)
+{
+	return c->type;
+}
+
+SDL_Rect collision_getRect(Collision* c)
 {
 	SDL_Rect r = { c->p->x + c->x_offset - (c->w / 2), c->p->y + c->y_offset - (c->h / 2),c->w, c->h };	
 	return r;
 }
 
-void collision_boxRender(SDL_Renderer* renderer, Collision_Box* c)
+// Optimerbar
+bool collision_circleIntersection(Collision* c1, Collision* c2)
 {
-	SDL_Rect rect = collision_getRect(c);
-	SDL_RenderFillRect(renderer, &rect);
+	return (double)(c1->r + c2->r) > distanceBetweenPointsCoordinates(c2->p->x + c2->x_offset, c1->p->x + c1->x_offset, c2->p->y + c2->y_offset, c1->p->y + c1->y_offset);
 }
 
-bool collision_boxIntersection(Collision_Box* c1, Collision_Box* c2)
+// Optimerbar
+bool collision_boxIntersection(Collision* c1, Collision* c2)
 {
 	// Rect A och B är överflödiga går att optimera, kopierat från lazyFoo.
 	SDL_Rect A = collision_getRect(c1);
@@ -80,16 +118,32 @@ bool collision_boxIntersection(Collision_Box* c1, Collision_Box* c2)
 	return true;
 }
 
-// Debug
+// Debug 
 
-void collision_boxPrint(Collision_Box* c)
+// Saknas render för cirklar
+
+void collision_boxRender(SDL_Renderer* renderer, Collision* c)
+{
+	SDL_Rect rect = collision_getRect(c);
+	SDL_RenderFillRect(renderer, &rect);
+}
+
+void collision_print(Collision* c)
 {
 	printf("-----------------------------------------\n");
-	printf("- Collision Box -------------------------\n");
+	printf("- Collision -----------------------------\n");
 	printf("-----------------------------------------\n");
-	printf("x\t%d\n", c->p->x);
-	printf("y\t%d\n", c->p->y);
-	printf("w\t%d\n", c->w);
-	printf("h\t%d\n", c->h);						
+	printf("x, y \t\t%d, %d\n", c->p->x, c->p->y);
 	printf("-----------------------------------------\n");
 }
+/*
+
+struct Collision_Type {
+	SDL_Point* p;
+	int x_offset;
+	int y_offset;
+	int w;
+	int h;
+	int r;
+	int type;
+}; */

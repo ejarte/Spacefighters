@@ -15,8 +15,8 @@ int main(int argc, char* args[])
 {
 	initWindow();
 	initEventHandler();
-	initWorld();
 	game_init();
+	initWorld();
 
 	//initNormal();
 	//spaceShipSetup();

@@ -3,6 +3,7 @@
 #include "libraries.h"
 #include "animation.h"
 #include "sprite.h"
+#include "collision.h"
 
 typedef struct Object_type Object;
 #define MAX_OBJECTS 1000
@@ -50,12 +51,16 @@ void object_setFacingAnglePtr(Object* o, double* p);
 
 void object_setCollisionBoxDimension(Object* o, int w, int h, int x_offset, int y_offset);
 
-bool object_checkForBoxCollision(Object* o1, Object* o2);
+void object_setCollisionCircleDiameter(Object* o, int d, int x_offset, int y_offset);
+
+bool object_checkForCollision(Object* o1, Object* o2);
 
 
 void object_disableCollision(Object* o);
 
 void object_enableCollision(Object* o);
+
+Collision* object_getCollision(Object* o);
 
 // Update
 
