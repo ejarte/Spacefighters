@@ -6,7 +6,6 @@
 	2) Adding hitpoints to asteroids
 	3) Adding item drops to asteroids
 	4) Generating dx and dy based on angle
-	5) Add a weight variable to vary likelyhood of lower/higher speeds
 */
 
 #include "world.h"
