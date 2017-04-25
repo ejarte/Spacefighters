@@ -206,8 +206,8 @@ void object_render(SDL_Renderer* renderer, Object *o, bool debugCollision)
 		SDL_RenderCopyEx(renderer, sprite_getTexture(o->sprite), &srect, &dsrect, angle + o->facingIMG_offset, &center, SDL_FLIP_NONE);
 
 		// debug render
-		if (debugCollision && o->collision != NULL)
-			collision_boxRender(renderer, o->collision);
+		//if (debugCollision && o->collision != NULL)
+		//	collision_boxRender(renderer, o->collision);
 	}
 }
 

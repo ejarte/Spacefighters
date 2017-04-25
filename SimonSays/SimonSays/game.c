@@ -309,26 +309,18 @@ void game_update()
 
 void game_render()
 {
-	// Size
 	// Clear previous display
 	SDL_RenderClear(renderer);
 
-	Object* tempObj;
-	int newX, newY;
-	tempObj = spaceship_getBody(spaceship[0]);
-	newX = object_getX(tempObj);
-	//newY = 
+	Object* tempObj = spaceship_getBody(spaceship[0]);
+	int x = object_getX(tempObj);
+	int y = object_getY(tempObj);
 
-
-	// Stars
-
-	//printf("newX::: %d %d")
-
-	stars_rect.x = object_getX(tempObj) / 10;
-	stars_rect.y = object_getY(tempObj) / 10;
+	stars_rect.x = x / 10;
+	stars_rect.y = y / 10;
 	// Back
-	back_rect.x = object_getX(tempObj) / 15;
-	back_rect.y = object_getY(tempObj) / 15;
+	back_rect.x = x / 15;
+	back_rect.y = y / 15;
 
 	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
 	background_rect.w = screenW;
@@ -339,21 +331,6 @@ void game_render()
 
 	SDL_RenderCopy(renderer, backgroundImage, &back_rect, &background_rect);
 	SDL_RenderCopy(renderer, starsImage, &stars_rect, &background_rect);
-
-
-	// 
-	/*
-	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
-	background_rect.w = screenW;
-	background_rect.h = screenH;
-
-	back_rect.w = background_rect.w;
-	back_rect.h = background_rect.h;
-
-	SDL_RenderCopy(renderer, backgroundImage, &back_rect, &background_rect);
-	SDL_RenderCopy(renderer, starsImage, &stars_rect , &background_rect);
-	*/
-
 
 	// Handle all objects in the game
 	for (int i = 0; i < getObjectIndexMax(); i++) {

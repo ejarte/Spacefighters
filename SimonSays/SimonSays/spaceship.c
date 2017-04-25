@@ -91,6 +91,14 @@ int spaceship_getY(Spaceship* s) {
 	return s->p->y;
 }
 
+SDL_Point spaceship_getPosition(Spaceship* s)
+{
+	SDL_Point p;
+	p.x = s->p->x;
+	p.y = s->p->y;
+	return p;
+}
+
 // Facing Angle
 
 void spaceship_setFacingAngle(Spaceship*s, double angle)

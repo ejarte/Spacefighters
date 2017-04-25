@@ -16,6 +16,7 @@ Object *spaceship_getBody(Spaceship *s);
 
 int spaceship_getX(Spaceship* s);
 int spaceship_getY(Spaceship* s);
+SDL_Point spaceship_getPosition(Spaceship* s);
 
 // Facing Angle
 void spaceship_setFacingAngle(Spaceship*s, double angle);
