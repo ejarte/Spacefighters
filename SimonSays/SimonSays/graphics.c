@@ -26,18 +26,6 @@ void initWindow()
 	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
 }
 
-int getWindowHeight()
-{
-	return screenH;
-}
-
-int getWindowWidth()
-{
-	return screenW;
-}
-
-
-
 
 
 

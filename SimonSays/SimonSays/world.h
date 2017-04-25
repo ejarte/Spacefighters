@@ -3,5 +3,17 @@
 #include "libraries.h"
 #include "object.h"
 
+// Object Types existing in the world
+#define OBJ_TYPE_GREENWIND			1
+#define OBJ_TYPE_SPACESHIP			2
+#define OBJ_TYPE_EXPLOSION			3
+#define OBJ_TYPE_BLACKHOLE			4
+#define OBJ_TYPE_ASTEROID			5
+#define OBJ_TYPE_ITEM_HEALTH		6
+#define OBJ_TYPE_ITEM_INVUL			7
+#define OBJ_TYPE_ITEM_SPEED			8
+#define OBJ_TYPE_PROJECTILE			9
+
 bool isInsideWorld(int x, int y);
 void initWorld();
+void generateEnteringAsteroid();

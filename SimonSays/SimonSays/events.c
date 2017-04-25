@@ -4,6 +4,7 @@
 */
 
 #include "events.h"
+#include "graphics.h"
 
 #define EV_MAX_SCANCODES				260	// Array Size
 #define TRIGGER_EVENT_NONE				0		
@@ -11,6 +12,10 @@
 #define TRIGGER_EVENT_KEY_RELEASED		2
 #define TRIGGER_EVENT_MOUSE_PRESSED		3
 #define TRIGGER_EVENT_MOUSE_RELEASED	4
+
+// Window dimensions
+int ev_window_w;
+int ev_window_h;
 
 // Event data encapsulation
 struct EventData {	
@@ -31,6 +36,16 @@ struct	EventData event_data;
 struct TextEventData txt_event_data;
 bool quit_event;		// Flag for quit event
 SDL_Point mouse_point;
+
+int getWindowWidth()
+{
+	return ev_window_w;
+}
+
+int getWindowHeight()
+{
+	return ev_window_h;
+}
 
 SDL_Point getMousePos()
 {
@@ -148,8 +163,7 @@ void refreshEventHandler() {
 		switch (event.type) {
 			case SDL_WINDOWEVENT: 
 				if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
-					// Not yet implemented
-					printf("window resized!\n");
+					SDL_GetWindowSize(window, &ev_window_w, &ev_window_h);
 				} break;
 			case SDL_MOUSEMOTION: break;	
 				// Not yet implemented 
@@ -219,6 +233,7 @@ void refreshEventHandler() {
 
 void initEventHandler() 
 {
+	SDL_GetWindowSize(window, &ev_window_w, &ev_window_h);
 	for (int i = 0; i < EV_MAX_SCANCODES; i++)
 	{
 		event_data.event_flag[i] = TRIGGER_EVENT_NONE;

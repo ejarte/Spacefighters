@@ -27,16 +27,6 @@ SDL_Texture *starsImage;
 // old test 
 Effect *e1; 
 
-#define OBJ_TYPE_GREENWIND			1
-#define OBJ_TYPE_SPACESHIP			2
-#define OBJ_TYPE_EXPLOSION			3
-#define OBJ_TYPE_BLACKHOLE			4
-#define OBJ_TYPE_ASTEROID			5
-#define OBJ_TYPE_ITEM_HEALTH		6
-#define OBJ_TYPE_ITEM_INVUL			7
-#define OBJ_TYPE_ITEM_SPEED			8
-#define OBJ_TYPE_PROJECTILE			9
-
 Sprite* sprite[100];				
 Animation* animation[100];
 Spaceship* spaceship[20];
@@ -50,6 +40,10 @@ Spaceship* spaceship[20];
 
 void game_init()
 {
+	// Init World
+	initWorld();
+
+
 	// Object Indexer
 	initObjectIndex();
 
@@ -113,19 +107,7 @@ void game_init()
 		Object* tempObj;
 
 		// Blackhole
-		tempObj = createObject(OBJ_TYPE_BLACKHOLE, 500, 500, sprite_getFrameWidth(sprite[4]) / 4, sprite_getFrameHeight(sprite[4]) / 4, 0, 0, sprite[4], animation[0]);
-
-		// Asteroids without collision added
-		tempObj = createObject(OBJ_TYPE_ASTEROID, 900, 700, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[5]);
-		tempObj = createObject(OBJ_TYPE_ASTEROID, 600, 600, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[6]);
-		tempObj = createObject(OBJ_TYPE_ASTEROID, 200, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[7]);
-		tempObj = createObject(OBJ_TYPE_ASTEROID, 400, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[8]);
-		tempObj = createObject(OBJ_TYPE_ASTEROID, 500, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[9]);
-		tempObj = createObject(OBJ_TYPE_ASTEROID, 600, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[10]);
-		tempObj = createObject(OBJ_TYPE_ASTEROID, 660, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[11]);
-		tempObj = createObject(OBJ_TYPE_ASTEROID, 720, 800, sprite_getFrameWidth(sprite[5]) / 4, sprite_getFrameHeight(sprite[5]) / 4, 0, 0, sprite[5], animation[12]);
-		object_setDeltaX(tempObj, 1);
-		object_setDeltaY(tempObj, -2);
+		//tempObj = createObject(OBJ_TYPE_BLACKHOLE, 500, 500, sprite_getFrameWidth(sprite[4]) / 4, sprite_getFrameHeight(sprite[4]) / 4, 0, 0, sprite[4], animation[0]);
 	
 
 	// Pre-existing Objects
@@ -178,7 +160,6 @@ void game_init()
 		spaceship_setDrag(spaceship[1], drag);
 		spaceship_setAcceleration(spaceship[1], acceleration);
 		spaceship_setMaxSpeed(spaceship[1], max_speed);
-
 }
 
 void game_execute() {
@@ -253,6 +234,11 @@ void game_events()
 			}
 			if (keyEventHeld(SDL_SCANCODE_D)) {
 				spaceship_accelerateX(spaceship[0]);
+			}
+
+			// TEST - GENERATE ASTEROID ON Z
+			if (keyEventPressed(SDL_SCANCODE_Z)) {
+				generateEnteringAsteroid();
 			}
 
 			// Movement ship B

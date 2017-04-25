@@ -16,7 +16,9 @@ int main(int argc, char* args[])
 	initWindow();
 	initEventHandler();
 	game_init();
-	initWorld();
+
+	// seed random - call only once!
+	srand(time(NULL));
 
 	//initNormal();
 	//spaceShipSetup();
@@ -27,6 +29,7 @@ int main(int argc, char* args[])
 	SDL_Delay(50);
 	//playMusic("audio/music/SPACE.mp3", -1);
 
+	
 
 	bool run = true;
 

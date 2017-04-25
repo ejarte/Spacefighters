@@ -11,6 +11,9 @@
 #define STATE_RELEASED					99		// Flag for Released Key/Button
 #define STATE_PRESSED					98		// Flag for Pressed Key/Button
 
+int getWindowHeight();
+int getWindowWidth();
+
 bool isTextEventEnabled();
 bool textEvent();
 char* getTextInput();
