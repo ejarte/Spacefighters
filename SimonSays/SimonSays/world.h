@@ -2,6 +2,7 @@
 
 #include "libraries.h"
 #include "object.h"
+#include "spaceship.h"
 
 // Object Types existing in the world
 #define OBJ_TYPE_GREENWIND			1
@@ -14,6 +15,7 @@
 #define OBJ_TYPE_ITEM_SPEED			8
 #define OBJ_TYPE_PROJECTILE			9
 
-bool isInsideWorld(int x, int y);
+bool isInsideWorld(Object* o);
 void initWorld();
-void generateEnteringAsteroid();
+void spawnEnteringAsteroid();
+void spawnNormalProjectile(Spaceship* source);

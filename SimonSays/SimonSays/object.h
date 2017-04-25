@@ -6,10 +6,16 @@
 #include "collision.h"
 
 typedef struct Object_type Object;
+
 #define MAX_OBJECTS 1000
+#define HP_DEAD				0
+#define HP_INVULNERABLE		-1
+
 Object* object[MAX_OBJECTS];
 
 Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingOffset, Sprite *s, Animation *a);
+
+void destroyObject(Object* o);
 
 // Position
 
@@ -66,7 +72,7 @@ Collision* object_getCollision(Object* o);
 
 void object_tick(Object* o);
 
-void object_render(SDL_Renderer* renderer, Object *o);
+void object_render(SDL_Renderer* renderer, Object *o, bool debugCollision);
 
 // Delta X & Y
 
@@ -104,6 +110,10 @@ int object_getTypeId(Object *o);
 
 int object_getObjId(Object *o);
 
+void object_setCustomId(Object* o, int id);
+
+int object_getCustomId(Object *o);
+
 // Debug
 void object_print(Object *o);
 
@@ -113,6 +123,8 @@ void objectIndex_flagEnabled(bool flag);
 void initObjectIndex();
 
 int indexObject();
+
+void deindexObject(Object *o);
 
 void objectIndex_deindexInt(int index);
 

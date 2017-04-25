@@ -169,6 +169,7 @@
     <ClInclude Include="graphics.h" />
     <ClInclude Include="libraries.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="projectile.h" />
     <ClInclude Include="spaceship.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="state_handler.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="game.c" />
     <ClCompile Include="libraries.c" />
     <ClCompile Include="object.c" />
+    <ClCompile Include="projectile.c" />
     <ClCompile Include="spaceship.c" />
     <ClCompile Include="sprite.c" />
     <ClCompile Include="state_handler.c" />

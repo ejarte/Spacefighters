@@ -2,27 +2,6 @@
 #include "animation.h"
 #include "sprite.h"
 #include "collision.h"
-/*
-struct Object_type {
-Animation *anim;
-Sprite *sprite;
-SDL_Rect rect;
-int topX;
-int topY;
-int w;
-int h;
-
-double scale;
-double facing;
-bool show;				// Show on screen
-bool activeAnimation;	// Play animation
-int type;				// Type id
-int index;				// Object id
-
-struct Collision* collision;
-bool collisionEnabled;
-};
-*/
 
 struct Object_type {
 	Animation *anim;			// Animation
@@ -33,19 +12,23 @@ struct Object_type {
 	//int cyclesPerDelta;			// Number of frames before delta x and y is updated
 	//int tick;
 	//SDL_Point* pos_offset;	// Offset from center position x- and y-axis.		// NOT IMPLEMENTED
-	double facingAngle;			// The objects facing angle							+
+	double facingAngle;			// The objects facing angle							
 	double* facingAnglePtr;		// A pointer to the object facing angle				
 	double facingIMG_offset;	// This is to calibrate the image to the game facing angle so that 0 is always north when using facingAngle.
 	int w;						// Object width
 	int h;						// Object height
 	int type_id;				// Unique object type id
 	int obj_id;					// Unique object id, used to find object[i]
+	int custom_id;				// Use this to link this to some other index		// NOT IMPLEMENTED OR USED YET
 	bool showObj;				// flag to show/hide the object from palyers
 	bool activeAnim;			// flag for pausing/resuming current animation
 	bool collisionEnabled;		// flag for enabling/disabling collision
+	double hp;					// object hit points
 	Collision* collision;		// struct pointer containing collision dat
-};
 
+	void *data;					// Used to link object to other structs such as projectiles or spaceship
+};
+ 
 Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingIMGOffset, Sprite *s, Animation *a)
 {
 	Object* o = malloc(sizeof(Object));	// Allokerar 
@@ -74,12 +57,21 @@ Object* createObject(int type, int x, int y, int w, int h, double facingAngle, d
 	//o->tick = 0;
 	o->delta_x = 0;
 	o->delta_y = 0;
+	o->hp = HP_INVULNERABLE;
 	// Index
 	// Ändra denna funktion till att ta emot ett objekt
 	o->obj_id = indexObject();
 	object[o->obj_id] = o;
+	o->custom_id = -1; // unused
 
 	return o;
+}
+
+void destroyObject(Object* o)
+{
+	printf("Object destroyed...\n");
+	deindexObject(o);
+	free(o);
 }
 
 // Position
@@ -204,7 +196,7 @@ Collision* object_getCollision(Object* o)
 
 // Update
 
-void object_render(SDL_Renderer* renderer, Object *o)
+void object_render(SDL_Renderer* renderer, Object *o, bool debugCollision)
 {
 	if (o->showObj) {
 		SDL_Rect dsrect = { o->pos_center->x - o->w/2, o->pos_center->y - o->w / 2, o->w, o->h };
@@ -213,6 +205,9 @@ void object_render(SDL_Renderer* renderer, Object *o)
 		double angle = *(o->facingAnglePtr);
 		SDL_RenderCopyEx(renderer, sprite_getTexture(o->sprite), &srect, &dsrect, angle + o->facingIMG_offset, &center, SDL_FLIP_NONE);
 
+		// debug render
+		if (debugCollision && o->collision != NULL)
+			collision_boxRender(renderer, o->collision);
 	}
 }
 
@@ -224,6 +219,7 @@ void object_tick(Object* o)
 	
 	// Förändrar postionen i x och y led
 	if (o->delta_x != 0 || o->delta_y != 0) {
+		//printf("Delta_x, y: %d %d\n", o->delta_x, o->delta_y);
 		object_setPos(o, o->pos_center->x + o->delta_x, o->pos_center->y + o->delta_y);
 	}
 }
@@ -277,6 +273,17 @@ int object_getObjId(Object *o)
 	return o->obj_id;
 }
 
+/* Used to link this object to another index */
+void object_setCustomId(Object* o, int id)
+{
+	o->custom_id = id;
+}
+
+int object_getCustomId(Object *o)
+{
+	return o->custom_id;
+}
+
 // Delta X & Y
 
 void object_setDeltaX(Object *o, int delta)
@@ -314,7 +321,7 @@ void object_clearDeltaXY(Object *o)
 // Debug
 void object_print(Object *o)
 {
-	printf("Pos(%d,%d)\n", o->pos_center->x, o->pos_center->y);
+	// Not implemented
 }
 
 //================================================================================================================
@@ -366,6 +373,19 @@ int indexObject()
 	}
 	printf("ERROR: objectIndex_getIndex_____IndexOutOfBounds\n");
 	return -1;
+}
+
+void deindexObject(Object *o)
+{
+	int index = o->obj_id;
+	if (object[index] != NULL) {
+		object[index] = NULL;
+		obj_index.recycledNumber[obj_index.recycled++] = index;
+		printf("Object deindexed: %d\n", index);
+	}
+	else {
+		printf("ERROR: objectIndex_deindexInt_____Attemting to deindex an unallocated index.\n");
+	}
 }
 
 void objectIndex_deindexInt(int index)

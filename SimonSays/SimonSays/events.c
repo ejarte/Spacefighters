@@ -233,7 +233,10 @@ void refreshEventHandler() {
 
 void initEventHandler() 
 {
+	// Preset window width and height
 	SDL_GetWindowSize(window, &ev_window_w, &ev_window_h);
+
+
 	for (int i = 0; i < EV_MAX_SCANCODES; i++)
 	{
 		event_data.event_flag[i] = TRIGGER_EVENT_NONE;

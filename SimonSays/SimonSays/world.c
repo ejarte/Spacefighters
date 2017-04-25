@@ -15,6 +15,8 @@
 #include "animation.h"
 #include "sprite.h"
 #include "events.h"
+#include "spaceship.h"
+#include "projectile.h"
 
 #define LEFT			0
 #define RIGHT			1
@@ -56,9 +58,100 @@ void generateRandomSpeed(int *p_dx, int* p_dy, int side)
 	}
 }
 
-void generateEnteringAsteroid()
+/*
+SDL_Point mouse = getMousePos();
+SDL_Point player;
+// lägg in funktionalitet fär att hämta x och y direkt från spaceship_
+tempObj = spaceship_getBody(spaceship[0]);
+player.x = object_getX(tempObj);
+player.y = object_getY(tempObj);
+
+//int spaceship_getX(Spaceship* s);
+//int spaceship_getY(Spaceship* s);
+int bulletSpeed = 15;
+double distance = distanceBetweenPoints(mouse, player);
+double dx = (double) (mouse.x - player.x)/distance;
+double dy = (double) (mouse.y - player.y)/distance;
+dx *= bulletSpeed;
+dy *= bulletSpeed;
+
+printf("%d %d\n", dx, dy);
+tempObj = createObject(OBJ_TYPE_PROJECTILE, player.x, player.y, sprite_getFrameWidth(sprite[5]) / 10, sprite_getFrameHeight(sprite[5]) / 10, 0, 0, sprite[5], animation[9]);
+object_setDeltaX(tempObj, dx);
+object_setDeltaY(tempObj, dy);
+object_setCollisionCircleDiameter(tempObj, 5, 0, 0);
+*/
+
+void spawnNormalProjectile(Spaceship* source)
 {
-	printf("Asteroid entered.\n");
+	int dx, dy, a, b, c, distance, x, y;
+	double angle;
+	double hyp;
+
+	SDL_Point pSource;
+	SDL_Point pMouse = getMousePos();	
+	pSource.x = spaceship_getX(source);
+	pSource.y = spaceship_getY(source);
+	double projectileSpeed = 15;
+	 
+	dx = pSource.x - pMouse.x;
+	dy = pSource.y - pMouse.y;
+	a = (int) sqrt(dx*dx);
+	b = (int) sqrt(dy*dy);
+	hyp = sqrt(dx*dx+ dy*dy);
+
+	//angle = sin((double) b/a); // c= b?? :s konstigt
+	//hyp = (a * a) + (b*b);// 
+	//hyp = sqrt(hyp);
+	angle = acos(a / hyp);
+	// Ja... men nu måste den konverteras till rad xd
+	//angle = (double) b/a;
+	distance = 4;
+
+
+	printf("angle: %f\n", angle);
+	printf("a: %f\n", (double) a);
+	printf("b: %f\n", (double) b);
+	printf("c: %f\n", hyp); //ta gärna bort andra printf
+
+	x = (double) distance * cos(angle);
+	y = (double)distance * sin(angle);
+
+
+	//distance = (int) sqrt(dx*dx + dy*dy);
+	
+
+	/*
+	
+	    local real x = GetLocationX(source) + dist * Cos(angle * bj_DEGTORAD)
+    local real y = GetLocationY(source) + dist * Sin(angle * bj_DEGTORAD)
+	*/
+
+	/*
+	
+	b[i].directionX = b1 - b[i].x;
+	b[i].directionY = b2 - b[i].y;
+
+	b[i].vector_unitX = (b[i].directionX) / b[i].v_length;
+	b[i].vector_unitY = (b[i].directionY) / b[i].v_length;
+	*/
+
+	//dx = (double) dx/ (double) distance*projectileSpeed;
+	//dy = (double) dx/ (double) distance*projectileSpeed;
+
+	//printf("%d %d\n", dx, dy);
+	// Create Object
+	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, pSource.x, pSource.y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
+	object_setDeltaX(lastCreatedObj, x);
+	object_setDeltaY(lastCreatedObj, y);
+	object_setCollisionCircleDiameter(lastCreatedObj, 5, 0, 0);
+	// Create projectile data
+	//createProjectile(lastCreatedObj, source, 1);
+}
+
+
+void spawnEnteringAsteroid()
+{
 	int side, dx, dy, x, y, screen_w, screen_h, d;
 	double facingAngle, scale;
 	Object* lastCreatedObj;
@@ -90,14 +183,19 @@ void generateEnteringAsteroid()
 		y = screen_h + d/2;
 		generateRandomSpeed(&dx, &dy, side);
 	}
-
+	printf("Asteroid entered.\n");
 	lastCreatedObj = createObject(OBJ_TYPE_ASTEROID, x, y, sprite_getFrameWidth(spr_asteroid_gray) / 4, sprite_getFrameHeight(spr_asteroid_gray) / 4, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
 	object_setDeltaX(lastCreatedObj, dx);
 	object_setDeltaY(lastCreatedObj, dy);
+	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
 }
 
-bool isInsideWorld(int x, int y)
+bool isInsideWorld(Object* o)
 {
-	return (x > 0 && x < getWindowWidth() && y > 0 && y < getWindowHeight());
-}
+	Collision* c = object_getCollision(o);
+	SDL_Rect collision_rect = collision_getRect(c);
 
+	printf("COL %d %d\n", collision_rect.x, collision_rect.y);
+
+	return false;
+}

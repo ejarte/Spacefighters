@@ -9,6 +9,7 @@
 #include "state_handler.h"
 #include "world.h"
 #include "collision.h"
+#include "projectile.h"
 
 // Background
 //SDL_Rect background_sky_rect;
@@ -178,7 +179,6 @@ void game_events()
 		return;
 	}
 
-
 	// Prevents the user from controlling when text event is enabled	
 	if (isTextEventEnabled()) {
 
@@ -195,32 +195,12 @@ void game_events()
 			printf("recording message... Cannot move.\n");
 		}
 		else {
+
+			// Shoot 
+
 			if (mouseEventPressed(SDL_BUTTON_LEFT)) {
-
-				// Test av projektil
-
-				SDL_Point mouse = getMousePos();
-				SDL_Point player;
-				// lägg in funktionalitet fär att hämta x och y direkt från spaceship_
-				tempObj = spaceship_getBody(spaceship[0]);
-				player.x = object_getX(tempObj);
-				player.y = object_getY(tempObj);
-
-				//int spaceship_getX(Spaceship* s);
-				//int spaceship_getY(Spaceship* s);
-				int bulletSpeed = 15;
-				double distance = distanceBetweenPoints(mouse, player);
-				double dx = (double) (mouse.x - player.x)/distance;
-				double dy = (double) (mouse.y - player.y)/distance;
-				dx *= bulletSpeed;
-				dy *= bulletSpeed;
-
-				printf("%d %d\n", dx, dy);
-				tempObj = createObject(OBJ_TYPE_ASTEROID, player.x, player.y, sprite_getFrameWidth(sprite[5]) / 10, sprite_getFrameHeight(sprite[5]) / 10, 0, 0, sprite[5], animation[9]);
-				object_setDeltaX(tempObj, dx);
-				object_setDeltaY(tempObj, dy);
+				spawnNormalProjectile(spaceship[0]);
 			}
-
 
 			// Movement ship A
 			if (keyEventHeld(SDL_SCANCODE_W)) {
@@ -238,7 +218,7 @@ void game_events()
 
 			// TEST - GENERATE ASTEROID ON Z
 			if (keyEventPressed(SDL_SCANCODE_Z)) {
-				generateEnteringAsteroid();
+				spawnEnteringAsteroid();
 			}
 
 			// Movement ship B
@@ -262,43 +242,68 @@ void game_update()
 {
 	Object* tempObj;
 
-	spaceship_setFacingToPoint(spaceship[0], getMousePos());		// Rotate spaceship to look at mouse position
+	// Rotate spaceship to look at mouse position
+	spaceship_setFacingToPoint(spaceship[0], getMousePos());		
 
 	// Move spaceship if inside world
 	for (int i = 0; i < 2; i++) {
 		tempObj = spaceship_getBody(spaceship[i]);
-
-		if (isInsideWorld(object_getX(tempObj), object_getY(tempObj))) {
-			spaceship_move(spaceship[i]);
-		}
-		else {
-			// prevent futher movement
-			object_clearDeltaXY(tempObj);
-		}
+		spaceship_move(spaceship[i]);
 	}
+
+	int removedObject[100];
+	int removedIndex = 0;
 
 	// Loop through all objects
 	for (int i = 0; i < getObjectIndexMax(); i++) {
+		// prevents nullpointer reference crash
+		if (object[i] != NULL) { 
+			// Check if still inside world
 
-		// Collision Detection
-		for (int j = i + 1; j < getObjectIndexMax(); j++) {
-			if (object_checkForCollision(object[i], object[j])) {
-				printf("collision detected between object %d and %d.\n", i, j);
+			// Collision Detection
+			for (int j = i + 1; j < getObjectIndexMax(); j++) {
+				// prevents nullpointer reference crash
+				if (object[j] != NULL) {
+					if (object_checkForCollision(object[i], object[j])) {
 
-
-				if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
-					// prevents futher movement
-					object_clearDeltaXY(object[i]);
-					object_clearDeltaXY(object[j]);
+						/*
+						if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
+							printf("spaceship collided with ");
+							printf("Do nothing... source\n");
+						}
+						*/
+						if (object_getTypeId(object[i]) == OBJ_TYPE_PROJECTILE) {
+							if (projectile_isSource(object[i], object[j]) == false) {
+								//removedObject[removedIndex++] = i;
+							}
+						}
+						if (object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID) {
+							//printf("asteroid collided with ");
+						}
+						if (object_getTypeId(object[j]) == OBJ_TYPE_SPACESHIP) {
+						//	printf("spaceship...\n");
+						}
+						if (object_getTypeId(object[j]) == OBJ_TYPE_PROJECTILE) {
+							if (projectile_isSource(object[j], object[i])) {
+								//printf("Do nothing... source\n");
+							}
+							else {
+								//removedObject[removedIndex++] = j;
+								//printf("projectile...\n");
+							}
+						}
+						if (object_getTypeId(object[j]) == OBJ_TYPE_ASTEROID) {
+							//printf("asteroid...\n");
+						}
+					}
 				}
 			}
 		}
-
-
-		// Rotate blackhole
-		if (object_getTypeId(object[i]) == OBJ_TYPE_BLACKHOLE) {
-			object_addFacingAngle(object[i], 0.5);
-		}
+	}
+	for (int i = 0; i < removedIndex; i++) {
+		//printf("removed index: %d\n", removedObject[i]);
+		object_disableCollision(object[removedObject[i]]);
+		destroyObject(object[removedObject[i]]);
 	}
 }
 
@@ -354,7 +359,7 @@ void game_render()
 	for (int i = 0; i < getObjectIndexMax(); i++) {
 		if (object[i] != NULL) {
 			object_tick(object[i]);
-			object_render(renderer, object[i]);
+			object_render(renderer, object[i], true);
 		}
 	}
 	SDL_RenderPresent(renderer);

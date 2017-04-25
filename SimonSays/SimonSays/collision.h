@@ -15,3 +15,4 @@ bool collision_boxIntersection(Collision* c1, Collision* c2);
 void collision_boxRender(SDL_Renderer* renderer, Collision* c);
 int collision_getType(Collision* c);
 void collision_print(Collision* c);
+SDL_Rect collision_getRect(Collision* c);
