@@ -44,7 +44,7 @@ void initWorld()
 	}
 }
 
-void generateRandomSpeed(int *p_dx, int* p_dy, int side) 
+void generateRandomSpeed(int *p_dx, int* p_dy, int side)
 {
 	int rdm;
 	*p_dx = *p_dy = 0;
@@ -82,44 +82,70 @@ object_setDeltaY(tempObj, dy);
 object_setCollisionCircleDiameter(tempObj, 5, 0, 0);
 */
 
+double radiansTodegrees(double radians)
+{
+	double degrees;
+	return radians * 180 / M_PI;
+}
+
+double degreesToRadians(double degree)
+{
+	double radians;
+	return degree * (M_PI / 180);
+}
+
+double xyToAngle(double dx, double dy)
+{
+	double tmp, hyp, a, b, angle;
+
+	a = (int)sqrt(dx*dx); //x-axel
+	b = (int)sqrt(dy*dy); //y-axel
+
+	angle = atan2(b, a); // funkar för klockan 3-6
+	if (dx > 0 && dy < 0) //klockan 6-9 - behöver ta reda på skillnaden mellan angle och 90 grader. Dubbla den vinkeln och lägg på angle.
+	{
+		angle = atan2(b, a);
+		tmp = radiansTodegrees(angle);
+		tmp = 90 - tmp;
+		tmp = tmp * 2;
+		angle = degreesToRadians(tmp) + angle;
+	}
+	else if (dx > 0 && dy > 0) //klockan 9-12 - Ta vinkeln - 180 grader
+	{
+		tmp = radiansTodegrees(angle);
+		tmp = tmp + 180;
+		angle = degreesToRadians(tmp);
+	}
+
+	else if (dx < 0 && dy > 0) //klockan 12-3 - Samma som klockan 3-6 fast 0 grader som riktlinje
+	{
+		tmp = radiansTodegrees(angle);
+		angle = angle - degreesToRadians(tmp * 2);
+	}
+
+	return angle;
+}
+
 void spawnNormalProjectile(Spaceship* source)
 {
 	int dx, dy, a, b, c, distance, x, y;
 	double angle;
-	double hyp;
 
 	SDL_Point pSource;
-	SDL_Point pMouse = getMousePos();	
+	SDL_Point pMouse = getMousePos();
 	pSource.x = spaceship_getX(source);
 	pSource.y = spaceship_getY(source);
 	double projectileSpeed = 15;
-	 
+
 	dx = pSource.x - pMouse.x;
 	dy = pSource.y - pMouse.y;
-	a = (int) sqrt(dx*dx);
-	b = (int) sqrt(dy*dy);
-	hyp = sqrt(dx*dx+ dy*dy);
 
-	//angle = sin((double) b/a); // c= b?? :s konstigt
-	//hyp = (a * a) + (b*b);// 
-	//hyp = sqrt(hyp);
-	angle = acos(a / hyp);
-	// Ja... men nu måste den konverteras till rad xd
-	//angle = (double) b/a;
-	distance = 4;
+	angle = xyToAngle(dx, dy);
 
-
-	printf("angle: %f\n", angle);
-	printf("a: %f\n", (double) a);
-	printf("b: %f\n", (double) b);
-	printf("c: %f\n", hyp); //ta gärna bort andra printf
+	distance = 4; //hastigheten på skotten
 
 	x = (double) distance * cos(angle);
 	y = (double)distance * sin(angle);
-
-
-	//distance = (int) sqrt(dx*dx + dy*dy);
-	
 
 	/*
 	
