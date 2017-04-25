@@ -35,6 +35,7 @@ Effect *e1;
 #define OBJ_TYPE_ITEM_HEALTH		6
 #define OBJ_TYPE_ITEM_INVUL			7
 #define OBJ_TYPE_ITEM_SPEED			8
+#define OBJ_TYPE_PROJECTILE			9
 
 Sprite* sprite[100];				
 Animation* animation[100];
@@ -253,15 +254,6 @@ void game_events()
 			if (keyEventHeld(SDL_SCANCODE_D)) {
 				spaceship_accelerateX(spaceship[0]);
 			}
-			// Rotate test
-			if (keyEventHeld(SDL_SCANCODE_Q)) {
-				tempObj = spaceship_getBody(spaceship[0]);
-				object_addFacingAngle(tempObj, -3);
-			}
-			if (keyEventHeld(SDL_SCANCODE_E)) {
-				tempObj = spaceship_getBody(spaceship[0]);
-				object_addFacingAngle(tempObj, 3);
-			}
 
 			// Movement ship B
 			if (keyEventHeld(SDL_SCANCODE_UP)) {
@@ -284,15 +276,7 @@ void game_update()
 {
 	Object* tempObj;
 
-	// Rotate spaceship
-	double newAngle, dx, dy;
-	dx = spaceship_getX(spaceship[0]) - getMouseX();
-	dy = spaceship_getY(spaceship[0]) - getMouseY();
-	newAngle = (atan2(dx, dy) * 180.0)/M_PI *-1;			// får ut vinkeln i grader mellan muspekaren och bilden
-
-	tempObj = spaceship_getBody(spaceship[0]);
-	object_setFacingAngle(tempObj, newAngle);
-
+	spaceship_setFacingToPoint(spaceship[0], getMousePos());		// Rotate spaceship to look at mouse position
 
 	// Move spaceship if inside world
 	for (int i = 0; i < 2; i++) {

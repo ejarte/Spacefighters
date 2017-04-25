@@ -98,6 +98,15 @@ void spaceship_setFacingAngle(Spaceship*s, double angle)
 	object_setFacingAngle(s->body, angle);
 }
 
+void spaceship_setFacingToPoint(Spaceship* s, SDL_Point p)
+{
+	double newAngle, dx, dy;
+	dx = s->p->x - p.x;
+	dy = s->p->y - p.y;
+	newAngle = (atan2(dx, dy) * 180.0) / M_PI *-1;			// får ut vinkeln i grader mellan muspekaren och bilden
+	object_setFacingAngle(s->body, newAngle);
+}
+
 // Speed 
 
 void spaceship_setSpeedX(Spaceship* s, double speed)

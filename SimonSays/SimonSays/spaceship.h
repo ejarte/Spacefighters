@@ -19,6 +19,7 @@ int spaceship_getY(Spaceship* s);
 
 // Facing Angle
 void spaceship_setFacingAngle(Spaceship*s, double angle);
+void spaceship_setFacingToPoint(Spaceship* s, SDL_Point p);
 
 // Speed
 void spaceship_setDrag(Spaceship* s, double drag);
