@@ -77,11 +77,13 @@ void spawnAteroidTest()
 	object_setDeltaX(lastCreatedObj, 2);
 	object_setDeltaY(lastCreatedObj, 0);
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
+	object_setMass(lastCreatedObj, 6); //massa på asteroid1
 
 	lastCreatedObj = createObject(OBJ_TYPE_ASTEROID, p2.x, p2.y, sprite_getFrameWidth(spr_asteroid_gray) / 4, sprite_getFrameHeight(spr_asteroid_gray) / 4, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
 	object_setDeltaX(lastCreatedObj, -2);
 	object_setDeltaY(lastCreatedObj, 0);
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
+	object_setMass(lastCreatedObj, 8);
 }
 
 void spawnEnteringAsteroid()

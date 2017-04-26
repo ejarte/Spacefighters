@@ -26,6 +26,8 @@ struct Object_type {
 	double hp;					// object hit points
 	Collision* collision;		// struct pointer containing collision dat
 
+	double mass;				// Object mass
+
 	void *data;					// Used to link object to other structs such as projectiles or spaceship
 };
  
@@ -63,6 +65,8 @@ Object* createObject(int type, int x, int y, int w, int h, double facingAngle, d
 	o->obj_id = indexObject();
 	object[o->obj_id] = o;
 	o->custom_id = -1; // unused
+	
+	o->mass = 1;	// Default mass
 
 	return o;
 }
@@ -297,6 +301,41 @@ int object_getCustomId(Object *o)
 }
 
 // Delta X & Y
+
+void object_calculateCollisionSpeed(Object* o1, Object *o2)
+{
+	double force1, force2;
+
+	//prev1x = o1->delta_x;
+	//prev2x = o2->delta_x;
+
+	force1 = o1->mass * o1->delta_x;
+	force2 = o2->mass * o2->delta_x;
+	o1->delta_x = (1/ o1->mass) * (o1->delta_x - (force2 / force1 * o1->delta_x));
+	o2->delta_x = (1 / o1->mass) * (o2->delta_x - (force1 / force2 * o2->delta_x));
+
+	if (o1->delta_x > prev1x || o1->delta_x * -1 > prev1x)
+		o1->delta_x = prev1x;
+/*
+	double f1_x = o1->mass * o1->delta_x;
+	double f1_y = o1->mass * o1->delta_y;
+	double f2_x = o2->mass * o2->delta_x;
+	double f2_y = o2->mass * o2->delta_y;
+	*/
+	//o1->delta_x = f1_x / f2_x * o1->delta_x;
+	//o1->delta_x = 5;
+	o2->delta_x = -5;
+
+}
+
+void object_setMass(Object* o, double mass) {
+	o->mass = mass;
+}
+
+double object_getMass(Object* o)
+{
+	return o->mass;
+}
 
 void object_setDeltaX(Object *o, int delta)
 {

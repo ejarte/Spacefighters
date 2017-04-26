@@ -1,0 +1,1051 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="(@1 @10)" Category="CodeSchema_ProjectItem" Bounds="140.738000077079,488.673500539553,92.2546667437457,25.998000077079" FilePath="$(VsSolution)\SimonSays\collision.c" Label="collision.c" />
+    <Node Id="(@1 @11)" Category="CodeSchema_ProjectItem" Bounds="20,544.671500616632,102.181333410412,25.998000077079" FilePath="$(VsSolution)\SimonSays\animation.c" Label="animation.c" />
+    <Node Id="(@1 @12)" Category="CodeSchema_ProjectItem" Bounds="342.984000231237,432.675500462474,79.0413334104124,25.998000077079" FilePath="$(VsSolution)\SimonSays\audio.c" Label="audio.c" />
+    <Node Id="(@1 @13)" Category="CodeSchema_ProjectItem" Bounds="643.490000385395,488.673500539553,101.058000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\spaceship.c" Label="spaceship.c" />
+    <Node Id="(@1 @14)" Category="CodeSchema_ProjectItem" Bounds="432.464000231237,544.671500616632,119.841333410412,25.998000077079" FilePath="$(VsSolution)\SimonSays\state_handler.c" Label="state_handler.c" />
+    <Node Id="(@1 @15)" Category="CodeSchema_ProjectItem" Bounds="262.992666820824,488.673500539553,93.8746667437457,25.998000077079" FilePath="$(VsSolution)\SimonSays\graphics.c" Label="graphics.c" />
+    <Node Id="(@1 @16)" Category="CodeSchema_ProjectItem" Bounds="20,488.673500539553,90.7380000770791,25.998000077079" FilePath="$(VsSolution)\SimonSays\libraries.c" Label="libraries.c" />
+    <Node Id="(@1 @17)" Category="CodeSchema_ProjectItem" Bounds="674.331333795807,432.675500462474,83.3913334104124,25.998000077079" FilePath="$(VsSolution)\SimonSays\events.c" Label="events.c" />
+    <Node Id="(@1 @171)" Category="CodeSchema_ProjectItem" Bounds="452.025333641649,432.675500462474,80.288000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\audio.h" Label="audio.h" />
+    <Node Id="(@1 @18)" Category="CodeSchema_ProjectItem" Bounds="562.313333718728,432.675500462474,82.018000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\object.c" Label="object.c" />
+    <Node Id="(@1 @202)" Category="CodeSchema_ProjectItem" Bounds="515.148666974982,488.673500539553,98.3413334104123,25.998000077079" FilePath="$(VsSolution)\SimonSays\targetver.h" Label="targetver.h" />
+    <Node Id="(@1 @3)" Category="CodeSchema_ProjectItem" Bounds="233.992666820825,432.675500462474,78.9913334104124,25.998000077079" FilePath="$(VsSolution)\SimonSays\world.c" Label="world.c" />
+    <Node Id="(@1 @4)" Category="CodeSchema_ProjectItem" Bounds="386.86733356457,488.673500539553,98.2813334104123,25.998000077079" FilePath="$(VsSolution)\SimonSays\projectile.c" Label="projectile.c" />
+    <Node Id="(@1 @7)" Category="CodeSchema_ProjectItem" Bounds="152.181333410412,544.671500616632,109.518000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\game_state.c" Label="game_state.c" />
+    <Node Id="(@1 @78)" Category="CodeSchema_ProjectItem" Bounds="291.699333487491,544.671500616632,110.764666743746,25.998000077079" FilePath="$(VsSolution)\SimonSays\game_state.h" Label="game_state.h" />
+    <Node Id="(@1 @8)" Category="CodeSchema_ProjectItem" Bounds="125.281333410412,432.675500462474,78.7113334104124,25.998000077079" FilePath="$(VsSolution)\SimonSays\sprite.c" Label="sprite.c" />
+    <Node Id="(@1 @9)" Category="CodeSchema_ProjectItem" Bounds="20,432.675500462474,75.2813334104124,25.998000077079" FilePath="$(VsSolution)\SimonSays\main.c" Label="main.c" />
+    <Node Id="@100" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\stdarg.h" Label="stdarg.h" />
+    <Node Id="@102" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_search.h" Label="corecrt_search.h" />
+    <Node Id="@104" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_touch.h" Label="SDL_touch.h" />
+    <Node Id="@106" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\math.h" Label="math.h" />
+    <Node Id="@108" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_math.h" Label="corecrt_math.h" />
+    <Node Id="@110" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_joystick.h" Label="SDL_joystick.h" />
+    <Node Id="@112" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\signal.h" Label="signal.h" />
+    <Node Id="@114" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\ConcurrencySal.h" Label="ConcurrencySal.h" />
+    <Node Id="@116" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\sal.h" Label="sal.h" />
+    <Node Id="@118" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL.h" Label="SDL.h" />
+    <Node Id="@120" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\stdbool.h" Label="stdbool.h" />
+    <Node Id="@122" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_filesystem.h" Label="SDL_filesystem.h" />
+    <Node Id="@124" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_system.h" Label="SDL_system.h" />
+    <Node Id="@126" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_platform.h" Label="SDL_platform.h" />
+    <Node Id="@128" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_endian.h" Label="SDL_endian.h" />
+    <Node Id="@130" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_main.h" Label="SDL_main.h" />
+    <Node Id="@132" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\ammintrin.h" Label="ammintrin.h" />
+    <Node Id="@134" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\emmintrin.h" Label="emmintrin.h" />
+    <Node Id="@136" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\immintrin.h" Label="immintrin.h" />
+    <Node Id="@138" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\nmmintrin.h" Label="nmmintrin.h" />
+    <Node Id="@140" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\pmmintrin.h" Label="pmmintrin.h" />
+    <Node Id="@142" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\smmintrin.h" Label="smmintrin.h" />
+    <Node Id="@144" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\tmmintrin.h" Label="tmmintrin.h" />
+    <Node Id="@146" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\wmmintrin.h" Label="wmmintrin.h" />
+    <Node Id="@148" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\xmmintrin.h" Label="xmmintrin.h" />
+    <Node Id="@150" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\zmmintrin.h" Label="zmmintrin.h" />
+    <Node Id="@152" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\mmintrin.h" Label="mmintrin.h" />
+    <Node Id="@154" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\intrin.h" Label="intrin.h" />
+    <Node Id="@156" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\arm_neon.h" Label="arm_neon.h" />
+    <Node Id="@158" Category="CodeSchema_ProjectItem" Bounds="507.336666666667,320.679500308316,93.5013334104124,25.998000077079" FilePath="$(VsSolution)\SimonSays\collision.h" Label="collision.h" />
+    <Node Id="@160" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_version.h" Label="SDL_version.h" />
+    <Node Id="@162" Category="CodeSchema_ProjectItem" Bounds="631.373333333333,320.679500308316,103.428000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\animation.h" Label="animation.h" />
+    <Node Id="@164" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_video.h" Label="SDL_video.h" />
+    <Node Id="@166" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_cpuinfo.h" Label="SDL_cpuinfo.h" />
+    <Node Id="@168" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wstdio.h" Label="corecrt_wstdio.h" />
+    <Node Id="@170" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\stdio.h" Label="stdio.h" />
+    <Node Id="@173" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_audio.h" Label="SDL_audio.h" />
+    <Node Id="@175" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wconio.h" Label="corecrt_wconio.h" />
+    <Node Id="@177" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wio.h" Label="corecrt_wio.h" />
+    <Node Id="@179" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\errno.h" Label="errno.h" />
+    <Node Id="@181" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_loadso.h" Label="SDL_loadso.h" />
+    <Node Id="@183" Category="CodeSchema_ProjectItem" Bounds="351.935,208.683500154158,102.304666743746,25.998000077079" FilePath="$(VsSolution)\SimonSays\spaceship.h" Label="spaceship.h" />
+    <Node Id="@185" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\setjmp.h" Label="setjmp.h" />
+    <Node Id="@187" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\vcruntime_startup.h" Label="vcruntime_startup.h" />
+    <Node Id="@189" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_startup.h" Label="corecrt_startup.h" />
+    <Node Id="@191" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\tchar.h" Label="tchar.h" />
+    <Node Id="@193" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\wchar.h" Label="wchar.h" />
+    <Node Id="@195" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_render.h" Label="SDL_render.h" />
+    <Node Id="@197" Category="CodeSchema_ProjectItem" Bounds="85.5433333333335,320.679500308316,121.088000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\state_handler.h" Label="state_handler.h" />
+    <Node Id="@199" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_gamecontroller.h" Label="SDL_gamecontroller.h" />
+    <Node Id="@2" Category="CodeSchema_PoundIncludeFile" Bounds="0,56.6875,828.406333410412,533.982000693711" FilePath="$(VsSolution)\SimonSays\SimonSays.vcxproj" Group="Expanded" Label="SimonSays.vcxproj" Language="{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}" />
+    <Node Id="@201" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_timer.h" Label="SDL_timer.h" />
+    <Node Id="@204" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_power.h" Label="SDL_power.h" />
+    <Node Id="@206" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2_mixer-2.0.1\include\SDL_mixer.h" Label="SDL_mixer.h" />
+    <Node Id="@208" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_error.h" Label="SDL_error.h" />
+    <Node Id="@21" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\intrin0.h" Label="intrin0.h" />
+    <Node Id="@210" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\armintr.h" Label="armintr.h" />
+    <Node Id="@212" Category="CodeSchema_ProjectItem" Bounds="162.526666666667,264.681500231237,95.1213334104124,25.998000077079" FilePath="$(VsSolution)\SimonSays\graphics.h" Label="graphics.h" />
+    <Node Id="@214" Category="CodeSchema_ProjectItem" Bounds="366.095,376.677500385395,91.9846667437457,25.998000077079" FilePath="$(VsSolution)\SimonSays\libraries.h" Label="libraries.h" />
+    <Node Id="@216" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_math_defines.h" Label="corecrt_math_defines.h" />
+    <Node Id="@218" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\inttypes.h" Label="inttypes.h" />
+    <Node Id="@220" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\sys\types.h" Label="types.h" />
+    <Node Id="@222" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\vadefs.h" Label="vadefs.h" />
+    <Node Id="@224" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_pixels.h" Label="SDL_pixels.h" />
+    <Node Id="@226" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\CodeAnalysis\sourceannotations.h" Label="sourceannotations.h" />
+    <Node Id="@228" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_rwops.h" Label="SDL_rwops.h" />
+    <Node Id="@23" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wstdlib.h" Label="corecrt_wstdlib.h" />
+    <Node Id="@230" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wprocess.h" Label="corecrt_wprocess.h" />
+    <Node Id="@232" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\process.h" Label="process.h" />
+    <Node Id="@234" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\limits.h" Label="limits.h" />
+    <Node Id="@236" Category="CodeSchema_ProjectItem" Bounds="723.768333333333,152.685500077079,84.638000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\events.h" Label="events.h" />
+    <Node Id="@238" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_events.h" Label="SDL_events.h" />
+    <Node Id="@240" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_hints.h" Label="SDL_hints.h" />
+    <Node Id="@242" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_memcpy_s.h" Label="corecrt_memcpy_s.h" />
+    <Node Id="@244" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\float.h" Label="float.h" />
+    <Node Id="@246" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\sys\stat.h" Label="stat.h" />
+    <Node Id="@248" Category="CodeSchema_ProjectItem" FilePath="$(VsSolution)\SimonSays\effect.h" Label="effect.h" />
+    <Node Id="@25" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\stdlib.h" Label="stdlib.h" />
+    <Node Id="@250" Category="CodeSchema_ProjectItem" Bounds="402.455,264.681500231237,83.2646667437457,25.998000077079" FilePath="$(VsSolution)\SimonSays\object.h" Label="object.h" />
+    <Node Id="@252" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wdirect.h" Label="corecrt_wdirect.h" />
+    <Node Id="@254" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_rect.h" Label="SDL_rect.h" />
+    <Node Id="@256" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2_net-2.0.1\include\SDL_net.h" Label="SDL_net.h" />
+    <Node Id="@258" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_quit.h" Label="SDL_quit.h" />
+    <Node Id="@260" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\stdint.h" Label="stdint.h" />
+    <Node Id="@262" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt.h" Label="corecrt.h" />
+    <Node Id="@264" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_assert.h" Label="SDL_assert.h" />
+    <Node Id="@266" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\mm3dnow.h" Label="mm3dnow.h" />
+    <Node Id="@268" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\setjmpex.h" Label="setjmpex.h" />
+    <Node Id="@27" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_atomic.h" Label="SDL_atomic.h" />
+    <Node Id="@270" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_mutex.h" Label="SDL_mutex.h" />
+    <Node Id="@272" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_messagebox.h" Label="SDL_messagebox.h" />
+    <Node Id="@274" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\shared\winpackagefamily.h" Label="winpackagefamily.h" />
+    <Node Id="@276" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\shared\winapifamily.h" Label="winapifamily.h" />
+    <Node Id="@278" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\memory.h" Label="memory.h" />
+    <Node Id="@280" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_memory.h" Label="corecrt_memory.h" />
+    <Node Id="@29" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_haptic.h" Label="SDL_haptic.h" />
+    <Node Id="@31" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_stdinc.h" Label="SDL_stdinc.h" />
+    <Node Id="@33" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\malloc.h" Label="malloc.h" />
+    <Node Id="@35" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_malloc.h" Label="corecrt_malloc.h" />
+    <Node Id="@37" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_thread.h" Label="SDL_thread.h" />
+    <Node Id="@39" Category="CodeSchema_ProjectItem" Bounds="437.968333333333,152.685500077079,80.2380000770791,25.998000077079" FilePath="$(VsSolution)\SimonSays\world.h" Label="world.h" />
+    <Node Id="@41" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_clipboard.h" Label="SDL_clipboard.h" />
+    <Node Id="@43" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_keyboard.h" Label="SDL_keyboard.h" />
+    <Node Id="@45" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_surface.h" Label="SDL_surface.h" />
+    <Node Id="@47" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_scancode.h" Label="SDL_scancode.h" />
+    <Node Id="@49" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_keycode.h" Label="SDL_keycode.h" />
+    <Node Id="@51" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\close_code.h" Label="close_code.h" />
+    <Node Id="@53" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\begin_code.h" Label="begin_code.h" />
+    <Node Id="@55" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_blendmode.h" Label="SDL_blendmode.h" />
+    <Node Id="@57" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2_image-2.0.1\include\SDL_image.h" Label="SDL_image.h" />
+    <Node Id="@59" Category="CodeSchema_ProjectItem" Bounds="276.323333333333,152.685500077079,99.528000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\projectile.h" Label="projectile.h" />
+    <Node Id="@6" Category="CodeSchema_ProjectItem" Bounds="367.623333333333,96.6875,78.928000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\game.c" Label="game.c" />
+    <Node Id="@61" Category="CodeSchema_ProjectItem" Bounds="20,208.683500154158,80.1746667437457,25.998000077079" FilePath="$(VsSolution)\SimonSays\game.h" Label="game.h" />
+    <Node Id="@63" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\vcruntime.h" Label="vcruntime.h" />
+    <Node Id="@65" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wtime.h" Label="corecrt_wtime.h" />
+    <Node Id="@67" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\time.h" Label="time.h" />
+    <Node Id="@69" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wctype.h" Label="corecrt_wctype.h" />
+    <Node Id="@71" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\ctype.h" Label="ctype.h" />
+    <Node Id="@73" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_share.h" Label="corecrt_share.h" />
+    <Node Id="@75" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_gesture.h" Label="SDL_gesture.h" />
+    <Node Id="@77" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_mouse.h" Label="SDL_mouse.h" />
+    <Node Id="@80" Category="CodeSchema_ProjectItem" Bounds="301.108333333333,320.679500308316,79.958000077079,25.998000077079" FilePath="$(VsSolution)\SimonSays\sprite.h" Label="sprite.h" />
+    <Node Id="@82" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\stddef.h" Label="stddef.h" />
+    <Node Id="@84" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2_ttf-2.0.14\include\SDL_ttf.h" Label="SDL_ttf.h" />
+    <Node Id="@86" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_config.h" Label="SDL_config.h" />
+    <Node Id="@88" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_stdio_config.h" Label="corecrt_stdio_config.h" />
+    <Node Id="@90" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\mbstring.h" Label="mbstring.h" />
+    <Node Id="@92" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\corecrt_wstring.h" Label="corecrt_wstring.h" />
+    <Node Id="@94" Category="CodeSchema_ProjectItem" FilePath="$(ProgramFiles)\Windows Kits\10\Include\10.0.15063.0\ucrt\string.h" Label="string.h" />
+    <Node Id="@96" Category="CodeSchema_ProjectItem" FilePath="$(VsInstallDir)\VC\Tools\MSVC\14.10.25017\include\vcruntime_string.h" Label="vcruntime_string.h" />
+    <Node Id="@98" Category="CodeSchema_ProjectItem" FilePath="C:\SDLBIB\SDL2-2.0.5\include\SDL_log.h" Label="SDL_log.h" />
+    <Node Id="G4" Category="CodeSchema_PoundIncludeGroup" Group="Collapsed" Label="Windows SDK" />
+    <Node Id="OthersGroup" Category="CodeSchema_PoundIncludeGroup" Group="Collapsed" Label="Others" />
+    <Node Id="PoundIncludeGraphExternalsGroup" Category="Externals" Bounds="370.708166705206,0,86.99,25" Group="Collapsed" Label="Externals" />
+    <Node Id="Windows SDK Indirectly Included" Category="CodeSchema_PoundIncludeGroup" Group="Collapsed" Label="Indirectly Included" />
+  </Nodes>
+  <Links>
+    <Link Source="@100" Target="@63" Category="PoundInclude" />
+    <Link Source="@102" Target="@262" Category="PoundInclude" />
+    <Link Source="@102" Target="@82" Category="PoundInclude" />
+    <Link Source="@104" Target="@164" Category="PoundInclude" />
+    <Link Source="@104" Target="@208" Category="PoundInclude" />
+    <Link Source="@104" Target="@31" Category="PoundInclude" />
+    <Link Source="@104" Target="@51" Category="PoundInclude" />
+    <Link Source="@104" Target="@53" Category="PoundInclude" />
+    <Link Source="@106" Target="@108" Category="PoundInclude" />
+    <Link Source="@106" Target="@216" Category="PoundInclude" />
+    <Link Source="@108" Target="@262" Category="PoundInclude" />
+    <Link Source="@110" Target="@208" Category="PoundInclude" />
+    <Link Source="@110" Target="@31" Category="PoundInclude" />
+    <Link Source="@110" Target="@51" Category="PoundInclude" />
+    <Link Source="@110" Target="@53" Category="PoundInclude" />
+    <Link Source="@112" Target="@262" Category="PoundInclude" />
+    <Link Source="@116" Target="@114" Category="PoundInclude" />
+    <Link Source="@116" Target="@226" Category="PoundInclude" />
+    <Link Source="@118" Target="@110" Category="PoundInclude" />
+    <Link Source="@118" Target="@122" Category="PoundInclude" />
+    <Link Source="@118" Target="@124" Category="PoundInclude" />
+    <Link Source="@118" Target="@128" Category="PoundInclude" />
+    <Link Source="@118" Target="@130" Category="PoundInclude" />
+    <Link Source="@118" Target="@160" Category="PoundInclude" />
+    <Link Source="@118" Target="@164" Category="PoundInclude" />
+    <Link Source="@118" Target="@166" Category="PoundInclude" />
+    <Link Source="@118" Target="@173" Category="PoundInclude" />
+    <Link Source="@118" Target="@181" Category="PoundInclude" />
+    <Link Source="@118" Target="@195" Category="PoundInclude" />
+    <Link Source="@118" Target="@199" Category="PoundInclude" />
+    <Link Source="@118" Target="@201" Category="PoundInclude" />
+    <Link Source="@118" Target="@204" Category="PoundInclude" />
+    <Link Source="@118" Target="@208" Category="PoundInclude" />
+    <Link Source="@118" Target="@228" Category="PoundInclude" />
+    <Link Source="@118" Target="@238" Category="PoundInclude" />
+    <Link Source="@118" Target="@240" Category="PoundInclude" />
+    <Link Source="@118" Target="@264" Category="PoundInclude" />
+    <Link Source="@118" Target="@27" Category="PoundInclude" />
+    <Link Source="@118" Target="@270" Category="PoundInclude" />
+    <Link Source="@118" Target="@272" Category="PoundInclude" />
+    <Link Source="@118" Target="@29" Category="PoundInclude" />
+    <Link Source="@118" Target="@31" Category="PoundInclude" />
+    <Link Source="@118" Target="@37" Category="PoundInclude" />
+    <Link Source="@118" Target="@41" Category="PoundInclude" />
+    <Link Source="@118" Target="@51" Category="PoundInclude" />
+    <Link Source="@118" Target="@53" Category="PoundInclude" />
+    <Link Source="@118" Target="@98" Category="PoundInclude" />
+    <Link Source="@122" Target="@31" Category="PoundInclude" />
+    <Link Source="@122" Target="@51" Category="PoundInclude" />
+    <Link Source="@122" Target="@53" Category="PoundInclude" />
+    <Link Source="@124" Target="@164" Category="PoundInclude" />
+    <Link Source="@124" Target="@195" Category="PoundInclude" />
+    <Link Source="@124" Target="@31" Category="PoundInclude" />
+    <Link Source="@124" Target="@43" Category="PoundInclude" />
+    <Link Source="@124" Target="@51" Category="PoundInclude" />
+    <Link Source="@124" Target="@53" Category="PoundInclude" />
+    <Link Source="@126" Target="@276" Category="PoundInclude" />
+    <Link Source="@126" Target="@51" Category="PoundInclude" />
+    <Link Source="@126" Target="@53" Category="PoundInclude" />
+    <Link Source="@128" Target="@31" Category="PoundInclude" />
+    <Link Source="@128" Target="@51" Category="PoundInclude" />
+    <Link Source="@128" Target="@53" Category="PoundInclude" />
+    <Link Source="@130" Target="@31" Category="PoundInclude" />
+    <Link Source="@130" Target="@51" Category="PoundInclude" />
+    <Link Source="@130" Target="@53" Category="PoundInclude" />
+    <Link Source="@134" Target="@148" Category="PoundInclude" />
+    <Link Source="@136" Target="@146" Category="PoundInclude" />
+    <Link Source="@136" Target="@150" Category="PoundInclude" />
+    <Link Source="@138" Target="@142" Category="PoundInclude" />
+    <Link Source="@140" Target="@134" Category="PoundInclude" />
+    <Link Source="@142" Target="@144" Category="PoundInclude" />
+    <Link Source="@144" Target="@140" Category="PoundInclude" />
+    <Link Source="@146" Target="@138" Category="PoundInclude" />
+    <Link Source="@148" Target="@152" Category="PoundInclude" />
+    <Link Source="@148" Target="@33" Category="PoundInclude" />
+    <Link Source="@154" Target="@132" Category="PoundInclude" />
+    <Link Source="@154" Target="@136" Category="PoundInclude" />
+    <Link Source="@154" Target="@156" Category="PoundInclude" />
+    <Link Source="@154" Target="@185" Category="PoundInclude" />
+    <Link Source="@154" Target="@21" Category="PoundInclude" />
+    <Link Source="@154" Target="@210" Category="PoundInclude" />
+    <Link Source="@154" Target="@266" Category="PoundInclude" />
+    <Link Source="@154" Target="@63" Category="PoundInclude" />
+    <Link Source="@156" Target="@116" Category="PoundInclude" />
+    <Link Source="@156" Target="@260" Category="PoundInclude" />
+    <Link Source="@158" Target="@214" Category="PoundInclude" Bounds="453.422760009766,346.677490234375,67.7016296386719,26.6983032226563" />
+    <Link Source="@160" Target="@31" Category="PoundInclude" />
+    <Link Source="@160" Target="@51" Category="PoundInclude" />
+    <Link Source="@160" Target="@53" Category="PoundInclude" />
+    <Link Source="@162" Target="@214" Category="PoundInclude" Bounds="466.893463134766,344.348693847656,164.555938720703,34.0029602050781" />
+    <Link Source="@164" Target="@224" Category="PoundInclude" />
+    <Link Source="@164" Target="@254" Category="PoundInclude" />
+    <Link Source="@164" Target="@31" Category="PoundInclude" />
+    <Link Source="@164" Target="@45" Category="PoundInclude" />
+    <Link Source="@164" Target="@51" Category="PoundInclude" />
+    <Link Source="@164" Target="@53" Category="PoundInclude" />
+    <Link Source="@166" Target="@134" Category="PoundInclude" />
+    <Link Source="@166" Target="@148" Category="PoundInclude" />
+    <Link Source="@166" Target="@152" Category="PoundInclude" />
+    <Link Source="@166" Target="@154" Category="PoundInclude" />
+    <Link Source="@166" Target="@266" Category="PoundInclude" />
+    <Link Source="@166" Target="@31" Category="PoundInclude" />
+    <Link Source="@166" Target="@51" Category="PoundInclude" />
+    <Link Source="@166" Target="@53" Category="PoundInclude" />
+    <Link Source="@168" Target="@262" Category="PoundInclude" />
+    <Link Source="@168" Target="@88" Category="PoundInclude" />
+    <Link Source="@170" Target="@168" Category="PoundInclude" />
+    <Link Source="@170" Target="@262" Category="PoundInclude" />
+    <Link Source="@173" Target="@128" Category="PoundInclude" />
+    <Link Source="@173" Target="@208" Category="PoundInclude" />
+    <Link Source="@173" Target="@228" Category="PoundInclude" />
+    <Link Source="@173" Target="@270" Category="PoundInclude" />
+    <Link Source="@173" Target="@31" Category="PoundInclude" />
+    <Link Source="@173" Target="@37" Category="PoundInclude" />
+    <Link Source="@173" Target="@51" Category="PoundInclude" />
+    <Link Source="@173" Target="@53" Category="PoundInclude" />
+    <Link Source="@175" Target="@262" Category="PoundInclude" />
+    <Link Source="@175" Target="@88" Category="PoundInclude" />
+    <Link Source="@177" Target="@262" Category="PoundInclude" />
+    <Link Source="@177" Target="@73" Category="PoundInclude" />
+    <Link Source="@179" Target="@262" Category="PoundInclude" />
+    <Link Source="@181" Target="@208" Category="PoundInclude" />
+    <Link Source="@181" Target="@31" Category="PoundInclude" />
+    <Link Source="@181" Target="@51" Category="PoundInclude" />
+    <Link Source="@181" Target="@53" Category="PoundInclude" />
+    <Link Source="@183" Target="@214" Category="PoundInclude" Bounds="380.073638916016,234.681503295898,24.1610107421875,133.544509887695" />
+    <Link Source="@183" Target="@250" Category="PoundInclude" Bounds="412.604797363281,234.681503295898,16.6482849121094,22.7383270263672" />
+    <Link Source="@185" Target="@268" Category="PoundInclude" />
+    <Link Source="@185" Target="@63" Category="PoundInclude" />
+    <Link Source="@187" Target="@63" Category="PoundInclude" />
+    <Link Source="@189" Target="@106" Category="PoundInclude" />
+    <Link Source="@189" Target="@187" Category="PoundInclude" />
+    <Link Source="@189" Target="@262" Category="PoundInclude" />
+    <Link Source="@191" Target="@193" Category="PoundInclude" />
+    <Link Source="@191" Target="@262" Category="PoundInclude" />
+    <Link Source="@191" Target="@90" Category="PoundInclude" />
+    <Link Source="@191" Target="@94" Category="PoundInclude" />
+    <Link Source="@193" Target="@168" Category="PoundInclude" />
+    <Link Source="@193" Target="@175" Category="PoundInclude" />
+    <Link Source="@193" Target="@177" Category="PoundInclude" />
+    <Link Source="@193" Target="@220" Category="PoundInclude" />
+    <Link Source="@193" Target="@23" Category="PoundInclude" />
+    <Link Source="@193" Target="@230" Category="PoundInclude" />
+    <Link Source="@193" Target="@242" Category="PoundInclude" />
+    <Link Source="@193" Target="@246" Category="PoundInclude" />
+    <Link Source="@193" Target="@252" Category="PoundInclude" />
+    <Link Source="@193" Target="@262" Category="PoundInclude" />
+    <Link Source="@193" Target="@65" Category="PoundInclude" />
+    <Link Source="@193" Target="@69" Category="PoundInclude" />
+    <Link Source="@193" Target="@92" Category="PoundInclude" />
+    <Link Source="@193" Target="@96" Category="PoundInclude" />
+    <Link Source="@195" Target="@164" Category="PoundInclude" />
+    <Link Source="@195" Target="@254" Category="PoundInclude" />
+    <Link Source="@195" Target="@31" Category="PoundInclude" />
+    <Link Source="@195" Target="@51" Category="PoundInclude" />
+    <Link Source="@195" Target="@53" Category="PoundInclude" />
+    <Link Source="@197" Target="@214" Category="PoundInclude" Bounds="205.330062866211,346.150207519531,151.957962036133,31.9900207519531" />
+    <Link Source="@199" Target="@110" Category="PoundInclude" />
+    <Link Source="@199" Target="@208" Category="PoundInclude" />
+    <Link Source="@199" Target="@228" Category="PoundInclude" />
+    <Link Source="@199" Target="@31" Category="PoundInclude" />
+    <Link Source="@199" Target="@51" Category="PoundInclude" />
+    <Link Source="@199" Target="@53" Category="PoundInclude" />
+    <Link Source="@2" Target="(@1 @10)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @11)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @12)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @13)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @14)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @15)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @16)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @17)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @171)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @18)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @202)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @3)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @4)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @7)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @78)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @8)" Category="Contains" />
+    <Link Source="@2" Target="(@1 @9)" Category="Contains" />
+    <Link Source="@2" Target="@158" Category="Contains" />
+    <Link Source="@2" Target="@162" Category="Contains" />
+    <Link Source="@2" Target="@183" Category="Contains" />
+    <Link Source="@2" Target="@197" Category="Contains" />
+    <Link Source="@2" Target="@212" Category="Contains" />
+    <Link Source="@2" Target="@214" Category="Contains" />
+    <Link Source="@2" Target="@236" Category="Contains" />
+    <Link Source="@2" Target="@250" Category="Contains" />
+    <Link Source="@2" Target="@39" Category="Contains" />
+    <Link Source="@2" Target="@59" Category="Contains" />
+    <Link Source="@2" Target="@6" Category="Contains" />
+    <Link Source="@2" Target="@61" Category="Contains" />
+    <Link Source="@2" Target="@80" Category="Contains" />
+    <Link Source="@201" Target="@208" Category="PoundInclude" />
+    <Link Source="@201" Target="@31" Category="PoundInclude" />
+    <Link Source="@201" Target="@51" Category="PoundInclude" />
+    <Link Source="@201" Target="@53" Category="PoundInclude" />
+    <Link Source="@204" Target="@31" Category="PoundInclude" />
+    <Link Source="@204" Target="@51" Category="PoundInclude" />
+    <Link Source="@204" Target="@53" Category="PoundInclude" />
+    <Link Source="@206" Target="@128" Category="PoundInclude" />
+    <Link Source="@206" Target="@160" Category="PoundInclude" />
+    <Link Source="@206" Target="@173" Category="PoundInclude" />
+    <Link Source="@206" Target="@228" Category="PoundInclude" />
+    <Link Source="@206" Target="@31" Category="PoundInclude" />
+    <Link Source="@206" Target="@51" Category="PoundInclude" />
+    <Link Source="@206" Target="@53" Category="PoundInclude" />
+    <Link Source="@208" Target="@31" Category="PoundInclude" />
+    <Link Source="@208" Target="@51" Category="PoundInclude" />
+    <Link Source="@208" Target="@53" Category="PoundInclude" />
+    <Link Source="@212" Target="@214" Category="PoundInclude" Bounds="216.587066650391,290.679504394531,142.283142089844,83.9950256347656" />
+    <Link Source="@214" Target="@106" Category="PoundInclude" />
+    <Link Source="@214" Target="@118" Category="PoundInclude" />
+    <Link Source="@214" Target="@120" Category="PoundInclude" />
+    <Link Source="@214" Target="@170" Category="PoundInclude" />
+    <Link Source="@214" Target="@191" Category="PoundInclude" />
+    <Link Source="@214" Target="@206" Category="PoundInclude" />
+    <Link Source="@214" Target="@256" Category="PoundInclude" />
+    <Link Source="@214" Target="@57" Category="PoundInclude" />
+    <Link Source="@214" Target="@67" Category="PoundInclude" />
+    <Link Source="@214" Target="@84" Category="PoundInclude" />
+    <Link Source="@214" Target="@94" Category="PoundInclude" />
+    <Link Source="@218" Target="@260" Category="PoundInclude" />
+    <Link Source="@218" Target="@262" Category="PoundInclude" />
+    <Link Source="@224" Target="@128" Category="PoundInclude" />
+    <Link Source="@224" Target="@31" Category="PoundInclude" />
+    <Link Source="@224" Target="@51" Category="PoundInclude" />
+    <Link Source="@224" Target="@53" Category="PoundInclude" />
+    <Link Source="@228" Target="@208" Category="PoundInclude" />
+    <Link Source="@228" Target="@31" Category="PoundInclude" />
+    <Link Source="@228" Target="@51" Category="PoundInclude" />
+    <Link Source="@228" Target="@53" Category="PoundInclude" />
+    <Link Source="@23" Target="@262" Category="PoundInclude" />
+    <Link Source="@230" Target="@262" Category="PoundInclude" />
+    <Link Source="@232" Target="@189" Category="PoundInclude" />
+    <Link Source="@232" Target="@230" Category="PoundInclude" />
+    <Link Source="@232" Target="@262" Category="PoundInclude" />
+    <Link Source="@234" Target="@63" Category="PoundInclude" />
+    <Link Source="@236" Target="@214" Category="PoundInclude" Bounds="467.033203125,178.683502197266,299.054138183594,205.387939453125" />
+    <Link Source="@238" Target="@104" Category="PoundInclude" />
+    <Link Source="@238" Target="@110" Category="PoundInclude" />
+    <Link Source="@238" Target="@164" Category="PoundInclude" />
+    <Link Source="@238" Target="@199" Category="PoundInclude" />
+    <Link Source="@238" Target="@208" Category="PoundInclude" />
+    <Link Source="@238" Target="@258" Category="PoundInclude" />
+    <Link Source="@238" Target="@31" Category="PoundInclude" />
+    <Link Source="@238" Target="@43" Category="PoundInclude" />
+    <Link Source="@238" Target="@51" Category="PoundInclude" />
+    <Link Source="@238" Target="@53" Category="PoundInclude" />
+    <Link Source="@238" Target="@75" Category="PoundInclude" />
+    <Link Source="@238" Target="@77" Category="PoundInclude" />
+    <Link Source="@240" Target="@31" Category="PoundInclude" />
+    <Link Source="@240" Target="@51" Category="PoundInclude" />
+    <Link Source="@240" Target="@53" Category="PoundInclude" />
+    <Link Source="@242" Target="@179" Category="PoundInclude" />
+    <Link Source="@242" Target="@262" Category="PoundInclude" />
+    <Link Source="@242" Target="@96" Category="PoundInclude" />
+    <Link Source="@244" Target="@262" Category="PoundInclude" />
+    <Link Source="@246" Target="@220" Category="PoundInclude" />
+    <Link Source="@246" Target="@262" Category="PoundInclude" />
+    <Link Source="@248" Target="@162" Category="PoundInclude" />
+    <Link Source="@248" Target="@214" Category="PoundInclude" />
+    <Link Source="@248" Target="@80" Category="PoundInclude" />
+    <Link Source="@25" Target="@102" Category="PoundInclude" />
+    <Link Source="@25" Target="@23" Category="PoundInclude" />
+    <Link Source="@25" Target="@234" Category="PoundInclude" />
+    <Link Source="@25" Target="@262" Category="PoundInclude" />
+    <Link Source="@25" Target="@35" Category="PoundInclude" />
+    <Link Source="@250" Target="@158" Category="PoundInclude" Bounds="469.622009277344,290.679504394531,50.91015625,25.9169616699219" />
+    <Link Source="@250" Target="@162" Category="PoundInclude" Bounds="485.719665527344,287.434997558594,137.610412597656,32.2423095703125" />
+    <Link Source="@250" Target="@214" Category="PoundInclude" Bounds="423.98095703125,290.679504394531,20.1063842773438,78.1838684082031" />
+    <Link Source="@250" Target="@80" Category="PoundInclude" Bounds="372.904052734375,290.679504394531,47.2735595703125,25.7012023925781" />
+    <Link Source="@252" Target="@262" Category="PoundInclude" />
+    <Link Source="@254" Target="@208" Category="PoundInclude" />
+    <Link Source="@254" Target="@224" Category="PoundInclude" />
+    <Link Source="@254" Target="@228" Category="PoundInclude" />
+    <Link Source="@254" Target="@31" Category="PoundInclude" />
+    <Link Source="@254" Target="@51" Category="PoundInclude" />
+    <Link Source="@254" Target="@53" Category="PoundInclude" />
+    <Link Source="@256" Target="@118" Category="PoundInclude" />
+    <Link Source="@256" Target="@128" Category="PoundInclude" />
+    <Link Source="@256" Target="@160" Category="PoundInclude" />
+    <Link Source="@256" Target="@260" Category="PoundInclude" />
+    <Link Source="@256" Target="@51" Category="PoundInclude" />
+    <Link Source="@256" Target="@53" Category="PoundInclude" />
+    <Link Source="@258" Target="@208" Category="PoundInclude" />
+    <Link Source="@258" Target="@31" Category="PoundInclude" />
+    <Link Source="@260" Target="@63" Category="PoundInclude" />
+    <Link Source="@262" Target="@276" Category="PoundInclude" />
+    <Link Source="@262" Target="@63" Category="PoundInclude" />
+    <Link Source="@264" Target="@112" Category="PoundInclude" />
+    <Link Source="@264" Target="@51" Category="PoundInclude" />
+    <Link Source="@264" Target="@53" Category="PoundInclude" />
+    <Link Source="@264" Target="@86" Category="PoundInclude" />
+    <Link Source="@266" Target="@148" Category="PoundInclude" />
+    <Link Source="@266" Target="@152" Category="PoundInclude" />
+    <Link Source="@266" Target="@63" Category="PoundInclude" />
+    <Link Source="@268" Target="@185" Category="PoundInclude" />
+    <Link Source="@27" Target="@126" Category="PoundInclude" />
+    <Link Source="@27" Target="@31" Category="PoundInclude" />
+    <Link Source="@27" Target="@51" Category="PoundInclude" />
+    <Link Source="@27" Target="@53" Category="PoundInclude" />
+    <Link Source="@270" Target="@208" Category="PoundInclude" />
+    <Link Source="@270" Target="@31" Category="PoundInclude" />
+    <Link Source="@270" Target="@51" Category="PoundInclude" />
+    <Link Source="@270" Target="@53" Category="PoundInclude" />
+    <Link Source="@272" Target="@164" Category="PoundInclude" />
+    <Link Source="@272" Target="@31" Category="PoundInclude" />
+    <Link Source="@272" Target="@51" Category="PoundInclude" />
+    <Link Source="@272" Target="@53" Category="PoundInclude" />
+    <Link Source="@276" Target="@274" Category="PoundInclude" />
+    <Link Source="@278" Target="@280" Category="PoundInclude" />
+    <Link Source="@280" Target="@242" Category="PoundInclude" />
+    <Link Source="@280" Target="@262" Category="PoundInclude" />
+    <Link Source="@280" Target="@96" Category="PoundInclude" />
+    <Link Source="@29" Target="@110" Category="PoundInclude" />
+    <Link Source="@29" Target="@208" Category="PoundInclude" />
+    <Link Source="@29" Target="@31" Category="PoundInclude" />
+    <Link Source="@29" Target="@51" Category="PoundInclude" />
+    <Link Source="@29" Target="@53" Category="PoundInclude" />
+    <Link Source="@31" Target="@100" Category="PoundInclude" />
+    <Link Source="@31" Target="@106" Category="PoundInclude" />
+    <Link Source="@31" Target="@116" Category="PoundInclude" />
+    <Link Source="@31" Target="@170" Category="PoundInclude" />
+    <Link Source="@31" Target="@218" Category="PoundInclude" />
+    <Link Source="@31" Target="@220" Category="PoundInclude" />
+    <Link Source="@31" Target="@244" Category="PoundInclude" />
+    <Link Source="@31" Target="@25" Category="PoundInclude" />
+    <Link Source="@31" Target="@260" Category="PoundInclude" />
+    <Link Source="@31" Target="@278" Category="PoundInclude" />
+    <Link Source="@31" Target="@33" Category="PoundInclude" />
+    <Link Source="@31" Target="@51" Category="PoundInclude" />
+    <Link Source="@31" Target="@53" Category="PoundInclude" />
+    <Link Source="@31" Target="@71" Category="PoundInclude" />
+    <Link Source="@31" Target="@82" Category="PoundInclude" />
+    <Link Source="@31" Target="@86" Category="PoundInclude" />
+    <Link Source="@31" Target="@94" Category="PoundInclude" />
+    <Link Source="@33" Target="@262" Category="PoundInclude" />
+    <Link Source="@33" Target="@35" Category="PoundInclude" />
+    <Link Source="@35" Target="@262" Category="PoundInclude" />
+    <Link Source="@37" Target="@208" Category="PoundInclude" />
+    <Link Source="@37" Target="@232" Category="PoundInclude" />
+    <Link Source="@37" Target="@27" Category="PoundInclude" />
+    <Link Source="@37" Target="@270" Category="PoundInclude" />
+    <Link Source="@37" Target="@31" Category="PoundInclude" />
+    <Link Source="@37" Target="@51" Category="PoundInclude" />
+    <Link Source="@37" Target="@53" Category="PoundInclude" />
+    <Link Source="@39" Target="@183" Category="PoundInclude" Bounds="427.708953857422,178.683502197266,32.9683837890625,24.6155242919922" />
+    <Link Source="@39" Target="@214" Category="PoundInclude" Bounds="433.717163085938,178.683502197266,83.3701782226563,192.067565917969" />
+    <Link Source="@39" Target="@250" Category="PoundInclude" Bounds="458.921569824219,178.683502197266,23.1761779785156,78.736328125" />
+    <Link Source="@41" Target="@31" Category="PoundInclude" />
+    <Link Source="@41" Target="@51" Category="PoundInclude" />
+    <Link Source="@41" Target="@53" Category="PoundInclude" />
+    <Link Source="@43" Target="@164" Category="PoundInclude" />
+    <Link Source="@43" Target="@208" Category="PoundInclude" />
+    <Link Source="@43" Target="@31" Category="PoundInclude" />
+    <Link Source="@43" Target="@49" Category="PoundInclude" />
+    <Link Source="@43" Target="@51" Category="PoundInclude" />
+    <Link Source="@43" Target="@53" Category="PoundInclude" />
+    <Link Source="@45" Target="@224" Category="PoundInclude" />
+    <Link Source="@45" Target="@228" Category="PoundInclude" />
+    <Link Source="@45" Target="@254" Category="PoundInclude" />
+    <Link Source="@45" Target="@31" Category="PoundInclude" />
+    <Link Source="@45" Target="@51" Category="PoundInclude" />
+    <Link Source="@45" Target="@53" Category="PoundInclude" />
+    <Link Source="@45" Target="@55" Category="PoundInclude" />
+    <Link Source="@47" Target="@31" Category="PoundInclude" />
+    <Link Source="@49" Target="@31" Category="PoundInclude" />
+    <Link Source="@49" Target="@47" Category="PoundInclude" />
+    <Link Source="@55" Target="@51" Category="PoundInclude" />
+    <Link Source="@55" Target="@53" Category="PoundInclude" />
+    <Link Source="@57" Target="@118" Category="PoundInclude" />
+    <Link Source="@57" Target="@160" Category="PoundInclude" />
+    <Link Source="@57" Target="@51" Category="PoundInclude" />
+    <Link Source="@57" Target="@53" Category="PoundInclude" />
+    <Link Source="@59" Target="@183" Category="PoundInclude" Bounds="343.961608886719,178.683502197266,33.9727478027344,24.7065734863281" />
+    <Link Source="@59" Target="@214" Category="PoundInclude" Bounds="293.311584472656,178.683502197266,74.1910705566406,194.946136474609" />
+    <Link Source="@59" Target="@250" Category="PoundInclude" Bounds="323.234008789063,178.683502197266,83.9044799804688,82.2899475097656" />
+    <Link Source="@6" Target="@158" Category="PoundInclude" Bounds="446.353912353516,120.755790710449,134.733428955078,191.816841125488" />
+    <Link Source="@6" Target="@162" Category="PoundInclude" Bounds="446.551330566406,117.693405151367,236.536010742188,193.986099243164" />
+    <Link Source="@6" Target="@183" Category="PoundInclude" Bounds="404.657104492188,122.685501098633,2.43023681640625,77.0208740234375" />
+    <Link Source="@6" Target="@197" Category="PoundInclude" Bounds="131.087326049805,117.693405151367,236.535995483398,194.292587280273" />
+    <Link Source="@6" Target="@212" Category="PoundInclude" Bounds="215.735534667969,119.192390441895,151.887786865234,136.779090881348" />
+    <Link Source="@6" Target="@236" Category="PoundInclude" Bounds="446.551330566406,115.80500793457,268.327880859375,41.7365264892578" />
+    <Link Source="@6" Target="@248" Category="PoundInclude" />
+    <Link Source="@6" Target="@250" Category="PoundInclude" Bounds="443.297912597656,122.685501098633,105.789428710938,137.760818481445" />
+    <Link Source="@6" Target="@39" Category="PoundInclude" Bounds="423.568786621094,122.685501098633,30.9704895019531,24.4265441894531" />
+    <Link Source="@6" Target="@59" Category="PoundInclude" Bounds="352.293243408203,122.685501098633,35.9913024902344,24.8819885253906" />
+    <Link Source="@6" Target="@61" Category="PoundInclude" Bounds="74.2840957641602,114.795280456543,293.339225769043,86.5028457641602" />
+    <Link Source="@6" Target="@80" Category="PoundInclude" Bounds="264.427398681641,121.208465576172,103.611267089844,192.271118164063" />
+    <Link Source="@61" Target="@214" Category="PoundInclude" Bounds="54.0873336791992,234.681503295898,303.05298614502,149.460403442383" />
+    <Link Source="@63" Target="@116" Category="PoundInclude" />
+    <Link Source="@63" Target="@222" Category="PoundInclude" />
+    <Link Source="@65" Target="@262" Category="PoundInclude" />
+    <Link Source="@67" Target="@262" Category="PoundInclude" />
+    <Link Source="@67" Target="@65" Category="PoundInclude" />
+    <Link Source="@69" Target="@262" Category="PoundInclude" />
+    <Link Source="@71" Target="@262" Category="PoundInclude" />
+    <Link Source="@71" Target="@69" Category="PoundInclude" />
+    <Link Source="@75" Target="@104" Category="PoundInclude" />
+    <Link Source="@75" Target="@164" Category="PoundInclude" />
+    <Link Source="@75" Target="@208" Category="PoundInclude" />
+    <Link Source="@75" Target="@31" Category="PoundInclude" />
+    <Link Source="@75" Target="@51" Category="PoundInclude" />
+    <Link Source="@75" Target="@53" Category="PoundInclude" />
+    <Link Source="@77" Target="@164" Category="PoundInclude" />
+    <Link Source="@77" Target="@208" Category="PoundInclude" />
+    <Link Source="@77" Target="@31" Category="PoundInclude" />
+    <Link Source="@77" Target="@51" Category="PoundInclude" />
+    <Link Source="@77" Target="@53" Category="PoundInclude" />
+    <Link Source="@80" Target="@214" Category="PoundInclude" Bounds="357.568786621094,346.677490234375,30.9704895019531,24.4265747070313" />
+    <Link Source="@82" Target="@262" Category="PoundInclude" />
+    <Link Source="@84" Target="@118" Category="PoundInclude" />
+    <Link Source="@84" Target="@51" Category="PoundInclude" />
+    <Link Source="@84" Target="@53" Category="PoundInclude" />
+    <Link Source="@86" Target="@126" Category="PoundInclude" />
+    <Link Source="@88" Target="@262" Category="PoundInclude" />
+    <Link Source="@90" Target="@262" Category="PoundInclude" />
+    <Link Source="@92" Target="@262" Category="PoundInclude" />
+    <Link Source="@92" Target="@96" Category="PoundInclude" />
+    <Link Source="@94" Target="@262" Category="PoundInclude" />
+    <Link Source="@94" Target="@280" Category="PoundInclude" />
+    <Link Source="@94" Target="@92" Category="PoundInclude" />
+    <Link Source="@94" Target="@96" Category="PoundInclude" />
+    <Link Source="@96" Target="@63" Category="PoundInclude" />
+    <Link Source="@98" Target="@31" Category="PoundInclude" />
+    <Link Source="@98" Target="@51" Category="PoundInclude" />
+    <Link Source="@98" Target="@53" Category="PoundInclude" />
+    <Link Source="G4" Target="@106" Category="Contains" />
+    <Link Source="G4" Target="@112" Category="Contains" />
+    <Link Source="G4" Target="@170" Category="Contains" />
+    <Link Source="G4" Target="@191" Category="Contains" />
+    <Link Source="G4" Target="@218" Category="Contains" />
+    <Link Source="G4" Target="@220" Category="Contains" />
+    <Link Source="G4" Target="@232" Category="Contains" />
+    <Link Source="G4" Target="@244" Category="Contains" />
+    <Link Source="G4" Target="@25" Category="Contains" />
+    <Link Source="G4" Target="@276" Category="Contains" />
+    <Link Source="G4" Target="@278" Category="Contains" />
+    <Link Source="G4" Target="@33" Category="Contains" />
+    <Link Source="G4" Target="@67" Category="Contains" />
+    <Link Source="G4" Target="@71" Category="Contains" />
+    <Link Source="G4" Target="@82" Category="Contains" />
+    <Link Source="G4" Target="@94" Category="Contains" />
+    <Link Source="G4" Target="Windows SDK Indirectly Included" Category="Contains" />
+    <Link Source="OthersGroup" Target="@100" Category="Contains" />
+    <Link Source="OthersGroup" Target="@104" Category="Contains" />
+    <Link Source="OthersGroup" Target="@110" Category="Contains" />
+    <Link Source="OthersGroup" Target="@114" Category="Contains" />
+    <Link Source="OthersGroup" Target="@116" Category="Contains" />
+    <Link Source="OthersGroup" Target="@118" Category="Contains" />
+    <Link Source="OthersGroup" Target="@120" Category="Contains" />
+    <Link Source="OthersGroup" Target="@122" Category="Contains" />
+    <Link Source="OthersGroup" Target="@124" Category="Contains" />
+    <Link Source="OthersGroup" Target="@126" Category="Contains" />
+    <Link Source="OthersGroup" Target="@128" Category="Contains" />
+    <Link Source="OthersGroup" Target="@130" Category="Contains" />
+    <Link Source="OthersGroup" Target="@132" Category="Contains" />
+    <Link Source="OthersGroup" Target="@134" Category="Contains" />
+    <Link Source="OthersGroup" Target="@136" Category="Contains" />
+    <Link Source="OthersGroup" Target="@138" Category="Contains" />
+    <Link Source="OthersGroup" Target="@140" Category="Contains" />
+    <Link Source="OthersGroup" Target="@142" Category="Contains" />
+    <Link Source="OthersGroup" Target="@144" Category="Contains" />
+    <Link Source="OthersGroup" Target="@146" Category="Contains" />
+    <Link Source="OthersGroup" Target="@148" Category="Contains" />
+    <Link Source="OthersGroup" Target="@150" Category="Contains" />
+    <Link Source="OthersGroup" Target="@152" Category="Contains" />
+    <Link Source="OthersGroup" Target="@154" Category="Contains" />
+    <Link Source="OthersGroup" Target="@156" Category="Contains" />
+    <Link Source="OthersGroup" Target="@160" Category="Contains" />
+    <Link Source="OthersGroup" Target="@164" Category="Contains" />
+    <Link Source="OthersGroup" Target="@166" Category="Contains" />
+    <Link Source="OthersGroup" Target="@173" Category="Contains" />
+    <Link Source="OthersGroup" Target="@181" Category="Contains" />
+    <Link Source="OthersGroup" Target="@185" Category="Contains" />
+    <Link Source="OthersGroup" Target="@187" Category="Contains" />
+    <Link Source="OthersGroup" Target="@195" Category="Contains" />
+    <Link Source="OthersGroup" Target="@199" Category="Contains" />
+    <Link Source="OthersGroup" Target="@201" Category="Contains" />
+    <Link Source="OthersGroup" Target="@204" Category="Contains" />
+    <Link Source="OthersGroup" Target="@206" Category="Contains" />
+    <Link Source="OthersGroup" Target="@208" Category="Contains" />
+    <Link Source="OthersGroup" Target="@21" Category="Contains" />
+    <Link Source="OthersGroup" Target="@210" Category="Contains" />
+    <Link Source="OthersGroup" Target="@222" Category="Contains" />
+    <Link Source="OthersGroup" Target="@224" Category="Contains" />
+    <Link Source="OthersGroup" Target="@226" Category="Contains" />
+    <Link Source="OthersGroup" Target="@228" Category="Contains" />
+    <Link Source="OthersGroup" Target="@234" Category="Contains" />
+    <Link Source="OthersGroup" Target="@238" Category="Contains" />
+    <Link Source="OthersGroup" Target="@240" Category="Contains" />
+    <Link Source="OthersGroup" Target="@248" Category="Contains" />
+    <Link Source="OthersGroup" Target="@254" Category="Contains" />
+    <Link Source="OthersGroup" Target="@256" Category="Contains" />
+    <Link Source="OthersGroup" Target="@258" Category="Contains" />
+    <Link Source="OthersGroup" Target="@260" Category="Contains" />
+    <Link Source="OthersGroup" Target="@264" Category="Contains" />
+    <Link Source="OthersGroup" Target="@266" Category="Contains" />
+    <Link Source="OthersGroup" Target="@268" Category="Contains" />
+    <Link Source="OthersGroup" Target="@27" Category="Contains" />
+    <Link Source="OthersGroup" Target="@270" Category="Contains" />
+    <Link Source="OthersGroup" Target="@272" Category="Contains" />
+    <Link Source="OthersGroup" Target="@29" Category="Contains" />
+    <Link Source="OthersGroup" Target="@31" Category="Contains" />
+    <Link Source="OthersGroup" Target="@37" Category="Contains" />
+    <Link Source="OthersGroup" Target="@41" Category="Contains" />
+    <Link Source="OthersGroup" Target="@43" Category="Contains" />
+    <Link Source="OthersGroup" Target="@45" Category="Contains" />
+    <Link Source="OthersGroup" Target="@47" Category="Contains" />
+    <Link Source="OthersGroup" Target="@49" Category="Contains" />
+    <Link Source="OthersGroup" Target="@51" Category="Contains" />
+    <Link Source="OthersGroup" Target="@53" Category="Contains" />
+    <Link Source="OthersGroup" Target="@55" Category="Contains" />
+    <Link Source="OthersGroup" Target="@57" Category="Contains" />
+    <Link Source="OthersGroup" Target="@63" Category="Contains" />
+    <Link Source="OthersGroup" Target="@75" Category="Contains" />
+    <Link Source="OthersGroup" Target="@77" Category="Contains" />
+    <Link Source="OthersGroup" Target="@84" Category="Contains" />
+    <Link Source="OthersGroup" Target="@86" Category="Contains" />
+    <Link Source="OthersGroup" Target="@96" Category="Contains" />
+    <Link Source="OthersGroup" Target="@98" Category="Contains" />
+    <Link Source="PoundIncludeGraphExternalsGroup" Target="G4" Category="Contains" />
+    <Link Source="PoundIncludeGraphExternalsGroup" Target="OthersGroup" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@102" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@108" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@168" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@175" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@177" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@179" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@189" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@193" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@216" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@23" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@230" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@242" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@246" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@252" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@262" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@274" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@280" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@35" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@65" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@69" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@73" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@88" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@90" Category="Contains" />
+    <Link Source="Windows SDK Indirectly Included" Target="@92" Category="Contains" />
+  </Links>
+  <Categories>
+    <Category Id="CodeSchema_PoundIncludeFile" Label="C++ Project File" BasedOn="File" CanBeDataDriven="True" IsProviderRoot="False" NavigationActionLabel="C++ Project File" />
+    <Category Id="CodeSchema_PoundIncludeGroup" Label="#include Group" BasedOn="Group" CanBeDataDriven="True" IsProviderRoot="False" NavigationActionLabel="#include Group" />
+    <Category Id="CodeSchema_ProjectItem" Label="Project Item" BasedOn="File" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Type" Icon="File" NavigationActionLabel="Project Items" />
+    <Category Id="Contains" Label="Contains" Description="Whether the source of the link contains the target object" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Contained By" IsContainment="True" OutgoingActionLabel="Contains" />
+    <Category Id="Externals" Label="Externals" CanBeDataDriven="True" IsProviderRoot="False" NavigationActionLabel="Externals" />
+    <Category Id="File" Label="File" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="File" NavigationActionLabel="Files" />
+    <Category Id="Group" Label="Group" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" IsProviderRoot="False" NavigationActionLabel="Groups" />
+    <Category Id="PoundInclude" Label="#include" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="#include By" OutgoingActionLabel="#include" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="DefaultAction" Label="DefaultAction" Description="DefaultAction" DataType="System.String" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="FilePath" Label="File Path" Description="File Path" DataType="System.String" />
+    <Property Id="Group" Label="Group" Description="Display the node as a group" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="Icon" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsContainment" DataType="System.Boolean" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="IsProviderRoot" Label="IsProviderRoot" Description="IsProviderRoot" DataType="System.Boolean" />
+    <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
+    <Property Id="Language" Label="Language" Description="Language" DataType="System.String" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+  </Properties>
+  <QualifiedNames>
+    <Name Id="Assembly" Label="Assembly" ValueType="Uri" />
+    <Name Id="File" Label="File" ValueType="Uri" />
+  </QualifiedNames>
+  <IdentifierAliases>
+    <Alias n="1" Uri="Assembly=$(VsSolutionUri)/SimonSays/SimonSays.vcxproj" />
+    <Alias n="2" Id="(@1)" />
+    <Alias n="3" Uri="File=$(VsSolutionUri)/SimonSays/world.c" />
+    <Alias n="4" Uri="File=$(VsSolutionUri)/SimonSays/projectile.c" />
+    <Alias n="5" Uri="File=$(VsSolutionUri)/SimonSays/game.c" />
+    <Alias n="6" Id="(@1 @5)" />
+    <Alias n="7" Uri="File=$(VsSolutionUri)/SimonSays/game_state.c" />
+    <Alias n="8" Uri="File=$(VsSolutionUri)/SimonSays/sprite.c" />
+    <Alias n="9" Uri="File=$(VsSolutionUri)/SimonSays/main.c" />
+    <Alias n="10" Uri="File=$(VsSolutionUri)/SimonSays/collision.c" />
+    <Alias n="11" Uri="File=$(VsSolutionUri)/SimonSays/animation.c" />
+    <Alias n="12" Uri="File=$(VsSolutionUri)/SimonSays/audio.c" />
+    <Alias n="13" Uri="File=$(VsSolutionUri)/SimonSays/spaceship.c" />
+    <Alias n="14" Uri="File=$(VsSolutionUri)/SimonSays/state_handler.c" />
+    <Alias n="15" Uri="File=$(VsSolutionUri)/SimonSays/graphics.c" />
+    <Alias n="16" Uri="File=$(VsSolutionUri)/SimonSays/libraries.c" />
+    <Alias n="17" Uri="File=$(VsSolutionUri)/SimonSays/events.c" />
+    <Alias n="18" Uri="File=$(VsSolutionUri)/SimonSays/object.c" />
+    <Alias n="19" Uri="Assembly=" />
+    <Alias n="20" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/intrin0.h" />
+    <Alias n="21" Id="(@19 @20)" />
+    <Alias n="22" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wstdlib.h" />
+    <Alias n="23" Id="(@19 @22)" />
+    <Alias n="24" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/stdlib.h" />
+    <Alias n="25" Id="(@19 @24)" />
+    <Alias n="26" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_atomic.h" />
+    <Alias n="27" Id="(@19 @26)" />
+    <Alias n="28" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_haptic.h" />
+    <Alias n="29" Id="(@19 @28)" />
+    <Alias n="30" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_stdinc.h" />
+    <Alias n="31" Id="(@19 @30)" />
+    <Alias n="32" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/malloc.h" />
+    <Alias n="33" Id="(@19 @32)" />
+    <Alias n="34" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_malloc.h" />
+    <Alias n="35" Id="(@19 @34)" />
+    <Alias n="36" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_thread.h" />
+    <Alias n="37" Id="(@19 @36)" />
+    <Alias n="38" Uri="File=$(VsSolutionUri)/SimonSays/world.h" />
+    <Alias n="39" Id="(@1 @38)" />
+    <Alias n="40" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_clipboard.h" />
+    <Alias n="41" Id="(@19 @40)" />
+    <Alias n="42" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_keyboard.h" />
+    <Alias n="43" Id="(@19 @42)" />
+    <Alias n="44" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_surface.h" />
+    <Alias n="45" Id="(@19 @44)" />
+    <Alias n="46" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_scancode.h" />
+    <Alias n="47" Id="(@19 @46)" />
+    <Alias n="48" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_keycode.h" />
+    <Alias n="49" Id="(@19 @48)" />
+    <Alias n="50" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/close_code.h" />
+    <Alias n="51" Id="(@19 @50)" />
+    <Alias n="52" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/begin_code.h" />
+    <Alias n="53" Id="(@19 @52)" />
+    <Alias n="54" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_blendmode.h" />
+    <Alias n="55" Id="(@19 @54)" />
+    <Alias n="56" Uri="File=file:///C:/SDLBIB/SDL2_image-2.0.1/include/SDL_image.h" />
+    <Alias n="57" Id="(@19 @56)" />
+    <Alias n="58" Uri="File=$(VsSolutionUri)/SimonSays/projectile.h" />
+    <Alias n="59" Id="(@1 @58)" />
+    <Alias n="60" Uri="File=$(VsSolutionUri)/SimonSays/game.h" />
+    <Alias n="61" Id="(@1 @60)" />
+    <Alias n="62" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/vcruntime.h" />
+    <Alias n="63" Id="(@19 @62)" />
+    <Alias n="64" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wtime.h" />
+    <Alias n="65" Id="(@19 @64)" />
+    <Alias n="66" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/time.h" />
+    <Alias n="67" Id="(@19 @66)" />
+    <Alias n="68" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wctype.h" />
+    <Alias n="69" Id="(@19 @68)" />
+    <Alias n="70" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/ctype.h" />
+    <Alias n="71" Id="(@19 @70)" />
+    <Alias n="72" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_share.h" />
+    <Alias n="73" Id="(@19 @72)" />
+    <Alias n="74" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_gesture.h" />
+    <Alias n="75" Id="(@19 @74)" />
+    <Alias n="76" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_mouse.h" />
+    <Alias n="77" Id="(@19 @76)" />
+    <Alias n="78" Uri="File=$(VsSolutionUri)/SimonSays/game_state.h" />
+    <Alias n="79" Uri="File=$(VsSolutionUri)/SimonSays/sprite.h" />
+    <Alias n="80" Id="(@1 @79)" />
+    <Alias n="81" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/stddef.h" />
+    <Alias n="82" Id="(@19 @81)" />
+    <Alias n="83" Uri="File=file:///C:/SDLBIB/SDL2_ttf-2.0.14/include/SDL_ttf.h" />
+    <Alias n="84" Id="(@19 @83)" />
+    <Alias n="85" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_config.h" />
+    <Alias n="86" Id="(@19 @85)" />
+    <Alias n="87" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_stdio_config.h" />
+    <Alias n="88" Id="(@19 @87)" />
+    <Alias n="89" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/mbstring.h" />
+    <Alias n="90" Id="(@19 @89)" />
+    <Alias n="91" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wstring.h" />
+    <Alias n="92" Id="(@19 @91)" />
+    <Alias n="93" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/string.h" />
+    <Alias n="94" Id="(@19 @93)" />
+    <Alias n="95" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/vcruntime_string.h" />
+    <Alias n="96" Id="(@19 @95)" />
+    <Alias n="97" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_log.h" />
+    <Alias n="98" Id="(@19 @97)" />
+    <Alias n="99" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/stdarg.h" />
+    <Alias n="100" Id="(@19 @99)" />
+    <Alias n="101" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_search.h" />
+    <Alias n="102" Id="(@19 @101)" />
+    <Alias n="103" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_touch.h" />
+    <Alias n="104" Id="(@19 @103)" />
+    <Alias n="105" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/math.h" />
+    <Alias n="106" Id="(@19 @105)" />
+    <Alias n="107" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_math.h" />
+    <Alias n="108" Id="(@19 @107)" />
+    <Alias n="109" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_joystick.h" />
+    <Alias n="110" Id="(@19 @109)" />
+    <Alias n="111" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/signal.h" />
+    <Alias n="112" Id="(@19 @111)" />
+    <Alias n="113" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/ConcurrencySal.h" />
+    <Alias n="114" Id="(@19 @113)" />
+    <Alias n="115" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/sal.h" />
+    <Alias n="116" Id="(@19 @115)" />
+    <Alias n="117" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL.h" />
+    <Alias n="118" Id="(@19 @117)" />
+    <Alias n="119" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/stdbool.h" />
+    <Alias n="120" Id="(@19 @119)" />
+    <Alias n="121" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_filesystem.h" />
+    <Alias n="122" Id="(@19 @121)" />
+    <Alias n="123" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_system.h" />
+    <Alias n="124" Id="(@19 @123)" />
+    <Alias n="125" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_platform.h" />
+    <Alias n="126" Id="(@19 @125)" />
+    <Alias n="127" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_endian.h" />
+    <Alias n="128" Id="(@19 @127)" />
+    <Alias n="129" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_main.h" />
+    <Alias n="130" Id="(@19 @129)" />
+    <Alias n="131" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/ammintrin.h" />
+    <Alias n="132" Id="(@19 @131)" />
+    <Alias n="133" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/emmintrin.h" />
+    <Alias n="134" Id="(@19 @133)" />
+    <Alias n="135" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/immintrin.h" />
+    <Alias n="136" Id="(@19 @135)" />
+    <Alias n="137" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/nmmintrin.h" />
+    <Alias n="138" Id="(@19 @137)" />
+    <Alias n="139" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/pmmintrin.h" />
+    <Alias n="140" Id="(@19 @139)" />
+    <Alias n="141" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/smmintrin.h" />
+    <Alias n="142" Id="(@19 @141)" />
+    <Alias n="143" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/tmmintrin.h" />
+    <Alias n="144" Id="(@19 @143)" />
+    <Alias n="145" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/wmmintrin.h" />
+    <Alias n="146" Id="(@19 @145)" />
+    <Alias n="147" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/xmmintrin.h" />
+    <Alias n="148" Id="(@19 @147)" />
+    <Alias n="149" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/zmmintrin.h" />
+    <Alias n="150" Id="(@19 @149)" />
+    <Alias n="151" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/mmintrin.h" />
+    <Alias n="152" Id="(@19 @151)" />
+    <Alias n="153" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/intrin.h" />
+    <Alias n="154" Id="(@19 @153)" />
+    <Alias n="155" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/arm_neon.h" />
+    <Alias n="156" Id="(@19 @155)" />
+    <Alias n="157" Uri="File=$(VsSolutionUri)/SimonSays/collision.h" />
+    <Alias n="158" Id="(@1 @157)" />
+    <Alias n="159" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_version.h" />
+    <Alias n="160" Id="(@19 @159)" />
+    <Alias n="161" Uri="File=$(VsSolutionUri)/SimonSays/animation.h" />
+    <Alias n="162" Id="(@1 @161)" />
+    <Alias n="163" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_video.h" />
+    <Alias n="164" Id="(@19 @163)" />
+    <Alias n="165" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_cpuinfo.h" />
+    <Alias n="166" Id="(@19 @165)" />
+    <Alias n="167" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wstdio.h" />
+    <Alias n="168" Id="(@19 @167)" />
+    <Alias n="169" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/stdio.h" />
+    <Alias n="170" Id="(@19 @169)" />
+    <Alias n="171" Uri="File=$(VsSolutionUri)/SimonSays/audio.h" />
+    <Alias n="172" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_audio.h" />
+    <Alias n="173" Id="(@19 @172)" />
+    <Alias n="174" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wconio.h" />
+    <Alias n="175" Id="(@19 @174)" />
+    <Alias n="176" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wio.h" />
+    <Alias n="177" Id="(@19 @176)" />
+    <Alias n="178" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/errno.h" />
+    <Alias n="179" Id="(@19 @178)" />
+    <Alias n="180" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_loadso.h" />
+    <Alias n="181" Id="(@19 @180)" />
+    <Alias n="182" Uri="File=$(VsSolutionUri)/SimonSays/spaceship.h" />
+    <Alias n="183" Id="(@1 @182)" />
+    <Alias n="184" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/setjmp.h" />
+    <Alias n="185" Id="(@19 @184)" />
+    <Alias n="186" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/vcruntime_startup.h" />
+    <Alias n="187" Id="(@19 @186)" />
+    <Alias n="188" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_startup.h" />
+    <Alias n="189" Id="(@19 @188)" />
+    <Alias n="190" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/tchar.h" />
+    <Alias n="191" Id="(@19 @190)" />
+    <Alias n="192" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/wchar.h" />
+    <Alias n="193" Id="(@19 @192)" />
+    <Alias n="194" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_render.h" />
+    <Alias n="195" Id="(@19 @194)" />
+    <Alias n="196" Uri="File=$(VsSolutionUri)/SimonSays/state_handler.h" />
+    <Alias n="197" Id="(@1 @196)" />
+    <Alias n="198" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_gamecontroller.h" />
+    <Alias n="199" Id="(@19 @198)" />
+    <Alias n="200" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_timer.h" />
+    <Alias n="201" Id="(@19 @200)" />
+    <Alias n="202" Uri="File=$(VsSolutionUri)/SimonSays/targetver.h" />
+    <Alias n="203" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_power.h" />
+    <Alias n="204" Id="(@19 @203)" />
+    <Alias n="205" Uri="File=file:///C:/SDLBIB/SDL2_mixer-2.0.1/include/SDL_mixer.h" />
+    <Alias n="206" Id="(@19 @205)" />
+    <Alias n="207" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_error.h" />
+    <Alias n="208" Id="(@19 @207)" />
+    <Alias n="209" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/armintr.h" />
+    <Alias n="210" Id="(@19 @209)" />
+    <Alias n="211" Uri="File=$(VsSolutionUri)/SimonSays/graphics.h" />
+    <Alias n="212" Id="(@1 @211)" />
+    <Alias n="213" Uri="File=$(VsSolutionUri)/SimonSays/libraries.h" />
+    <Alias n="214" Id="(@1 @213)" />
+    <Alias n="215" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_math_defines.h" />
+    <Alias n="216" Id="(@19 @215)" />
+    <Alias n="217" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/inttypes.h" />
+    <Alias n="218" Id="(@19 @217)" />
+    <Alias n="219" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/sys/types.h" />
+    <Alias n="220" Id="(@19 @219)" />
+    <Alias n="221" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/vadefs.h" />
+    <Alias n="222" Id="(@19 @221)" />
+    <Alias n="223" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_pixels.h" />
+    <Alias n="224" Id="(@19 @223)" />
+    <Alias n="225" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/CodeAnalysis/sourceannotations.h" />
+    <Alias n="226" Id="(@19 @225)" />
+    <Alias n="227" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_rwops.h" />
+    <Alias n="228" Id="(@19 @227)" />
+    <Alias n="229" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wprocess.h" />
+    <Alias n="230" Id="(@19 @229)" />
+    <Alias n="231" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/process.h" />
+    <Alias n="232" Id="(@19 @231)" />
+    <Alias n="233" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/limits.h" />
+    <Alias n="234" Id="(@19 @233)" />
+    <Alias n="235" Uri="File=$(VsSolutionUri)/SimonSays/events.h" />
+    <Alias n="236" Id="(@1 @235)" />
+    <Alias n="237" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_events.h" />
+    <Alias n="238" Id="(@19 @237)" />
+    <Alias n="239" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_hints.h" />
+    <Alias n="240" Id="(@19 @239)" />
+    <Alias n="241" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_memcpy_s.h" />
+    <Alias n="242" Id="(@19 @241)" />
+    <Alias n="243" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/float.h" />
+    <Alias n="244" Id="(@19 @243)" />
+    <Alias n="245" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/sys/stat.h" />
+    <Alias n="246" Id="(@19 @245)" />
+    <Alias n="247" Uri="File=$(VsSolutionUri)/SimonSays/effect.h" />
+    <Alias n="248" Id="(@19 @247)" />
+    <Alias n="249" Uri="File=$(VsSolutionUri)/SimonSays/object.h" />
+    <Alias n="250" Id="(@1 @249)" />
+    <Alias n="251" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_wdirect.h" />
+    <Alias n="252" Id="(@19 @251)" />
+    <Alias n="253" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_rect.h" />
+    <Alias n="254" Id="(@19 @253)" />
+    <Alias n="255" Uri="File=file:///C:/SDLBIB/SDL2_net-2.0.1/include/SDL_net.h" />
+    <Alias n="256" Id="(@19 @255)" />
+    <Alias n="257" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_quit.h" />
+    <Alias n="258" Id="(@19 @257)" />
+    <Alias n="259" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/stdint.h" />
+    <Alias n="260" Id="(@19 @259)" />
+    <Alias n="261" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt.h" />
+    <Alias n="262" Id="(@19 @261)" />
+    <Alias n="263" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_assert.h" />
+    <Alias n="264" Id="(@19 @263)" />
+    <Alias n="265" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/mm3dnow.h" />
+    <Alias n="266" Id="(@19 @265)" />
+    <Alias n="267" Uri="File=$(VsInstallDirUri)/VC/Tools/MSVC/14.10.25017/include/setjmpex.h" />
+    <Alias n="268" Id="(@19 @267)" />
+    <Alias n="269" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_mutex.h" />
+    <Alias n="270" Id="(@19 @269)" />
+    <Alias n="271" Uri="File=file:///C:/SDLBIB/SDL2-2.0.5/include/SDL_messagebox.h" />
+    <Alias n="272" Id="(@19 @271)" />
+    <Alias n="273" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/shared/winpackagefamily.h" />
+    <Alias n="274" Id="(@19 @273)" />
+    <Alias n="275" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/shared/winapifamily.h" />
+    <Alias n="276" Id="(@19 @275)" />
+    <Alias n="277" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/memory.h" />
+    <Alias n="278" Id="(@19 @277)" />
+    <Alias n="279" Uri="File=$(ProgramFilesUri)/Windows Kits/10/Include/10.0.15063.0/ucrt/corecrt_memory.h" />
+    <Alias n="280" Id="(@19 @279)" />
+  </IdentifierAliases>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="C++ Project File" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_PoundIncludeFile')" />
+      <Setter Property="Background" Value="#FFEFEFEF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Externals" ValueLabel="Has category">
+      <Condition Expression="HasCategory('Externals')" />
+      <Setter Property="Background" Value="#FFA08080" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Source File" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_ProjectItem')" />
+      <Setter Property="Background" Value="#FFC0C0C0" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="#include Group" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_PoundIncludeGroup')" />
+      <Setter Property="Background" Value="#FFEFEFEF" />
+    </Style>
+  </Styles>
+  <Paths>
+    <Path Id="ProgramFiles" Value="C:\Program Files (x86)" />
+    <Path Id="ProgramFilesUri" Value="file:///C:/Program Files (x86)" />
+    <Path Id="VsInstallDir" Value="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise" />
+    <Path Id="VsInstallDirUri" Value="file:///C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" />
+    <Path Id="VsSolution" Value="C:\Users\tiago\Source\Repos\SimonSaysRepo\SimonSays" />
+    <Path Id="VsSolutionUri" Value="file:///C:/Users/tiago/Source/Repos/SimonSaysRepo/SimonSays" />
+  </Paths>
+</DirectedGraph>

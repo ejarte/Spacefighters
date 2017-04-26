@@ -79,6 +79,10 @@ void object_tick(Object* o);
 
 void object_render(SDL_Renderer* renderer, Object *o, bool debugCollision);
 
+void object_setMass(Object* o, double mass);
+double object_getMass(Object* o);
+void object_calculateCollisionSpeed(Object* o1, Object *o2);
+
 // Delta X & Y
 
 // Ska vi använda oss av vektorer istället?

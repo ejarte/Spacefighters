@@ -278,7 +278,7 @@ int removeIndex;
 
 bool isObjectTryingToLeaveWorld(Object* o)
 {
-	return !isInsideWorld(o) && object_getTypeId(o) != OBJ_TYPE_SPACESHIP;
+	return !isInsideWorld(o);
 }
 
 
@@ -316,7 +316,12 @@ void game_update()
 
 			// Removes asteroids and projectiles trying to leave the world
 			if (isObjectTryingToLeaveWorld(object[i])) {
-				list_objectsToRemove[removeIndex++] = i;
+				if (object_getTypeId(OBJ_TYPE_SPACESHIP)) {
+					
+				}
+				else {
+					list_objectsToRemove[removeIndex++] = i;
+				}
 			}
 
 			foundIndex = 0;	// Resets the foundIndex
@@ -327,22 +332,25 @@ void game_update()
 					printf("Spaceship collided with ");
 				}
 				if (object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID) {
+
 					printf("Asteroid collided with ");
 				}
 				if (object_getTypeId(object[i]) == OBJ_TYPE_PROJECTILE) {
 					printf("Projectile collided with ");
 				}
 
-				int k;
+				int k = -1;
 
 				// other object
 				for (int j = 0; j < foundIndex; j++) {
 					k = list_objectsFound[j];
-				///	printf("%d\n", k);
+					printf("\nk = %d\n", k);
+
 					if (object_getTypeId(object[k]) == OBJ_TYPE_SPACESHIP) {
 						printf(" spaceship.\n");
 					}
-					else if (object_getTypeId(object[k]) == OBJ_TYPE_ASTEROID) {
+					else if (object_getTypeId(object[k]) == OBJ_TYPE_ASTEROID && object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID) {
+						object_calculateCollisionSpeed(object[k], object[i]);
 						printf(" asteroid.\n");
 					}
 					else if (object_getTypeId(object[k]) == OBJ_TYPE_PROJECTILE) {
@@ -350,6 +358,7 @@ void game_update()
 					}
 				}
 			}
+
 		}
 	}
 	for (int i = 0; i < removeIndex; i++) {
