@@ -181,6 +181,7 @@ void spaceship_setMaxSpeed(Spaceship* s, double max)
 }
 
 void spaceship_move(Spaceship* s) {
+	//printf("delta_X OBJ: %d\n", object_getDeltaX(s->body));
 	if (s->mobile) {
 		s->speed_x *= s->drag;
 		s->speed_y *= s->drag;
@@ -190,6 +191,7 @@ void spaceship_move(Spaceship* s) {
 		s->speed_y -= spy;
 		//printf("%d %d %f %f\n", spx, spy, s->speed_x, s->speed_y);
 		object_addToDelta(s->body, spx, spy);
+
 	}
 }
 

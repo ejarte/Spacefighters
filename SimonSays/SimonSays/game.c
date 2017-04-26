@@ -145,7 +145,7 @@ void game_init()
 		double drag, max_speed, acceleration, weight;
 		acceleration = 0.2;
 		drag = 0.90;
-		max_speed = 4.;
+		max_speed = 40;
 
 		// Spaceship 1
 		tempObj = createObject(OBJ_TYPE_SPACESHIP, 100, 100, sprite_getFrameWidth(sprite[3]) / 2, sprite_getFrameHeight(sprite[3]) / 2, 0, 0, sprite[3], animation[3]);
@@ -161,6 +161,9 @@ void game_init()
 		spaceship_setDrag(spaceship[1], drag);
 		spaceship_setAcceleration(spaceship[1], acceleration);
 		spaceship_setMaxSpeed(spaceship[1], max_speed);
+
+		// Test
+		spawnAteroidTest();
 }
 
 void game_execute() {
@@ -257,11 +260,38 @@ void spaceshipCollided(Spaceship * s1, Spaceship * s2)
 {
 	collided = true;
 	Object* o1 = spaceship_getBody(s1);
-	printf("%d\n", object_getDeltaX(o1));
-	object_setDeltaX(o1, -10);
-	printf("%d\n", object_getDeltaX(o1));
+	//printf("%d\n", object_getDeltaX(o1));
+	//object_setDeltaX(o1, -10);
+	//printf("%d\n", object_getDeltaX(o1));
 	//spaceship_deaccelerateX(s1);
-	//printf()
+	//printf()//
+}
+
+//======================================================================================================
+
+int list_objectsFound[100];
+int foundIndex;
+
+int list_objectsToRemove[100];
+int removeIndex;
+
+
+bool isObjectTryingToLeaveWorld(Object* o)
+{
+	return !isInsideWorld(o) && object_getTypeId(o) != OBJ_TYPE_SPACESHIP;
+}
+
+
+int getCollisionObjects(int curIndex)
+{
+	for (int i = curIndex + 1; i < getObjectIndexMax(); i++) {
+		if (object[i] != NULL) {
+			if (object_checkForCollision(object[curIndex], object[i])) {
+				list_objectsFound[foundIndex++] = i;
+			}
+		}
+	}
+	return foundIndex;
 }
 
 void game_update()
@@ -277,66 +307,103 @@ void game_update()
 		spaceship_move(spaceship[i]);
 	}
 
-	int removedObject[100];
-	int removedIndex = 0;
+	removeIndex = 0; // Resets the removeIndex each cycle
 
 	// Loop through all objects
 	for (int i = 0; i < getObjectIndexMax(); i++) {
 		
-		//Prevents spaceships from leaving the world
-		if (!isInsideWorld(object[i])) {
-			printf("Object[%d] has left the world\n");
-		}
-		// prevents nullpointer reference crash
-		if (object[i] != NULL) { 
-			// Check if still inside world
+		if (object[i] != NULL) {
 
-			// Collision Detection
-			for (int j = i + 1; j < getObjectIndexMax(); j++) {
-				// prevents nullpointer reference crash
-				if (object[j] != NULL) {
-					if (object_checkForCollision(object[i], object[j])) {
+			// Removes asteroids and projectiles trying to leave the world
+			if (isObjectTryingToLeaveWorld(object[i])) {
+				list_objectsToRemove[removeIndex++] = i;
+			}
 
-						/*
-						if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
-							printf("spaceship collided with ");
-							printf("Do nothing... source\n");
-						}
-						*/
-						if (object_getTypeId(object[i]) == OBJ_TYPE_PROJECTILE) {
-							if (projectile_isSource(object[i], object[j]) == false) {
-								//removedObject[removedIndex++] = i;
-							}
-						}
-						if (object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID) {
-							//printf("asteroid collided with ");
-						}
-						if (object_getTypeId(object[j]) == OBJ_TYPE_SPACESHIP && object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
-							spaceshipCollided(object[i], object[j]);
-						}
-						if (object_getTypeId(object[j]) == OBJ_TYPE_PROJECTILE) {
-							if (projectile_isSource(object[j], object[i])) {
-								//printf("Do nothing... source\n");
-							}
-							else {
-								//removedObject[removedIndex++] = j;
-								//printf("projectile...\n");
-							}
-						}
-						if (object_getTypeId(object[j]) == OBJ_TYPE_ASTEROID) {
-							//printf("asteroid...\n");
-						}
+			foundIndex = 0;	// Resets the foundIndex
+
+			if (getCollisionObjects(i) > 0) {
+				// this object
+				if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
+					printf("Spaceship collided with ");
+				}
+				if (object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID) {
+					printf("Asteroid collided with ");
+				}
+				if (object_getTypeId(object[i]) == OBJ_TYPE_PROJECTILE) {
+					printf("Projectile collided with ");
+				}
+
+				int k;
+
+				// other object
+				for (int j = 0; j < foundIndex; j++) {
+					k = list_objectsFound[j];
+				///	printf("%d\n", k);
+					if (object_getTypeId(object[k]) == OBJ_TYPE_SPACESHIP) {
+						printf(" spaceship.\n");
+					}
+					else if (object_getTypeId(object[k]) == OBJ_TYPE_ASTEROID) {
+						printf(" asteroid.\n");
+					}
+					else if (object_getTypeId(object[k]) == OBJ_TYPE_PROJECTILE) {
+						printf(" projectile.\n");
 					}
 				}
 			}
 		}
 	}
-	for (int i = 0; i < removedIndex; i++) {
-		//printf("removed index: %d\n", removedObject[i]);
-		object_disableCollision(object[removedObject[i]]);
-		destroyObject(object[removedObject[i]]);
+	for (int i = 0; i < removeIndex; i++) {
+		destroyObject(object[list_objectsToRemove[i]]);
 	}
 }
+
+/*
+// prevents nullpointer reference crash
+if (object[i] != NULL) {
+// Check if still inside world
+
+// Collision Detection
+for (int j = i + 1; j < getObjectIndexMax(); j++) {
+// prevents nullpointer reference crash
+if (object[j] != NULL) {
+if (object_checkForCollision(object[i], object[j])) {
+
+/*
+if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
+printf("spaceship collided with ");
+printf("Do nothing... source\n");
+}
+
+if (object_getTypeId(object[i]) == OBJ_TYPE_PROJECTILE) {
+	if (projectile_isSource(object[i], object[j]) == false) {
+		//removedObject[removedIndex++] = i;
+	}
+}
+if (object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID) {
+	//printf("asteroid collided with ");
+}
+if (object_getTypeId(object[j]) == OBJ_TYPE_SPACESHIP && object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
+	spaceshipCollided(object[i], object[j]);
+}
+if (object_getTypeId(object[j]) == OBJ_TYPE_PROJECTILE) {
+	if (projectile_isSource(object[j], object[i])) {
+		//printf("Do nothing... source\n");
+	}
+	else {
+		//removedObject[removedIndex++] = j;
+		//printf("projectile...\n");
+	}
+}
+if (object_getTypeId(object[j]) == OBJ_TYPE_ASTEROID) {
+	//printf("asteroid...\n");
+}
+					}
+				}
+			}
+*/
+
+
+
 
 void game_render()
 {
