@@ -15,7 +15,7 @@
 //SDL_Rect background_sky_rect;
 //SDL_Texture* background_sky_texture;
 
-
+bool collided = false;
 SDL_Rect background_rect;
 
 SDL_Rect back_rect;
@@ -203,17 +203,20 @@ void game_events()
 			}
 
 			// Movement ship A
-			if (keyEventHeld(SDL_SCANCODE_W)) {
-				spaceship_deaccelerateY(spaceship[0]);
-			}
-			if (keyEventHeld(SDL_SCANCODE_S)) {
-				spaceship_accelerateY(spaceship[0]);
-			}
-			if (keyEventHeld(SDL_SCANCODE_A)) {
-				spaceship_deaccelerateX(spaceship[0]);
-			}
-			if (keyEventHeld(SDL_SCANCODE_D)) {
-				spaceship_accelerateX(spaceship[0]);
+			if (collided == false)
+			{
+				if (keyEventHeld(SDL_SCANCODE_W)) {
+					spaceship_deaccelerateY(spaceship[0]);
+				}
+				if (keyEventHeld(SDL_SCANCODE_S)) {
+					spaceship_accelerateY(spaceship[0]);
+				}
+				if (keyEventHeld(SDL_SCANCODE_A)) {
+					spaceship_deaccelerateX(spaceship[0]);
+				}
+				if (keyEventHeld(SDL_SCANCODE_D)) {
+					spaceship_accelerateX(spaceship[0]);
+				}
 			}
 
 			// TEST - GENERATE ASTEROID ON Z
@@ -236,6 +239,29 @@ void game_events()
 			}
 		}
 	}
+}
+
+SDL_Point returnColPos(Spaceship * s1, Spaceship * s2)
+{
+	SDL_Point newDirection;
+	int distance = 100;
+	int newXspeed, newYspeed;
+	newDirection = spaceship_getPosition(s1);
+	newDirection.x -= - (10 * spaceship_getSpeedX(s1));
+	newDirection.y -= - (10 * spaceship_getSpeedY(s1));
+
+	return newDirection;
+}
+
+void spaceshipCollided(Spaceship * s1, Spaceship * s2)
+{
+	collided = true;
+	Object* o1 = spaceship_getBody(s1);
+	printf("%d\n", object_getDeltaX(o1));
+	object_setDeltaX(o1, -10);
+	printf("%d\n", object_getDeltaX(o1));
+	//spaceship_deaccelerateX(s1);
+	//printf()
 }
 
 void game_update()
@@ -285,8 +311,8 @@ void game_update()
 						if (object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID) {
 							//printf("asteroid collided with ");
 						}
-						if (object_getTypeId(object[j]) == OBJ_TYPE_SPACESHIP) {
-						//	printf("spaceship...\n");
+						if (object_getTypeId(object[j]) == OBJ_TYPE_SPACESHIP && object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
+							spaceshipCollided(object[i], object[j]);
 						}
 						if (object_getTypeId(object[j]) == OBJ_TYPE_PROJECTILE) {
 							if (projectile_isSource(object[j], object[i])) {
