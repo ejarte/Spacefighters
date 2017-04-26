@@ -67,7 +67,8 @@ void spawnNormalProjectile(Spaceship* source)
 	projSpeed = 12;												
 	angle = angleBetweenPointsRad(pSource, getMousePos());
 	x = (double) projSpeed * cos(angle);					
-	y = (double) projSpeed * sin(angle);					
+	y = (double) projSpeed * sin(angle);	
+
 
 	// Create Object
 	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, pSource.x, pSource.y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
@@ -80,39 +81,47 @@ void spawnNormalProjectile(Spaceship* source)
 
 void spawnEnteringAsteroid()
 {
-	int side, dx, dy, x, y, screen_w, screen_h, d;
-	double facingAngle, scale;
-	Object* lastCreatedObj;
+	int side, dx, dy, screen_w, screen_h, speed, k;
+	double facingAngle, scale, targetAngle;
+	SDL_Point rdmPoint;
+	SDL_Point spawnPoint;
 
 	side = rand() % 4;
 	facingAngle = rand() % 360;
 	scale = rand() % MAX_SCALE + MIN_SCALE;
 	screen_w = getWindowWidth();
 	screen_h = getWindowHeight();
-	d = 150;
 
+	// distance from/to world edge
+	// used to spawn the asteroid outside the world
+	k = 100; 
+
+	// Random side
 	if (side == LEFT) {
-		x = 0 - d/2;
-		y = d + rand() % (screen_h - d);
-		generateRandomSpeed(&dx, &dy, side);
+		spawnPoint.x = 0 - k/2;
+		spawnPoint.y = k + rand() % screen_h;
 	}
 	else if (side == RIGHT) {
-		x = screen_w + d/2;
-		y = d + rand() % (screen_h - d);
-		generateRandomSpeed(&dx, &dy, side);
+		spawnPoint.x = screen_w + k/2;
+		spawnPoint.y = k + rand() % screen_h;
 	}
 	else if (side == TOP) {
-		x = d + rand() % (screen_w - d);
-		y = 0 - d/2;
-		generateRandomSpeed(&dx, &dy, side);
+		spawnPoint.x = k + rand() % screen_w;
+		spawnPoint.y = 0 - k/2;
 	}
 	else if (side == BOT) {
-		x = d + rand() % (screen_w - d);
-		y = screen_h + d/2;
-		generateRandomSpeed(&dx, &dy, side);
+		spawnPoint.x = k + rand() % screen_w;
+		spawnPoint.y = screen_h + k/2;
 	}
-	printf("Asteroid entered.\n");
-	lastCreatedObj = createObject(OBJ_TYPE_ASTEROID, x, y, sprite_getFrameWidth(spr_asteroid_gray) / 4, sprite_getFrameHeight(spr_asteroid_gray) / 4, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
+
+	speed = rand() % TOP_SPEED_XY + MIN_SPEED_XY; 
+	rdmPoint.x = rand() % (screen_w - 2*k);			// A random point on the world
+	rdmPoint.y = rand() % (screen_h - 2*k);
+	targetAngle = angleBetweenPointsRad(spawnPoint, rdmPoint);	// Angle between spawn point and random point
+	dx = (double)speed * cos(targetAngle);	// velocity vector
+	dy = (double)speed * sin(targetAngle);
+
+	Object* lastCreatedObj = createObject(OBJ_TYPE_ASTEROID, spawnPoint.x, spawnPoint.y, sprite_getFrameWidth(spr_asteroid_gray) / 4, sprite_getFrameHeight(spr_asteroid_gray) / 4, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
 	object_setDeltaX(lastCreatedObj, dx);
 	object_setDeltaY(lastCreatedObj, dy);
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
