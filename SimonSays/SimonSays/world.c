@@ -96,7 +96,7 @@ void spawnEnteringAsteroid()
 	// used to spawn the asteroid outside the world
 	k = 100; 
 
-	// Random side
+	// Asteroid spawn coordinates
 	if (side == LEFT) {
 		spawnPoint.x = 0 - k/2;
 		spawnPoint.y = k + rand() % screen_h;
@@ -129,10 +129,13 @@ void spawnEnteringAsteroid()
 
 bool isInsideWorld(Object* o)
 {
-	Collision* c = object_getCollision(o);
-	SDL_Rect collision_rect = collision_getRect(c);
-
-	printf("COL %d %d\n", collision_rect.x, collision_rect.y);
-
-	return false;
+	int w = object_getWidth(o)/2;
+	int h = object_getHeight(o)/2;
+	int x = object_getX(o);
+	int y = object_getY(o);
+	int topX = x - w;
+	int topY = y - h;
+	int botX = x + w;
+	int botY = y + h;
+	return (topX > 0 && topY > 0 && botX < getWindowWidth() && botY < getWindowHeight());
 }

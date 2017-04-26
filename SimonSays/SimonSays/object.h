@@ -17,6 +17,11 @@ Object* createObject(int type, int x, int y, int w, int h, double facingAngle, d
 
 void destroyObject(Object* o);
 
+// Dimensions
+
+int object_getWidth(Object *o);
+int object_getHeight(Object* o);
+
 // Position
 
 void object_setPos(Object *o, int x, int y);

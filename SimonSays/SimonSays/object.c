@@ -74,6 +74,18 @@ void destroyObject(Object* o)
 	free(o);
 }
 
+// Dimensions
+
+int object_getWidth(Object *o)
+{
+	return o->w;
+}
+
+int object_getHeight(Object* o)
+{
+	return o->h;
+}
+
 // Position
 void object_setPos(Object *o, int x, int y)
 {

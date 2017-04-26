@@ -256,6 +256,11 @@ void game_update()
 
 	// Loop through all objects
 	for (int i = 0; i < getObjectIndexMax(); i++) {
+		
+		//Prevents spaceships from leaving the world
+		if (!isInsideWorld(object[i])) {
+			printf("Object[%d] has left the world\n");
+		}
 		// prevents nullpointer reference crash
 		if (object[i] != NULL) { 
 			// Check if still inside world
