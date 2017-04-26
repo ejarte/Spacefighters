@@ -9,6 +9,8 @@
 #define STATUS_ALIVE_INVUL		5
 #define STATUS_ALIVE_SPEEDY		6
 
+#define SPACESHIP_MASS	10
+
 struct Spaceship_type {
 
 	// Representation
@@ -23,6 +25,7 @@ struct Spaceship_type {
 	double speed_y;
 	double drag;
 	double acc;
+	double mass;
 	bool mobile;
 
 	// Status
@@ -147,8 +150,7 @@ void spaceship_accelerateX(Spaceship *s)
 void spaceship_accelerateY(Spaceship* s)
 {
 	s->speed_y += s->acc;
-	if (s->speed_y > s->max_speed)
-		s->speed_y = s->max_speed;
+	overSpeedlimit(&s);
 }
 
 void spaceship_deaccelerateX(Spaceship *s)
@@ -161,8 +163,19 @@ void spaceship_deaccelerateX(Spaceship *s)
 void spaceship_deaccelerateY(Spaceship *s)
 {
 	s->speed_y -= s->acc;
-	if (s->speed_y < -1*s->max_speed)
-		s->speed_y = -1*s->max_speed;
+	overSpeedlimit(&s);
+}
+
+double overSpeedlimit(Spaceship *s)
+{
+	if (s->speed_y > s->max_speed && s->speed_y > 0)
+	{
+		s->speed_y = 0;//s->max_speed;
+	}
+	else if (s->speed_y < -s->max_speed && s->speed_y < 0)
+	{
+		s->speed_y = 0; //-s->max_speed;
+	}
 }
 
 void spaceship_setDrag(Spaceship* s, double drag)
@@ -178,6 +191,11 @@ void spaceship_setAcceleration(Spaceship* s, double acc)
 void spaceship_setMaxSpeed(Spaceship* s, double max)
 {
 	s->max_speed = max;
+}
+
+void spaceship_setMass(Spaceship* s, double max)
+{
+	s->mass = SPACESHIP_MASS;
 }
 
 void spaceship_move(Spaceship* s) {

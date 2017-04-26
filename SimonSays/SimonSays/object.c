@@ -304,28 +304,15 @@ int object_getCustomId(Object *o)
 
 void object_calculateCollisionSpeed(Object* o1, Object *o2)
 {
-	double force1, force2;
+	double tempX, tempY;
 
-	//prev1x = o1->delta_x;
-	//prev2x = o2->delta_x;
+	tempX = o1->delta_x;
+	tempY = o1->delta_y;
 
-	force1 = o1->mass * o1->delta_x;
-	force2 = o2->mass * o2->delta_x;
-	o1->delta_x = (1/ o1->mass) * (o1->delta_x - (force2 / force1 * o1->delta_x));
-	o2->delta_x = (1 / o1->mass) * (o2->delta_x - (force1 / force2 * o2->delta_x));
-
-	//if (o1->delta_x > prev1x || o1->delta_x * -1 > prev1x)
-	//	o1->delta_x = prev1x;
-/*
-	double f1_x = o1->mass * o1->delta_x;
-	double f1_y = o1->mass * o1->delta_y;
-	double f2_x = o2->mass * o2->delta_x;
-	double f2_y = o2->mass * o2->delta_y;
-	*/
-	//o1->delta_x = f1_x / f2_x * o1->delta_x;
-	//o1->delta_x = 5;
-	o2->delta_x = -5;
-
+	o1->delta_x = o2->delta_x;
+	o2->delta_x = tempX;
+	o1->delta_y = o2->delta_y;
+	o2->delta_y = tempY;
 }
 
 void object_setMass(Object* o, double mass) {

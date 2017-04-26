@@ -26,6 +26,7 @@
 #define TOP_SPEED_XY	6
 #define MIN_SCALE		1
 #define MAX_SCALE		5
+#define ASTEROID_MASS	5
 
 Sprite* spr_asteroid_gray;
 Animation* asteroid_anim[12];
@@ -77,13 +78,13 @@ void spawnAteroidTest()
 	object_setDeltaX(lastCreatedObj, 2);
 	object_setDeltaY(lastCreatedObj, 0);
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
-	object_setMass(lastCreatedObj, 6); //massa på asteroid1
+	object_setMass(lastCreatedObj, 10); //massa på asteroid1
 
 	lastCreatedObj = createObject(OBJ_TYPE_ASTEROID, p2.x, p2.y, sprite_getFrameWidth(spr_asteroid_gray) / 4, sprite_getFrameHeight(spr_asteroid_gray) / 4, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
-	object_setDeltaX(lastCreatedObj, -2);
+	object_setDeltaX(lastCreatedObj, -4);
 	object_setDeltaY(lastCreatedObj, 0);
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
-	object_setMass(lastCreatedObj, 8);
+	object_setMass(lastCreatedObj, 20);
 }
 
 void spawnEnteringAsteroid()
@@ -132,6 +133,7 @@ void spawnEnteringAsteroid()
 	object_setDeltaX(lastCreatedObj, dx);
 	object_setDeltaY(lastCreatedObj, dy);
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
+	object_setMass(lastCreatedObj, 5);
 }
 
 /* Used by mostly spaceship to detect when it is trying to leave */

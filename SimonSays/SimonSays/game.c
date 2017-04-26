@@ -154,6 +154,7 @@ void game_init()
 		spaceship_setDrag(spaceship[0], drag);
 		spaceship_setAcceleration(spaceship[0], acceleration);
 		spaceship_setMaxSpeed(spaceship[0], max_speed);	
+		spaceship_setMass(spaceship[0]);
 
 		tempObj = createObject(OBJ_TYPE_SPACESHIP, 800, 100, sprite_getFrameWidth(sprite[3]) / 2, sprite_getFrameHeight(sprite[3]) / 2, 0, 0, sprite[3], animation[3]);
 		object_setCollisionBoxDimension(tempObj, 60, 60, 0, 0);
@@ -161,6 +162,7 @@ void game_init()
 		spaceship_setDrag(spaceship[1], drag);
 		spaceship_setAcceleration(spaceship[1], acceleration);
 		spaceship_setMaxSpeed(spaceship[1], max_speed);
+		spaceship_setMass(spaceship[1]);
 
 		// Test
 		spawnAteroidTest();
@@ -383,9 +385,11 @@ void game_update()
 						printf("Projectile (%d) collided with ship (%d)\n", projectile, spaceship);
 					}
 					else if (varifySpaceshipAndAsteroidCollision(i, k, &spaceship, &asteroid)) {
+						object_calculateCollisionSpeed(object[i], object[k]);
 						printf("Spaceship (%d) collided with asteroid (%d)\n", spaceship, asteroid);
 					}
 					else if (varifySpaceshipAndSpaceshipCollision(i, k)) {
+						object_calculateCollisionSpeed(object[i], object[k]);
 						printf("Two spaceships collided.\n", i, k);
 					}
 					else if (varifyAsteroidAndAsteroidCollision(i, k)) {

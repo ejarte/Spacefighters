@@ -40,3 +40,4 @@ void spaceship_disableMobility(Spaceship *s);
 
 // Actions
 void spaceship_onDeath(Spaceship *s);
+double overSpeedlimit(Spaceship *s);
