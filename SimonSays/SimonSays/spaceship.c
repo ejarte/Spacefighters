@@ -150,7 +150,8 @@ void spaceship_accelerateX(Spaceship *s)
 void spaceship_accelerateY(Spaceship* s)
 {
 	s->speed_y += s->acc;
-	overSpeedlimit(&s);
+	if (s->speed_y > s->max_speed)
+		s->speed_y= s->max_speed;
 }
 
 void spaceship_deaccelerateX(Spaceship *s)
@@ -163,7 +164,8 @@ void spaceship_deaccelerateX(Spaceship *s)
 void spaceship_deaccelerateY(Spaceship *s)
 {
 	s->speed_y -= s->acc;
-	overSpeedlimit(&s);
+	if (s->speed_y < -1 * s->max_speed)
+		s->speed_y = -1 * s->max_speed;
 }
 
 double overSpeedlimit(Spaceship *s)
@@ -198,6 +200,16 @@ void spaceship_setMass(Spaceship* s, double max)
 	s->mass = SPACESHIP_MASS;
 }
 
+void spaceship_setDeltaX(Spaceship* s, double delta) 
+{
+	object_setDeltaX(s->body, delta);
+}
+
+void spaceship_setDeltaY(Spaceship* s, double delta)
+{
+	object_setDeltaY(s->body, delta);
+}
+
 void spaceship_move(Spaceship* s) {
 	//printf("delta_X OBJ: %d\n", object_getDeltaX(s->body));
 	if (s->mobile) {
@@ -205,10 +217,12 @@ void spaceship_move(Spaceship* s) {
 		s->speed_y *= s->drag;
 		int spx = s->speed_x;
 		int spy = s->speed_y;
-		s->speed_x -= spx;
-		s->speed_y -= spy;
+		//s->speed_x -= spx;
+		//s->speed_y -= spy;
 		//printf("%d %d %f %f\n", spx, spy, s->speed_x, s->speed_y);
-		object_addToDelta(s->body, spx, spy);
+		object_setDeltaX(s->body, spx);
+		object_setDeltaY(s->body, spy);
+		//object_addToDelta(s->body, spx, spy);
 
 	}
 }

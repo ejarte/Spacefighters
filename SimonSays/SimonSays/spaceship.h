@@ -23,6 +23,8 @@ void spaceship_setFacingAngle(Spaceship*s, double angle);
 void spaceship_setFacingToPoint(Spaceship* s, SDL_Point p);
 
 // Speed
+void spaceship_setDeltaX(Spaceship* s, double delta);
+void spaceship_setDeltaY(Spaceship* s, double delta);
 void spaceship_setDrag(Spaceship* s, double drag);
 void spaceship_setAcceleration(Spaceship* s, double acc);
 void spaceship_setMaxSpeed(Spaceship* s, double max);

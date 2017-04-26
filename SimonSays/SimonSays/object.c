@@ -24,11 +24,9 @@ struct Object_type {
 	bool activeAnim;			// flag for pausing/resuming current animation
 	bool collisionEnabled;		// flag for enabling/disabling collision
 	double hp;					// object hit points
-	Collision* collision;		// struct pointer containing collision dat
+	Collision* collision;		// struct pointer containing collision data
 
 	double mass;				// Object mass
-
-	void *data;					// Used to link object to other structs such as projectiles or spaceship
 };
  
 Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingIMGOffset, Sprite *s, Animation *a)

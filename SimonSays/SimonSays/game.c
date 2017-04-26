@@ -143,9 +143,9 @@ void game_init()
 
 		// Spaceship config
 		double drag, max_speed, acceleration, weight;
-		acceleration = 0.2;
-		drag = 0.90;
-		max_speed = 40;
+		acceleration = 0.4;
+		drag = 0.95;
+		max_speed = 15;
 
 		// Spaceship 1
 		tempObj = createObject(OBJ_TYPE_SPACESHIP, 100, 100, sprite_getFrameWidth(sprite[3]) / 2, sprite_getFrameHeight(sprite[3]) / 2, 0, 0, sprite[3], animation[3]);
@@ -363,7 +363,7 @@ void game_update()
 			// Prevents the spaceship from leaving the game universe
 			if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
 				if (!isInsideWorld(object[i])) {
-					printf("Spaceship is trying to leave this universe, stop it!\n");
+					//printf("Spaceship is trying to leave this universe, stop it!\n");
 				}
 			}
 			// Adds different types of objects to be removed when they leave the universe
@@ -376,17 +376,23 @@ void game_update()
 
 			if (getCollisionObjects(i) > 0) {
 
-				int k, spaceship, asteroid, projectile;
+				int k, spaceshipA, asteroid, projectile;
 
 				for (int j = 0; j < foundIndex; j++) {
 					k = list_objectsFound[j];
 
-					if (varifySpaceshipAndProjectileCollision(i, k, &projectile, &spaceship)) {
-						printf("Projectile (%d) collided with ship (%d)\n", projectile, spaceship);
+					if (varifySpaceshipAndProjectileCollision(i, k, &projectile, &spaceshipA)) {
+						printf("Projectile (%d) collided with ship (%d)\n", projectile, spaceshipA);
 					}
-					else if (varifySpaceshipAndAsteroidCollision(i, k, &spaceship, &asteroid)) {
+					else if (varifySpaceshipAndAsteroidCollision(i, k, &spaceshipA, &asteroid)) {
 						object_calculateCollisionSpeed(object[i], object[k]);
-						printf("Spaceship (%d) collided with asteroid (%d)\n", spaceship, asteroid);
+
+						printf("Spaceship (%d) collided with asteroid (%d)\n", spaceshipA, asteroid);
+						
+						if (spaceship_getBody(spaceship[0]) == object[spaceshipA]) {
+							spaceship_setDeltaX(spaceship[0], object_getDeltaX(object[spaceshipA]));
+							spaceship_setDeltaY(spaceship[0], object_getDeltaY(object[spaceshipA]));
+						}
 					}
 					else if (varifySpaceshipAndSpaceshipCollision(i, k)) {
 						object_calculateCollisionSpeed(object[i], object[k]);

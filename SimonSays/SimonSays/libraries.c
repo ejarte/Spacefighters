@@ -57,12 +57,10 @@ SDL_Point getPolarProjectionPoint(SDL_Point source, double distance, double angl
 
 double radiansToDegrees(double radians)
 {
-	double degrees;
 	return radians * 180 / M_PI;
 }
 
 double degreesToRadians(double degree)
 {
-	double radians;
 	return degree * (M_PI / 180);
 }
