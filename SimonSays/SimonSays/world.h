@@ -16,6 +16,7 @@
 #define OBJ_TYPE_PROJECTILE			9
 
 bool isInsideWorld(Object* o);
+bool hasLeftWorld(Object* o);
 void initWorld();
 void spawnEnteringAsteroid();
 void spawnNormalProjectile(Spaceship* source);

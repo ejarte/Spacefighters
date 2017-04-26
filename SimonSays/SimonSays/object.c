@@ -314,8 +314,8 @@ void object_calculateCollisionSpeed(Object* o1, Object *o2)
 	o1->delta_x = (1/ o1->mass) * (o1->delta_x - (force2 / force1 * o1->delta_x));
 	o2->delta_x = (1 / o1->mass) * (o2->delta_x - (force1 / force2 * o2->delta_x));
 
-	if (o1->delta_x > prev1x || o1->delta_x * -1 > prev1x)
-		o1->delta_x = prev1x;
+	//if (o1->delta_x > prev1x || o1->delta_x * -1 > prev1x)
+	//	o1->delta_x = prev1x;
 /*
 	double f1_x = o1->mass * o1->delta_x;
 	double f1_y = o1->mass * o1->delta_y;

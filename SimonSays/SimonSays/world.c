@@ -134,6 +134,7 @@ void spawnEnteringAsteroid()
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
 }
 
+/* Used by mostly spaceship to detect when it is trying to leave */
 bool isInsideWorld(Object* o)
 {
 	int w = object_getWidth(o)/2;
@@ -145,4 +146,18 @@ bool isInsideWorld(Object* o)
 	int botX = x + w;
 	int botY = y + h;
 	return (topX > 0 && topY > 0 && botX < getWindowWidth() && botY < getWindowHeight());
+}
+
+/* Used by misc objects to detect when they have guaranteedly left the world*/
+bool hasLeftWorld(Object* o) 
+{
+	int w = object_getWidth(o) / 2;
+	int h = object_getHeight(o) / 2;
+	int x = object_getX(o);
+	int y = object_getY(o);
+	int topX = x - w;
+	int topY = y - h;
+	int botX = x + w;
+	int botY = y + h;
+	return (topX < - 100 || topY < - 100 || botX > getWindowWidth() + 100 || botY > getWindowHeight() + 100);
 }
