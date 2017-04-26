@@ -46,6 +46,15 @@ double angleBetweenPointsRad(SDL_Point p1, SDL_Point p2)
 	return angle;
 }
 
+SDL_Point getPolarProjectionPoint(SDL_Point source, double distance, double angle_rad)
+{
+	SDL_Point p;
+	p.x = source.x + distance * cos(angle_rad);
+	p.y = source.y + distance * sin(angle_rad);
+	// Måste justeras för kvadranter!
+	return p;
+}
+
 double radiansToDegrees(double radians)
 {
 	double degrees;
