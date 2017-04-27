@@ -12,8 +12,6 @@
 #include "projectile.h"
 
 // Background
-//SDL_Rect background_sky_rect;
-//SDL_Texture* background_sky_texture;
 
 bool collided = false;
 SDL_Rect background_rect;
@@ -31,13 +29,6 @@ Effect *e1;
 Sprite* sprite[100];				
 Animation* animation[100];
 Spaceship* spaceship[20];
-
-/*
-#define STARS "images/skyForeground.png"
-#define SKY "images/skyBackground.png"
-
-*/
-
 
 void game_init()
 {
@@ -168,11 +159,19 @@ void game_init()
 		spawnAteroidTest();
 }
 
+//======================================================================================================
+// Game Execution
+//======================================================================================================
+
 void game_execute() {
 	game_events();
 	game_update();
 	game_render();
 }
+
+//======================================================================================================
+// Game Events
+//======================================================================================================
 
 void game_events()
 {
@@ -246,6 +245,11 @@ void game_events()
 	}
 }
 
+//======================================================================================================
+// Game Logic
+//======================================================================================================
+
+// Vad var detta??
 SDL_Point returnColPos(Spaceship * s1, Spaceship * s2)
 {
 	SDL_Point newDirection;
@@ -258,6 +262,7 @@ SDL_Point returnColPos(Spaceship * s1, Spaceship * s2)
 	return newDirection;
 }
 
+// Vad var detta?
 void spaceshipCollided(Spaceship * s1, Spaceship * s2)
 {
 	collided = true;
@@ -269,20 +274,12 @@ void spaceshipCollided(Spaceship * s1, Spaceship * s2)
 	//printf()//
 }
 
-//======================================================================================================
 
 int list_objectsFound[100];
 int foundIndex;
 
 int list_objectsToRemove[100];
 int removeIndex;
-
-
-bool isObjectTryingToLeaveWorld(Object* o)
-{
-	return !isInsideWorld(o);
-}
-
 
 int getCollisionObjects(int curIndex)
 {
@@ -294,6 +291,21 @@ int getCollisionObjects(int curIndex)
 		}
 	}
 	return foundIndex;
+}
+
+bool varifyAsteroidAndProjectileCollision(int i, int k, int* ptr_projectile, int* ptr_asteroid)
+{
+	if (object_getTypeId(object[k]) == OBJ_TYPE_PROJECTILE && object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID) {
+		*ptr_projectile = k;
+		*ptr_asteroid = i;
+		return true;
+	}
+	if (object_getTypeId(object[i]) == OBJ_TYPE_PROJECTILE && object_getTypeId(object[k]) == OBJ_TYPE_ASTEROID) {
+		*ptr_projectile = i;
+		*ptr_asteroid = k;
+		return true;
+	}
+	return false;
 }
 
 bool varifySpaceshipAndProjectileCollision(int i, int k, int* ptr_projectile, int* ptr_spaceship)
@@ -336,10 +348,6 @@ bool varifyAsteroidAndAsteroidCollision(int i, int k)
 	return object_getTypeId(object[k]) == OBJ_TYPE_ASTEROID && object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID;
 }
 
-
-
-
-
 void game_update()
 {
 	Object* tempObj;
@@ -362,9 +370,14 @@ void game_update()
 
 			// Prevents the spaceship from leaving the game universe
 			if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
-				if (!isInsideWorld(object[i])) {
+				int side;
+				if (!isInsideWorld(object[i], &side)) {
+					// Rebound - NEED FIX
 					int x = object_getDeltaX(object[i]);
 					int y = object_getDeltaY(object[i]);
+					int posX = object_getX(object[i]);
+					int posY = object_getY(object[i]);
+					printf("%d %d - %d %d - side: %d\n", x, y, posX, posY);
 					object_setDeltaX(object[i], -x);
 					object_setDeltaY(object[i], -y);
 				//	printf("Spaceship is trying to leave this universe, stop it!\n");
@@ -380,17 +393,30 @@ void game_update()
 
 			if (getCollisionObjects(i) > 0) {
 
-				int k, spaceship, asteroid, projectile;
+				int k, p_spaceship, p_asteroid, p_projectile;
 
 				for (int j = 0; j < foundIndex; j++) {
 					k = list_objectsFound[j];
 
-					if (varifySpaceshipAndProjectileCollision(i, k, &projectile, &spaceship)) {
-						printf("Projectile (%d) collided with ship (%d)\n", projectile, spaceship);
+					if (varifySpaceshipAndProjectileCollision(i, k, &p_projectile, &p_spaceship)) {
+						printf("Projectile (%d) collided with ship (%d)\n", p_projectile, p_spaceship);
+						if (projectile_hitOnSource(object[p_projectile], object[p_spaceship])) {
+							printf("HIT WAS ON SOURCE!\n");
+						}
+						else {
+							printf("HIT WAS NOT ON SOURCE!\n");
+							list_objectsToRemove[removeIndex++] = p_projectile;
+							destroyProjectile(projectile[p_projectile]);
+						}
 					}
-					else if (varifySpaceshipAndAsteroidCollision(i, k, &spaceship, &asteroid)) {
+					else if (varifyAsteroidAndProjectileCollision(i, k, &p_projectile, &p_asteroid)) {
+						printf("Projectile (%d) collided with asteroid (%d)\n", p_projectile, p_asteroid);
+						list_objectsToRemove[removeIndex++] = p_projectile;
+						destroyProjectile(projectile[p_projectile]);
+					}
+					else if (varifySpaceshipAndAsteroidCollision(i, k, &p_spaceship, &p_asteroid)) {
 						object_calculateCollisionSpeed(object[i], object[k]);
-						printf("Spaceship (%d) collided with asteroid (%d)\n", spaceship, asteroid);
+						printf("Spaceship (%d) collided with asteroid (%d)\n", p_spaceship, p_asteroid);
 					}
 					else if (varifySpaceshipAndSpaceshipCollision(i, k)) {
 						object_calculateCollisionSpeed(object[i], object[k]);

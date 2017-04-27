@@ -63,9 +63,10 @@ void spawnNormalProjectile(Spaceship* source)
 	object_setDeltaY(lastCreatedObj, y);
 	object_setCollisionCircleDiameter(lastCreatedObj, 5, 0, 0);
 	// Create projectile data
-	//createProjectile(lastCreatedObj, source, 1);
+	createProjectile(lastCreatedObj, source, 1);
 }
 
+// Remoev later
 void spawnAteroidTest()
 {
 	printf("Möte\n");
@@ -143,11 +144,13 @@ bool isInsideWorld(Object* o)
 	int h = object_getHeight(o)/2;
 	int x = object_getX(o);
 	int y = object_getY(o);
+	int window_w = getWindowWidth();
+	int window_h = getWindowHeight();
 	int topX = x - w;
 	int topY = y - h;
 	int botX = x + w;
 	int botY = y + h;
-	return (topX > 0 && topY > 0 && botX < getWindowWidth() && botY < getWindowHeight());
+	return (topX > 0 && topY > 0 && botX < window_w && botY < window_h);
 }
 
 /* Used by misc objects to detect when they have guaranteedly left the world*/
