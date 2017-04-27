@@ -45,25 +45,47 @@ void initWorld()
 	}
 }
 
-void spawnNormalProjectile(Spaceship* source)
+void spawnProjectile(Spaceship* source, int x, int y, int projSpeed, double angle)
 {
-	double angle;
-	int x, y, projSpeed;
-	SDL_Point pSource = spaceship_getPosition(source);
-
-	projSpeed = 12;												
-	angle = angleBetweenPointsRad(pSource, getMousePos());
-	x = (double) projSpeed * cos(angle);					
-	y = (double) projSpeed * sin(angle);	
-
-
-	// Create Object
-	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, pSource.x, pSource.y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
+	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, x, y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
+	x = (double)projSpeed * cos(angle);
+	y = (double)projSpeed * sin(angle);
 	object_setDeltaX(lastCreatedObj, x);
 	object_setDeltaY(lastCreatedObj, y);
 	object_setCollisionCircleDiameter(lastCreatedObj, 5, 0, 0);
 	// Create projectile data
 	createProjectile(lastCreatedObj, source, 1);
+}
+
+void spawnNormalProjectile(Spaceship* source)
+{
+	// SDL_Point getPolarProjectionPoint(SDL_Point source, double distance, double angle_rad);
+	double angle;
+	int x, y, projSpeed;
+	SDL_Point pSource = spaceship_getPosition(source);
+	projSpeed = 12;												
+	angle = angleBetweenPointsRad(pSource, getMousePos());
+	x = (double) projSpeed * cos(angle);					
+	y = (double) projSpeed * sin(angle);	
+	double facing = object_getFacingAngle(spaceship_getBody(source));
+	pSource = getPolarProjectionPoint(pSource, 100, degreesToRadians(facing));
+	spawnProjectile(source, pSource.x, pSource.y, projSpeed, angle);
+}
+
+void spawnProjectileSpecial_1(Spaceship* source)
+{
+	SDL_Point p;
+	Object* o = spaceship_getBody(source);
+	int x = object_getDeltaX(o);
+	int y = object_getDeltaY(o);
+	double angle = pointToAngle(x, y);
+	int projSpeed = 12;
+	p.x = object_getX(o);
+	p.y = object_getY(o);
+
+	for (int i = 0; i < 4; i++) {
+		spawnProjectile(source, p.x, p.y, projSpeed, angle + M_PI/2 * i + M_PI/6);
+	}
 }
 
 // Remoev later

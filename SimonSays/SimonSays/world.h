@@ -25,3 +25,4 @@ bool hasLeftWorld(Object* o);
 void initWorld();
 void spawnEnteringAsteroid();
 void spawnNormalProjectile(Spaceship* source);
+void spawnProjectileSpecial_1(Spaceship* source);

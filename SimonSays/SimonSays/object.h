@@ -85,8 +85,6 @@ void object_calculateCollisionSpeed(Object* o1, Object *o2);
 
 // Delta X & Y
 
-double pointToAngle(double x, double y);
-
 // Ska vi använda oss av vektorer istället?
 
 void object_setDeltaX(Object *o, int delta);

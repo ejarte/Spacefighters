@@ -204,7 +204,9 @@ void game_events()
 
 			if (mouseEventPressed(SDL_BUTTON_LEFT)) {
 				spawnNormalProjectile(spaceship[0]);
-				double testDoub = pointToAngle(0.0, 1.0); // x & y
+			}
+			if (mouseEventPressed(SDL_BUTTON_RIGHT)) {
+				spawnProjectileSpecial_1(spaceship[0]);
 			}
 
 			// Movement ship A
