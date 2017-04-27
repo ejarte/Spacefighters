@@ -164,7 +164,7 @@ void spawnEnteringAsteroid()
 }
 
 /* Used by mostly spaceship to detect when it is trying to leave */
-bool isInsideWorld(Object* o)
+bool isInsideWorld(Object* o, int *side)
 {
 	int w = object_getWidth(o)/2;
 	int h = object_getHeight(o)/2;
@@ -176,7 +176,23 @@ bool isInsideWorld(Object* o)
 	int topY = y - h;
 	int botX = x + w;
 	int botY = y + h;
-	return (topX > 0 && topY > 0 && botX < window_w && botY < window_h);
+	bool isInside = true;
+	isInside = (topX > 0 && topY > 0 && botX < window_w && botY < window_h);
+
+	if (isInside == false)
+	{
+		if (x > window_w - 30 || x < 30) //right or left
+		{
+			*side = 0;
+		}
+
+		if (y > window_h -40 || y < 40) //top or bottom
+		{
+			*side = 1;
+		}
+	}
+		
+	return isInside;
 }
 
 /* Used by misc objects to detect when they have guaranteedly left the world*/

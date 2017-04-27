@@ -375,6 +375,30 @@ bool varifyAsteroidAndAsteroidCollision(int i, int k)
 	return object_getTypeId(object[k]) == OBJ_TYPE_ASTEROID && object_getTypeId(object[i]) == OBJ_TYPE_ASTEROID;
 }
 
+void wallColBotTop(Object *s, int thatOne)
+{
+	int x = object_getDeltaX(object[thatOne]);
+	int y = object_getDeltaY(object[thatOne]);
+	int posX = object_getX(object[thatOne]);
+	int posY = object_getY(object[thatOne]);
+//	printf("%d %d - %d %d - side: %d\n", x, y, posX, posY);
+	object_setDeltaX(object[thatOne], x); //same delta_x but just slower
+	object_setDeltaY(object[thatOne], -y);
+	//	printf("Spaceship is trying to leave this universe, stop it!\n");
+}
+
+void wallColLeftRight(Object *s, int thatOne)
+{
+	int x = object_getDeltaX(object[thatOne]);
+	int y = object_getDeltaY(object[thatOne]);
+	int posX = object_getX(object[thatOne]);
+	int posY = object_getY(object[thatOne]);
+	//	printf("%d %d - %d %d - side: %d\n", x, y, posX, posY);
+	object_setDeltaX(object[thatOne], -x); //same delta_x but just slower
+	object_setDeltaY(object[thatOne], y);
+	//	printf("Spaceship is trying to leave this universe, stop it!\n");
+}
+
 void game_update()
 {
 	Object* tempObj;
@@ -399,15 +423,14 @@ void game_update()
 			if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
 				int side;
 				if (!isInsideWorld(object[i], &side)) {
-					// Rebound - NEED FIX
-					int x = object_getDeltaX(object[i]);
-					int y = object_getDeltaY(object[i]);
-					int posX = object_getX(object[i]);
-					int posY = object_getY(object[i]);
-					printf("%d %d - %d %d - side: %d\n", x, y, posX, posY);
-					object_setDeltaX(object[i], -x);
-					object_setDeltaY(object[i], -y);
-				//	printf("Spaceship is trying to leave this universe, stop it!\n");
+					int whichOne = i; //which spaceship to check for
+					if (side == 1) //collided top or bottom on the window
+					{
+						wallColBotTop(object[i], whichOne);
+					}
+					else {
+						wallColLeftRight(object[i], whichOne);
+					}
 				}
 			}
 			// Adds different types of objects to be removed when they leave the universe
