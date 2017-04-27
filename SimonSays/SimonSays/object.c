@@ -439,6 +439,11 @@ void objectIndex_deindexInt(int index)
 	}
 }
 
+double pointToAngle(double VectorX, double VectorY)
+{
+	return atan2(VectorY, VectorX);
+}
+
 void objectIndex_print()
 {
 	printf("Object Indexer...\n");
