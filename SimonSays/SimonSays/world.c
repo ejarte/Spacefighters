@@ -2,8 +2,6 @@
 	Last modified: 2017-04-25
 	
 	To-do:
-	1) Adding collision to asteroids
-	2) Adding hitpoints to asteroids
 	3) Adding item drops to asteroids
 	4) Generating dx and dy based on angle
 	5) Add a weight variable to vary likelyhood of lower/higher speeds
@@ -27,6 +25,7 @@
 #define MIN_SCALE		1
 #define MAX_SCALE		5
 #define ASTEROID_MASS	5
+#define ASTEROID_LIFE	5
 
 Sprite* spr_asteroid_gray;
 Animation* asteroid_anim[12];
@@ -92,7 +91,7 @@ void spawnProjectileSpecial_1(Spaceship* source)
 	}
 }
 
-// Remoev later
+// Remove later
 void spawnAteroidTest()
 {
 	printf("Möte\n");
@@ -123,7 +122,7 @@ void spawnEnteringAsteroid()
 
 	side = rand() % 4;
 	facingAngle = rand() % 360;
-	scale = rand() % MAX_SCALE + MIN_SCALE;
+	scale = rand() % MAX_SCALE + MIN_SCALE;			// NOT YET IMPLEMENTED
 	screen_w = getWindowWidth();
 	screen_h = getWindowHeight();
 
@@ -160,7 +159,8 @@ void spawnEnteringAsteroid()
 	object_setDeltaX(lastCreatedObj, dx);
 	object_setDeltaY(lastCreatedObj, dy);
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
-	object_setMass(lastCreatedObj, 5);
+	object_setMass(lastCreatedObj, ASTEROID_MASS);
+	object_setLife(lastCreatedObj, ASTEROID_LIFE);
 }
 
 /* Used by mostly spaceship to detect when it is trying to leave */

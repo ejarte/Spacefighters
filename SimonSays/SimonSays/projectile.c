@@ -44,14 +44,13 @@ void destroyProjectile(Projectile *p)
 	projectile[i] = NULL;
 }
 
-// Byt namn på detta till source t.ex.
 /* if the custom value of the object is equal to the object id of the other it means that one of them is a projectile */
-bool projectile_hitOnSource(Object* proj_obj, Object* other_obj)
+bool projectile_objectIsSource(Object* proj_obj, Object* other_obj)
 {
 	return object_getCustomId(proj_obj) == object_getObjId(other_obj);
 }
 
-bool projectile_ObjIsValidTarget(Object* source, Object* target)
+double projectile_getDamage(Projectile *p)
 {
-
+	return p->damage;
 }

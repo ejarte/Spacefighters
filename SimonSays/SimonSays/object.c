@@ -431,6 +431,10 @@ int indexObject()
 
 void deindexObject(Object *o)
 {
+	if (o == NULL) {
+		printf("Error: deindexObject - nullpointer reference.\n");
+		return;
+	}
 	int index = o->obj_id;
 	if (object[index] != NULL) {
 		object[index] = NULL;

@@ -163,6 +163,7 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="audio.h" />
     <ClInclude Include="collision.h" />
+    <ClInclude Include="effect.h" />
     <ClInclude Include="events.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="game_state.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="animation.c" />
     <ClCompile Include="audio.c" />
     <ClCompile Include="collision.c" />
+    <ClCompile Include="effect.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="libraries.c" />

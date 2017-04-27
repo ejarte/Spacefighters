@@ -23,12 +23,13 @@ SDL_Rect stars_rect;
 SDL_Texture* stars_box;
 SDL_Texture *starsImage;
 
-// old test 
-Effect *e1; 
 
 Sprite* sprite[100];				
 Animation* animation[100];
 Spaceship* spaceship[20];
+
+char* user_input;
+#define MSG_MAX_CHAR 200
 
 void game_init()
 {
@@ -141,14 +142,17 @@ void game_init()
 		// Spaceship 1
 		tempObj = createObject(OBJ_TYPE_SPACESHIP, 100, 100, sprite_getFrameWidth(sprite[3]) / 2, sprite_getFrameHeight(sprite[3]) / 2, 0, 0, sprite[3], animation[3]);
 		object_setCollisionBoxDimension(tempObj, 60, 60, 0, 0);
+		object_setLife(tempObj, 20);
 		spaceship[0] = createSpaceship(tempObj);
 		spaceship_setDrag(spaceship[0], drag);
 		spaceship_setAcceleration(spaceship[0], acceleration);
 		spaceship_setMaxSpeed(spaceship[0], max_speed);	
 		spaceship_setMass(spaceship[0]);
 
+
 		tempObj = createObject(OBJ_TYPE_SPACESHIP, 800, 100, sprite_getFrameWidth(sprite[3]) / 2, sprite_getFrameHeight(sprite[3]) / 2, 0, 0, sprite[3], animation[3]);
 		object_setCollisionBoxDimension(tempObj, 60, 60, 0, 0);
+		object_setLife(tempObj, 20);
 		spaceship[1] = createSpaceship(tempObj);
 		spaceship_setDrag(spaceship[1], drag);
 		spaceship_setAcceleration(spaceship[1], acceleration);
@@ -188,17 +192,27 @@ void game_events()
 
 		// Sends or terminates the chat mode
 		if (keyEventPressed(SDL_SCANCODE_RETURN)) {
-			printf("send message...\n");
+			printf("MSG: %s\n", user_input);
 			disableTextInput();
+			free(user_input);	// Deallocates the memory used
+		}
+		else {
+			if (textEvent()) {
+				strcat(user_input, getTextInput());
+				printf("s: %s\n", getTextInput());
+			}
 		}
 	}
 	else {
 		// Starts chat mode
 		if (keyEventPressed(SDL_SCANCODE_RETURN)) {
 			enableTextInput();
-			printf("recording message... Cannot move.\n");
+			user_input = malloc(MSG_MAX_CHAR);	// allocates memory for the chat message
+			user_input[0] = '\0';
+			printf("Type in your message...\n");
 		}
 		else {
+
 
 			// Shoot 
 			if (mouseEventHeld(SDL_BUTTON_LEFT)) {
@@ -409,21 +423,42 @@ void game_update()
 					k = list_objectsFound[j];
 
 					if (varifySpaceshipAndProjectileCollision(i, k, &p_projectile, &p_spaceship)) {
-						printf("Projectile (%d) collided with ship (%d)\n", p_projectile, p_spaceship);
-						if (projectile_hitOnSource(object[p_projectile], object[p_spaceship])) {
-							//printf("HIT WAS ON SOURCE!\n");
-						}
-						else {
-						//	printf("HIT WAS NOT ON SOURCE!\n");
+
+						// Prevents hit on source spaceship
+						if (!projectile_objectIsSource(object[p_projectile], object[p_spaceship])) {
 							list_objectsToRemove[removeIndex++] = p_projectile;
 							destroyProjectile(projectile[p_projectile]);
 						}
 					}
+
+					// Projectile hits asteroid
+
 					else if (varifyAsteroidAndProjectileCollision(i, k, &p_projectile, &p_asteroid)) {
-						printf("Projectile (%d) collided with asteroid (%d)\n", p_projectile, p_asteroid);
-						list_objectsToRemove[removeIndex++] = p_projectile;
+					
+						double life = object_getLife(object[p_asteroid]) - projectile_getDamage(projectile[p_projectile]);
+
+
+						if (life <= 0) {
+							int x = object_getX(object[p_asteroid]);
+							int y = object_getY(object[p_asteroid]);
+							printf("Asteroid destruction detected.\n");
+							// Create effect
+
+							tempObj = createObject(-1, x, y, sprite_getFrameWidth(sprite[2]) / 3, sprite_getFrameHeight(sprite[2]) / 3, 0, 0, sprite[2], animation[2]);
+							createEffect(tempObj, true);
+							// Remove asteroid object
+							list_objectsToRemove[removeIndex++] = p_asteroid;
+						}
+						else {
+							object_setLife(object[p_asteroid], life);
+							printf("asteroid %d has %f life remaing\n", p_asteroid, life);
+						}
+						list_objectsToRemove[removeIndex++] = p_projectile;	
 						destroyProjectile(projectile[p_projectile]);
 					}
+
+					// Collision between spaceship and asteroid
+
 					else if (varifySpaceshipAndAsteroidCollision(i, k, &p_spaceship, &p_asteroid)) {
 						object_calculateCollisionSpeed(object[i], object[k]);
 						printf("Spaceship (%d) collided with asteroid (%d)\n", p_spaceship, p_asteroid);
@@ -443,6 +478,7 @@ void game_update()
 	for (int i = 0; i < removeIndex; i++) {
 		destroyObject(object[list_objectsToRemove[i]]);
 	}
+	removeFinishedEffects();
 }
 
 void game_render()
@@ -470,12 +506,14 @@ void game_render()
 	SDL_RenderCopy(renderer, backgroundImage, &back_rect, &background_rect);
 	SDL_RenderCopy(renderer, starsImage, &stars_rect, &background_rect);
 
-	// Handle all objects in the game
+	// Render all objects in the game
 	for (int i = 0; i < getObjectIndexMax(); i++) {
 		if (object[i] != NULL) {
 			object_tick(object[i]);
 			object_render(renderer, object[i], true);
 		}
 	}
+
+
 	SDL_RenderPresent(renderer);
 }

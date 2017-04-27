@@ -64,6 +64,9 @@ Sprite *createSprite(SDL_Renderer* renderer, char* filepath, int columns, int ro
 
 void destroySprite(Sprite *ptr_sprite)
 {
+	if (ptr_sprite != NULL) {
+		printf("Error: destroySprite - Null pointer reference.\n");
+	}
 	if (ptr_sprite->texture != NULL) {
 		SDL_DestroyTexture(ptr_sprite->texture);
 	}
