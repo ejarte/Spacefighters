@@ -363,7 +363,11 @@ void game_update()
 			// Prevents the spaceship from leaving the game universe
 			if (object_getTypeId(object[i]) == OBJ_TYPE_SPACESHIP) {
 				if (!isInsideWorld(object[i])) {
-					printf("Spaceship is trying to leave this universe, stop it!\n");
+					int x = object_getDeltaX(object[i]);
+					int y = object_getDeltaY(object[i]);
+					object_setDeltaX(object[i], -x);
+					object_setDeltaY(object[i], -y);
+				//	printf("Spaceship is trying to leave this universe, stop it!\n");
 				}
 			}
 			// Adds different types of objects to be removed when they leave the universe
