@@ -1,6 +1,5 @@
 #include "spaceship.h"
 #include "graphics.h"
-#include "Object.h"
 
 #define STATUS_DEAD				1
 #define STATUS_ALIVE			2
@@ -150,7 +149,8 @@ void spaceship_accelerateX(Spaceship *s)
 void spaceship_accelerateY(Spaceship* s)
 {
 	s->speed_y += s->acc;
-	overSpeedlimit(&s);
+	if (s->speed_y > s->max_speed)
+		s->speed_y = s->max_speed;
 }
 
 void spaceship_deaccelerateX(Spaceship *s)
@@ -164,17 +164,15 @@ void spaceship_deaccelerateY(Spaceship *s)
 {
 	s->speed_y -= s->acc;
 	overSpeedlimit(&s);
+	if (s->speed_y < -1*s->max_speed)
+		s->speed_y = -1*s->max_speed;
 }
 
 double overSpeedlimit(Spaceship *s)
 {
 	if (s->speed_y > s->max_speed && s->speed_y > 0)
 	{
-		s->speed_y = 0;//s->max_speed;
-	}
-	else if (s->speed_y < -s->max_speed && s->speed_y < 0)
-	{
-		s->speed_y = 0; //-s->max_speed;
+		s->speed_y = s->max_speed;
 	}
 }
 

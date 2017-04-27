@@ -7,8 +7,8 @@ struct Object_type {
 	Animation *anim;			// Animation
 	Sprite *sprite;				// Sprite
 	SDL_Point* pos_center;		// Center position
-	int delta_x;				// Change in x axis
-	int delta_y;				// Change in y axis
+	double delta_x;				// Change in x axis
+	double delta_y;				// Change in y axis
 	//int cyclesPerDelta;			// Number of frames before delta x and y is updated
 	//int tick;
 	//SDL_Point* pos_offset;	// Offset from center position x- and y-axis.		// NOT IMPLEMENTED
@@ -304,10 +304,11 @@ int object_getCustomId(Object *o)
 
 void object_calculateCollisionSpeed(Object* o1, Object *o2)
 {
-	double tempX, tempY;
+	double tempX, tempY, tempMass;
 
-	tempX = o1->delta_x;
+	tempX = o1->delta_x; //sparar värdena temporärt i temp så att andra objektet kan få dess hastighet
 	tempY = o1->delta_y;
+	tempMass = 0.5;
 
 	o1->delta_x = o2->delta_x;
 	o2->delta_x = tempX;
