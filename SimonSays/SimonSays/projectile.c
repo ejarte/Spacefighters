@@ -34,6 +34,10 @@ Projectile* createProjectile(Object* projectileObj, Spaceship* source, double da
 
 void destroyProjectile(Projectile *p)
 {
+	if (p == NULL) {
+		printf("Error: destroyProjectile - nullpointer reference!");
+		return;
+	}
 	printf("projectile removed: %d\n.", p->index);
 	int i = p->index;
 	free(projectile[i]);

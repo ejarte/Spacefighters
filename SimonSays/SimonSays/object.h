@@ -58,6 +58,12 @@ double* object_getFacingAnglePtr(Object* o);
 /* links the facing angle to a pointer, useful when linking two objects together */
 void object_setFacingAnglePtr(Object* o, double* p);
 
+// Status
+
+void object_setLife(Object* o, double life);
+double object_getLife(Object* o);
+void object_addLife(Object* o, double life);
+
 // Collision
 
 void object_setCollisionBoxDimension(Object* o, int w, int h, int x_offset, int y_offset);

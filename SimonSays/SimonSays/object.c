@@ -27,8 +27,6 @@ struct Object_type {
 	Collision* collision;		// struct pointer containing collision dat
 
 	double mass;				// Object mass
-
-	void *data;					// Used to link object to other structs such as projectiles or spaceship
 };
  
 Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingIMGOffset, Sprite *s, Animation *a)
@@ -158,6 +156,23 @@ double* object_getFacingAnglePtr(Object* o)
 void object_setFacingAnglePtr(Object* o, double* p)
 {
 	o->facingAnglePtr = p;
+}
+
+// Status
+
+void object_setLife(Object* o, double life)
+{
+	o->hp = life;
+}
+
+double object_getLife(Object* o)
+{
+	return o->hp;
+}
+
+void object_addLife(Object* o, double life)
+{
+	o->hp += life;
 }
 
 // Collision

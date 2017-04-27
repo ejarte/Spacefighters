@@ -45,6 +45,7 @@ void initWorld()
 	}
 }
 
+/* Internal function to spawn projectiles on the world from a given spaceship */
 void spawnProjectile(Spaceship* source, int x, int y, int projSpeed, double angle)
 {
 	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, x, y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
