@@ -10,6 +10,8 @@
 
 #define SPACESHIP_MASS	10
 
+#define SPACESHIP_GUN_COOLDOWN 200
+
 struct Spaceship_type {
 
 	// Representation
@@ -32,6 +34,9 @@ struct Spaceship_type {
 	double hp;
 	double armor;
 	double damage;
+
+	unsigned int shoot_delay_expires;
+	int shoot_delay_ms;
 };
 
 Spaceship *createSpaceship(Object *body)
@@ -43,6 +48,8 @@ Spaceship *createSpaceship(Object *body)
 	s->speed_y = 0;
 	s->mobile = true;
 	s->p = object_getPosPtr(body);
+	s->shoot_delay_ms = SPACESHIP_GUN_COOLDOWN;		// default delay
+	s->shoot_delay_expires = s->shoot_delay_ms + 1;
 	return s;
 }
 
@@ -226,12 +233,31 @@ void spaceship_disableMobility(Spaceship *s)
 	s->mobile = false;
 }
 
+// Projectiles and delay
+
+
+bool spaceship_isGunOnCooldown(Spaceship *s)
+{
+	return SDL_GetTicks() <= s->shoot_delay_expires;
+}
+
+void spaceship_setGunDelayCooldown(Spaceship *s, int time_ms)
+{
+	s->shoot_delay_ms = time_ms;
+}
+
 // Actions
 
-void spaceship_onMove() 
+void spaceship_setCooldownExpiration(Spaceship *s)
 {
-
+	s->shoot_delay_expires = SDL_GetTicks() + s->shoot_delay_ms;
 }
+
+void spaceship_resetCooldown(Spaceship *s)
+{
+	s->shoot_delay_expires = SDL_GetTicks() - 1;
+}
+
 
 void spaceship_onDeath(Spaceship* s)
 {

@@ -201,12 +201,19 @@ void game_events()
 		else {
 
 			// Shoot 
+			if (mouseEventHeld(SDL_BUTTON_LEFT)) {
 
-			if (mouseEventPressed(SDL_BUTTON_LEFT)) {
-				spawnNormalProjectile(spaceship[0]);
+				if (!spaceship_isGunOnCooldown(spaceship[0])) {
+					spaceship_setCooldownExpiration(spaceship[0]);
+					spawnNormalProjectile(spaceship[0]);
+				}
 			}
-			if (mouseEventPressed(SDL_BUTTON_RIGHT)) {
-				spawnProjectileSpecial_1(spaceship[0]);
+
+			if (mouseEventHeld(SDL_BUTTON_RIGHT)) {
+				if (!spaceship_isGunOnCooldown(spaceship[0])) {
+					spaceship_setCooldownExpiration(spaceship[0]);
+					spawnProjectileSpecial_1(spaceship[0]);
+				}
 			}
 
 			// Movement ship A
@@ -404,10 +411,10 @@ void game_update()
 					if (varifySpaceshipAndProjectileCollision(i, k, &p_projectile, &p_spaceship)) {
 						printf("Projectile (%d) collided with ship (%d)\n", p_projectile, p_spaceship);
 						if (projectile_hitOnSource(object[p_projectile], object[p_spaceship])) {
-							printf("HIT WAS ON SOURCE!\n");
+							//printf("HIT WAS ON SOURCE!\n");
 						}
 						else {
-							printf("HIT WAS NOT ON SOURCE!\n");
+						//	printf("HIT WAS NOT ON SOURCE!\n");
 							list_objectsToRemove[removeIndex++] = p_projectile;
 							destroyProjectile(projectile[p_projectile]);
 						}

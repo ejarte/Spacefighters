@@ -67,10 +67,12 @@ void spawnNormalProjectile(Spaceship* source)
 	angle = angleBetweenPointsRad(pSource, getMousePos());
 	x = (double) projSpeed * cos(angle);					
 	y = (double) projSpeed * sin(angle);	
-	double facing = object_getFacingAngle(spaceship_getBody(source));
-	pSource = getPolarProjectionPoint(pSource, 100, degreesToRadians(facing));
+	//double facing = object_getFacingAngle(spaceship_getBody(source));
+	//pSource = getPolarProjectionPoint(pSource, 100, degreesToRadians(facing));
 	spawnProjectile(source, pSource.x, pSource.y, projSpeed, angle);
 }
+
+// NEED FIX 
 
 void spawnProjectileSpecial_1(Spaceship* source)
 {
@@ -78,13 +80,14 @@ void spawnProjectileSpecial_1(Spaceship* source)
 	Object* o = spaceship_getBody(source);
 	int x = object_getDeltaX(o);
 	int y = object_getDeltaY(o);
-	double angle = pointToAngle(x, y);
+	//double angle = pointToAngle(x, y);
+	double angle = object_getFacingAngle(spaceship_getBody(source));
 	int projSpeed = 12;
 	p.x = object_getX(o);
 	p.y = object_getY(o);
 
 	for (int i = 0; i < 4; i++) {
-		spawnProjectile(source, p.x, p.y, projSpeed, angle + M_PI/2 * i + M_PI/6);
+		spawnProjectile(source, p.x, p.y, projSpeed, (angle + M_PI/4) + M_PI / 2 * i);
 	}
 }
 
