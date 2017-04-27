@@ -8,8 +8,10 @@
 typedef struct Object_type Object;
 
 #define MAX_OBJECTS 1000
-#define HP_DEAD				0
-#define HP_INVULNERABLE		-1
+#define HP_DEAD				0	// NOT IMPLEMENTED
+#define HP_INVULNERABLE		-1	// NOT IMPLEMENTED
+
+int tot_created_obj;
 
 Object* object[MAX_OBJECTS];
 

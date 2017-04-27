@@ -35,7 +35,7 @@ Projectile* createProjectile(Object* projectileObj, Spaceship* source, double da
 void destroyProjectile(Projectile *p)
 {
 	if (p == NULL) {
-		printf("Error: destroyProjectile - nullpointer reference!");
+		printf("Error: destroyProjectile - null pointer reference!");
 		return;
 	}
 	printf("projectile removed: %d\n.", p->index);
@@ -52,5 +52,9 @@ bool projectile_objectIsSource(Object* proj_obj, Object* other_obj)
 
 double projectile_getDamage(Projectile *p)
 {
+	if (p == NULL) {
+		printf("Error: projectile_getDamage - null pointer reference!\n");
+		return 0.;
+	}
 	return p->damage;
 }

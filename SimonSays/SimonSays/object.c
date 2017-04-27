@@ -28,9 +28,13 @@ struct Object_type {
 
 	double mass;				// Object mass
 };
+
  
 Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingIMGOffset, Sprite *s, Animation *a)
 {
+	// Debug
+	tot_created_obj++;
+
 	Object* o = malloc(sizeof(Object));	// Allokerar 
 	o->pos_center = malloc(sizeof(SDL_Point));
 	o->type_id = type;
@@ -404,6 +408,8 @@ void initObjectIndex()
 	}
 	obj_index.max = 0;
 	obj_index.recycled = 0;
+
+	tot_created_obj = 0;
 }
 
 int getObjectIndexMax()

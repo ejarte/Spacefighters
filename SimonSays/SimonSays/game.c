@@ -10,6 +10,7 @@
 #include "world.h"
 #include "collision.h"
 #include "projectile.h"
+#include "text_commands.h"
 
 // Background
 
@@ -192,7 +193,9 @@ void game_events()
 
 		// Sends or terminates the chat mode
 		if (keyEventPressed(SDL_SCANCODE_RETURN)) {
-			printf("MSG: %s\n", user_input);
+			if (!runCommands(user_input)) {
+				printf("MSG: %s\n", user_input);
+			}
 			disableTextInput();
 			free(user_input);	// Deallocates the memory used
 		}
