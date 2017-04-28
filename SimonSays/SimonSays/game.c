@@ -393,10 +393,8 @@ void wallColLeftRight(Object *s, int thatOne)
 	int y = object_getDeltaY(object[thatOne]);
 	int posX = object_getX(object[thatOne]);
 	int posY = object_getY(object[thatOne]);
-	//	printf("%d %d - %d %d - side: %d\n", x, y, posX, posY);
-	object_setDeltaX(object[thatOne], -x); //same delta_x but just slower
-	object_setDeltaY(object[thatOne], y);
-	//	printf("Spaceship is trying to leave this universe, stop it!\n");
+	object_setDeltaX(object[thatOne], -x); 
+	object_setDeltaY(object[thatOne], y); //same delta_x but just slower
 }
 
 void game_update()
