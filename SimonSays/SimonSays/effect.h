@@ -3,14 +3,10 @@
 #include "libraries.h"
 #include "sprite.h"
 #include "animation.h"
-
+#include "object.h"
 
 typedef struct Effect_type Effect;
-
-
-Effect *createEffect(Object* o, bool oneShot);
-void destroyEffect(Effect *e);;
-//void effect_tick(Effect *e);
-//void effect_render(SDL_Renderer* renderer, Effect *e, SDL_Rect disp_rect);
-
-//void effect_reset(Effect *e);
+Effect *createEffect(Object* o);
+void destroyEffect(Effect *e);
+void removeFinishedEffects();
+Object* effect_getObject(Effect* e);

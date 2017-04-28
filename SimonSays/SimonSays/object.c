@@ -7,8 +7,8 @@ struct Object_type {
 	Animation *anim;			// Animation
 	Sprite *sprite;				// Sprite
 	SDL_Point* pos_center;		// Center position
-	int delta_x;				// Change in x axis
-	int delta_y;				// Change in y axis
+	double delta_x;				// Change in x axis
+	double delta_y;				// Change in y axis
 	//int cyclesPerDelta;			// Number of frames before delta x and y is updated
 	//int tick;
 	//SDL_Point* pos_offset;	// Offset from center position x- and y-axis.		// NOT IMPLEMENTED
@@ -28,9 +28,13 @@ struct Object_type {
 
 	double mass;				// Object mass
 };
+
  
 Object* createObject(int type, int x, int y, int w, int h, double facingAngle, double facingIMGOffset, Sprite *s, Animation *a)
 {
+	// Debug
+	tot_created_obj++;
+
 	Object* o = malloc(sizeof(Object));	// Allokerar 
 	o->pos_center = malloc(sizeof(SDL_Point));
 	o->type_id = type;
@@ -156,6 +160,23 @@ double* object_getFacingAnglePtr(Object* o)
 void object_setFacingAnglePtr(Object* o, double* p)
 {
 	o->facingAnglePtr = p;
+}
+
+// Status
+
+void object_setLife(Object* o, double life)
+{
+	o->hp = life;
+}
+
+double object_getLife(Object* o)
+{
+	return o->hp;
+}
+
+void object_addLife(Object* o, double life)
+{
+	o->hp += life;
 }
 
 // Collision
@@ -302,10 +323,11 @@ int object_getCustomId(Object *o)
 
 void object_calculateCollisionSpeed(Object* o1, Object *o2)
 {
-	double tempX, tempY;
+	double tempX, tempY, tempMass;
 
-	tempX = o1->delta_x;
+	tempX = o1->delta_x; //sparar värdena temporärt i temp så att andra objektet kan få dess hastighet
 	tempY = o1->delta_y;
+	tempMass = 0.5;
 
 	o1->delta_x = o2->delta_x;
 	o2->delta_x = tempX;
@@ -386,6 +408,8 @@ void initObjectIndex()
 	}
 	obj_index.max = 0;
 	obj_index.recycled = 0;
+
+	tot_created_obj = 0;
 }
 
 int getObjectIndexMax()
@@ -413,6 +437,10 @@ int indexObject()
 
 void deindexObject(Object *o)
 {
+	if (o == NULL) {
+		printf("Error: deindexObject - nullpointer reference.\n");
+		return;
+	}
 	int index = o->obj_id;
 	if (object[index] != NULL) {
 		object[index] = NULL;

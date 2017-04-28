@@ -15,8 +15,14 @@
 #define OBJ_TYPE_ITEM_SPEED			8
 #define OBJ_TYPE_PROJECTILE			9
 
+#define WORLD_LEFT					0
+#define WORLD_RIGHT					1
+#define WORLD_TOP					2
+#define WORLD_BOT					3
+
 bool isInsideWorld(Object* o);
 bool hasLeftWorld(Object* o);
 void initWorld();
 void spawnEnteringAsteroid();
 void spawnNormalProjectile(Spaceship* source);
+void spawnProjectileSpecial_1(Spaceship* source);

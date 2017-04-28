@@ -2,8 +2,6 @@
 	Last modified: 2017-04-25
 	
 	To-do:
-	1) Adding collision to asteroids
-	2) Adding hitpoints to asteroids
 	3) Adding item drops to asteroids
 	4) Generating dx and dy based on angle
 	5) Add a weight variable to vary likelyhood of lower/higher speeds
@@ -27,6 +25,7 @@
 #define MIN_SCALE		1
 #define MAX_SCALE		5
 #define ASTEROID_MASS	5
+#define ASTEROID_LIFE	5
 
 Sprite* spr_asteroid_gray;
 Animation* asteroid_anim[12];
@@ -45,27 +44,54 @@ void initWorld()
 	}
 }
 
-void spawnNormalProjectile(Spaceship* source)
+/* Internal function to spawn projectiles on the world from a given spaceship */
+void spawnProjectile(Spaceship* source, int x, int y, int projSpeed, double angle)
 {
-	double angle;
-	int x, y, projSpeed;
-	SDL_Point pSource = spaceship_getPosition(source);
-
-	projSpeed = 12;												
-	angle = angleBetweenPointsRad(pSource, getMousePos());
-	x = (double) projSpeed * cos(angle);					
-	y = (double) projSpeed * sin(angle);	
-
-
-	// Create Object
-	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, pSource.x, pSource.y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
+	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, x, y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
+	x = (double)projSpeed * cos(angle);
+	y = (double)projSpeed * sin(angle);
 	object_setDeltaX(lastCreatedObj, x);
 	object_setDeltaY(lastCreatedObj, y);
 	object_setCollisionCircleDiameter(lastCreatedObj, 5, 0, 0);
 	// Create projectile data
-	//createProjectile(lastCreatedObj, source, 1);
+	createProjectile(lastCreatedObj, source, 1);
 }
 
+void spawnNormalProjectile(Spaceship* source)
+{
+	// SDL_Point getPolarProjectionPoint(SDL_Point source, double distance, double angle_rad);
+	double angle;
+	int x, y, projSpeed;
+	SDL_Point pSource = spaceship_getPosition(source);
+	projSpeed = 12;												
+	angle = angleBetweenPointsRad(pSource, getMousePos());
+	x = (double) projSpeed * cos(angle);					
+	y = (double) projSpeed * sin(angle);	
+	//double facing = object_getFacingAngle(spaceship_getBody(source));
+	//pSource = getPolarProjectionPoint(pSource, 100, degreesToRadians(facing));
+	spawnProjectile(source, pSource.x, pSource.y, projSpeed, angle);
+}
+
+// NEED FIX 
+
+void spawnProjectileSpecial_1(Spaceship* source)
+{
+	SDL_Point p;
+	Object* o = spaceship_getBody(source);
+	int x = object_getDeltaX(o);
+	int y = object_getDeltaY(o);
+	//double angle = pointToAngle(x, y);
+	double angle = object_getFacingAngle(spaceship_getBody(source));
+	int projSpeed = 12;
+	p.x = object_getX(o);
+	p.y = object_getY(o);
+
+	for (int i = 0; i < 4; i++) {
+		spawnProjectile(source, p.x, p.y, projSpeed, (angle + M_PI/4) + M_PI / 2 * i);
+	}
+}
+
+// Remove later
 void spawnAteroidTest()
 {
 	printf("Möte\n");
@@ -96,7 +122,7 @@ void spawnEnteringAsteroid()
 
 	side = rand() % 4;
 	facingAngle = rand() % 360;
-	scale = rand() % MAX_SCALE + MIN_SCALE;
+	scale = rand() % MAX_SCALE + MIN_SCALE;			// NOT YET IMPLEMENTED
 	screen_w = getWindowWidth();
 	screen_h = getWindowHeight();
 
@@ -133,21 +159,40 @@ void spawnEnteringAsteroid()
 	object_setDeltaX(lastCreatedObj, dx);
 	object_setDeltaY(lastCreatedObj, dy);
 	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
-	object_setMass(lastCreatedObj, 5);
+	object_setMass(lastCreatedObj, ASTEROID_MASS);
+	object_setLife(lastCreatedObj, ASTEROID_LIFE);
 }
 
 /* Used by mostly spaceship to detect when it is trying to leave */
-bool isInsideWorld(Object* o)
+bool isInsideWorld(Object* o, int *side)
 {
 	int w = object_getWidth(o)/2;
 	int h = object_getHeight(o)/2;
 	int x = object_getX(o);
 	int y = object_getY(o);
+	int window_w = getWindowWidth();
+	int window_h = getWindowHeight();
 	int topX = x - w;
 	int topY = y - h;
 	int botX = x + w;
 	int botY = y + h;
-	return (topX > 0 && topY > 0 && botX < getWindowWidth() && botY < getWindowHeight());
+	bool isInside = true;
+	isInside = (topX > 0 && topY > 0 && botX < window_w && botY < window_h);
+
+	if (isInside == false)
+	{
+		if (x > window_w - 30 || x < 30) //right or left
+		{
+			*side = 0;
+		}
+
+		if (y > window_h -40 || y < 40) //top or bottom
+		{
+			*side = 1;
+		}
+	}
+		
+	return isInside;
 }
 
 /* Used by misc objects to detect when they have guaranteedly left the world*/

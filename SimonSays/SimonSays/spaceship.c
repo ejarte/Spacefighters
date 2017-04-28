@@ -1,6 +1,5 @@
 #include "spaceship.h"
 #include "graphics.h"
-#include "Object.h"
 
 #define STATUS_DEAD				1
 #define STATUS_ALIVE			2
@@ -10,6 +9,8 @@
 #define STATUS_ALIVE_SPEEDY		6
 
 #define SPACESHIP_MASS	10
+
+#define SPACESHIP_GUN_COOLDOWN 200
 
 struct Spaceship_type {
 
@@ -33,6 +34,9 @@ struct Spaceship_type {
 	double hp;
 	double armor;
 	double damage;
+
+	unsigned int shoot_delay_expires;
+	int shoot_delay_ms;
 };
 
 Spaceship *createSpaceship(Object *body)
@@ -44,6 +48,8 @@ Spaceship *createSpaceship(Object *body)
 	s->speed_y = 0;
 	s->mobile = true;
 	s->p = object_getPosPtr(body);
+	s->shoot_delay_ms = SPACESHIP_GUN_COOLDOWN;		// default delay
+	s->shoot_delay_expires = s->shoot_delay_ms + 1;
 	return s;
 }
 
@@ -151,7 +157,7 @@ void spaceship_accelerateY(Spaceship* s)
 {
 	s->speed_y += s->acc;
 	if (s->speed_y > s->max_speed)
-		s->speed_y= s->max_speed;
+		s->speed_y = s->max_speed;
 }
 
 void spaceship_deaccelerateX(Spaceship *s)
@@ -164,19 +170,16 @@ void spaceship_deaccelerateX(Spaceship *s)
 void spaceship_deaccelerateY(Spaceship *s)
 {
 	s->speed_y -= s->acc;
-	if (s->speed_y < -1 * s->max_speed)
-		s->speed_y = -1 * s->max_speed;
+	overSpeedlimit(&s);
+	if (s->speed_y < -1*s->max_speed)
+		s->speed_y = -1*s->max_speed;
 }
 
 double overSpeedlimit(Spaceship *s)
 {
 	if (s->speed_y > s->max_speed && s->speed_y > 0)
 	{
-		s->speed_y = 0;//s->max_speed;
-	}
-	else if (s->speed_y < -s->max_speed && s->speed_y < 0)
-	{
-		s->speed_y = 0; //-s->max_speed;
+		s->speed_y = s->max_speed;
 	}
 }
 
@@ -200,16 +203,6 @@ void spaceship_setMass(Spaceship* s, double max)
 	s->mass = SPACESHIP_MASS;
 }
 
-void spaceship_setDeltaX(Spaceship* s, double delta) 
-{
-	object_setDeltaX(s->body, delta);
-}
-
-void spaceship_setDeltaY(Spaceship* s, double delta)
-{
-	object_setDeltaY(s->body, delta);
-}
-
 void spaceship_move(Spaceship* s) {
 	//printf("delta_X OBJ: %d\n", object_getDeltaX(s->body));
 	if (s->mobile) {
@@ -217,12 +210,10 @@ void spaceship_move(Spaceship* s) {
 		s->speed_y *= s->drag;
 		int spx = s->speed_x;
 		int spy = s->speed_y;
-		//s->speed_x -= spx;
-		//s->speed_y -= spy;
+		s->speed_x -= spx;
+		s->speed_y -= spy;
 		//printf("%d %d %f %f\n", spx, spy, s->speed_x, s->speed_y);
-		object_setDeltaX(s->body, spx);
-		object_setDeltaY(s->body, spy);
-		//object_addToDelta(s->body, spx, spy);
+		object_addToDelta(s->body, spx, spy);
 
 	}
 }
@@ -242,12 +233,31 @@ void spaceship_disableMobility(Spaceship *s)
 	s->mobile = false;
 }
 
+// Projectiles and delay
+
+
+bool spaceship_isGunOnCooldown(Spaceship *s)
+{
+	return SDL_GetTicks() <= s->shoot_delay_expires;
+}
+
+void spaceship_setGunDelayCooldown(Spaceship *s, int time_ms)
+{
+	s->shoot_delay_ms = time_ms;
+}
+
 // Actions
 
-void spaceship_onMove() 
+void spaceship_setCooldownExpiration(Spaceship *s)
 {
-
+	s->shoot_delay_expires = SDL_GetTicks() + s->shoot_delay_ms;
 }
+
+void spaceship_resetCooldown(Spaceship *s)
+{
+	s->shoot_delay_expires = SDL_GetTicks() - 1;
+}
+
 
 void spaceship_onDeath(Spaceship* s)
 {

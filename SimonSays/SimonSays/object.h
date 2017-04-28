@@ -8,8 +8,10 @@
 typedef struct Object_type Object;
 
 #define MAX_OBJECTS 1000
-#define HP_DEAD				0
-#define HP_INVULNERABLE		-1
+#define HP_DEAD				0	// NOT IMPLEMENTED
+#define HP_INVULNERABLE		-1	// NOT IMPLEMENTED
+
+int tot_created_obj;
 
 Object* object[MAX_OBJECTS];
 
@@ -57,6 +59,12 @@ double* object_getFacingAnglePtr(Object* o);
 
 /* links the facing angle to a pointer, useful when linking two objects together */
 void object_setFacingAnglePtr(Object* o, double* p);
+
+// Status
+
+void object_setLife(Object* o, double life);
+double object_getLife(Object* o);
+void object_addLife(Object* o, double life);
 
 // Collision
 

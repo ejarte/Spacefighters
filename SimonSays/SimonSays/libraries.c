@@ -51,7 +51,6 @@ SDL_Point getPolarProjectionPoint(SDL_Point source, double distance, double angl
 	SDL_Point p;
 	p.x = source.x + distance * cos(angle_rad);
 	p.y = source.y + distance * sin(angle_rad);
-	// Måste justeras för kvadranter!
 	return p;
 }
 
@@ -63,4 +62,9 @@ double radiansToDegrees(double radians)
 double degreesToRadians(double degree)
 {
 	return degree * (M_PI / 180);
+}
+
+double pointToAngle(double VectorX, double VectorY)
+{
+	return atan2(VectorY, VectorX);
 }

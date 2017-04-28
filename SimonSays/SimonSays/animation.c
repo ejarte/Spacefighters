@@ -114,5 +114,9 @@ void anim_tick(Animation *a)
 
 bool anim_isFinished(Animation *a)
 {
+	if (a == NULL) {
+		printf("Error: anim_isFinished - null pointer reference.\n");
+		return true;
+	}
 	return a->completed;
 }

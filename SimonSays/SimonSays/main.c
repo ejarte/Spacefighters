@@ -5,12 +5,14 @@
 #include "audio.h"
 #include "world.h"
 #include "game.h"
+#include "text_commands.h"
 
 int main(int argc, char* args[])
 {
 	initWindow();
 	initEventHandler();
 	game_init();
+	initCommands();
 
 	// seed random - call only once!
 	srand(time(NULL));

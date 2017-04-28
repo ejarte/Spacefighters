@@ -40,6 +40,15 @@ bool spaceship_isMobile(Spaceship* s);
 void spaceship_enableMobility(Spaceship *s);
 void spaceship_disableMobility(Spaceship *s);
 
+
+bool spaceship_isGunOnCooldown(Spaceship *s);
+
+void spaceship_setGunDelayCooldown(Spaceship *s, int time_ms);
 // Actions
+
+void spaceship_setCooldownExpiration(Spaceship *s);
+
 void spaceship_onDeath(Spaceship *s);
 double overSpeedlimit(Spaceship *s);
+
+void spaceship_resetCooldown(Spaceship *s);
