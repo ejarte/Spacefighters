@@ -1,6 +1,7 @@
 #include "text_commands.h"
 #include "object.h"
 
+/*
 #define COMMAND_1 "event horizon"
 
 char* command[100];
@@ -39,3 +40,5 @@ bool runCommands(char* str)
 	printf("Invalid command\n");
 	return false;
 }
+
+*/

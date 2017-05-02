@@ -1,10 +1,86 @@
-/*	Author(s):	Tiago Redaelli
-*	Modified:	18-04-2017
-*	Version:	0.02
-* 
-*	Documentation of API is in the sprite.h file.
-*/
+#include "sprite.h"
 
+void sprite_setup(struct Sprite *s, SDL_Renderer* renderer, char* filepath, int columns, int rows, SDL_Color colorKey)
+{
+	if (columns >= MAX_FRAME_COL || rows >= MAX_FRAME_ROW) {
+		printf("ERROR: createSprite_____Overflow\n");
+	}
+	SDL_Surface *s_loadedSurface = IMG_Load(filepath);
+	if (s_loadedSurface == NULL) {
+		printf("ERROR: Unable to load texture %s. SDL_Image Error: %s\n", filepath, IMG_GetError());
+	}
+	else {
+		SDL_SetColorKey(s_loadedSurface, SDL_TRUE, SDL_MapRGB(s_loadedSurface->format, colorKey.r, colorKey.g, colorKey.b));
+		s->texture = SDL_CreateTextureFromSurface(renderer, s_loadedSurface);
+		if (s->texture == NULL) {
+			printf("Error: Unable to load texture. SDL_Error: %s\n", SDL_GetError());
+		}
+		SDL_FreeSurface(s_loadedSurface);
+	}
+	// Setup
+	s->col = columns;
+	s->row = rows;
+	int texture_w;
+	int texture_h;
+	SDL_QueryTexture(s->texture, NULL, NULL, &texture_w, &texture_h);
+
+	s->frame_w = texture_w / s->col;
+	s->frame_h = texture_h / s->row;
+
+	for (int r = 0; r < rows; r++) {		// Default number of frames initiated per row
+		s->frames_on_row[r] = columns;
+	}
+
+	for (int c = 0; c < MAX_FRAME_COL; c++) {
+		for (int r = 0; r < MAX_FRAME_ROW; r++) {
+			if (c < columns && r < rows) {
+				s->clip[c + r*MAX_FRAME_COL].x = s->frame_w*c;
+				s->clip[c + r*MAX_FRAME_COL].y = s->frame_h*r;
+				s->clip[c + r*MAX_FRAME_COL].w = s->frame_w;
+				s->clip[c + r*MAX_FRAME_COL].h = s->frame_h;
+			}
+			else {
+				s->clip[c + r*MAX_FRAME_COL].x = 0;
+				s->clip[c + r*MAX_FRAME_COL].y = 0;
+				s->clip[c + r*MAX_FRAME_COL].w = 0;
+				s->clip[c + r*MAX_FRAME_COL].h = 0;
+			}
+		}
+	}
+	if (s->texture == NULL) {
+		printf("ERROR: Failed to load sprite texture.\n");
+	}
+}
+
+SDL_Rect sprite_getClipRect(struct Sprite *s, int col, int row)
+{
+	SDL_Rect r = { 0, 0, 0, 0 };
+	if (row >= s->row || col >= s->col) {
+		printf("Error: sprite_getClipRect: IndexOutOfBounds!\n");
+		return r;
+	}
+	return s->clip[col + row*MAX_FRAME_COL];
+}
+
+void sprite_RenderCopy(struct Sprite *s, SDL_Renderer* renderer, int col, int row, SDL_Rect dsrect)
+{
+	// Renders to screen
+	SDL_Rect srect = sprite_getClipRect(s, col, row);
+	SDL_RenderCopy(renderer, s->texture, &srect, &dsrect);
+}
+
+SDL_Texture* sprite_getTexture(struct Sprite *s)
+{
+	return s->texture;
+}
+
+//=====================//
+// ~~ GAMMALT NEDAN ~~ // 
+//=====================//
+
+
+
+/*
 #include "sprite.h"
 
 struct Sprite_type {
@@ -171,3 +247,5 @@ void sprite_print(Sprite *ptr_sprite)
 	printf("textureHeight:\t%d\n", ptr_sprite->textureHeight);
 	printf("-----------------------------------------\n");
 }
+
+*/

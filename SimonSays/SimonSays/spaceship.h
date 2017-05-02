@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include "libraries.h"
 #include "object.h"
 
@@ -52,3 +52,5 @@ void spaceship_onDeath(Spaceship *s);
 double overSpeedlimit(Spaceship *s);
 
 void spaceship_resetCooldown(Spaceship *s);
+
+*/

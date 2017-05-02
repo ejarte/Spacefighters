@@ -1,9 +1,7 @@
 #pragma once
 
 #include "libraries.h"
-
-SDL_Renderer*	renderer; //variabeln för att uppdatera fönstret
-SDL_Window*		window;		//fönstret
+#include "definition.h"
 
 int screenW;				
 int screenH;

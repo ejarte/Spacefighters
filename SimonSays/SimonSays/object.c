@@ -1,7 +1,131 @@
 #include "object.h"
+
+void object_init()
+{
+	objIndex_size = 0;
+}
+
+int object_index()
+{
+	return objIndex_size++;
+}
+
+void  object_deindex(int index)
+{
+	printf("object %d was deindexed\n", index);
+	object[index] = object[--objIndex_size];
+}
+
+void object_setup(struct Object* o, int index, int type, int x, int y, int w, int h, double facingAng, double facingImgOffset, struct Sprite *s, struct Animation *a)
+{
+	o->id_index = index;
+	o->id_type = type;
+	o->center_x = x;
+	o->center_y = y;
+	o->prev_x = x;
+	o->prev_y = y;
+	o->w = w;
+	o->h = h;
+	o->facing = facingAng;
+	o->IMG_facingOffset = facingImgOffset;
+	o->sprite = s;
+	animation_copy(a, &(o->animation));
+	o->show = true;
+	o->delta_x = 0;
+	o->delta_y = 0;
+	o->speed_x = 0;
+	o->speed_y = 0;
+	o->speed_max = DEFAULT_MAX_SPEED;
+	o->drag = DEFAULT_DRAG;
+	o->acc = DEFAULT_ACC;
+}
+
+void object_render(SDL_Renderer* renderer, struct Object* o)
+{
+	if (o->show) {
+		SDL_Rect dsrect = { o->center_x - o->w / 2, o->center_y - o->w / 2, o->w, o->h };
+		SDL_Rect srect = sprite_getClipRect(o->sprite, animation_getCurColumn(&(o->animation)), animation_getCurRow(&(o->animation)));
+		SDL_Point center = { o->w / 2, o->h / 2 };
+		SDL_RenderCopyEx(renderer, o->sprite->texture, &srect, &dsrect, o->facing + o->IMG_facingOffset, &center, SDL_FLIP_NONE);
+	}
+}
+
+void object_tick(struct Object* o)
+{
+	animation_tick(&(o->animation));
+}
+
+void object_move(struct Object* o)
+{
+	o->prev_x = o->center_x;
+	o->prev_y = o->center_y;
+	o->delta_x *= o->drag;
+	o->delta_y *= o->drag;
+	o->speed_x *= o->drag;
+	o->speed_y *= o->drag;
+	int dx = o->delta_x + o->speed_x;
+	int dy = o->delta_y + o->speed_y;
+	o->center_x += dx;
+	o->center_y += dy;
+}
+
+bool object_isMoving(struct Object* o)
+{
+	return o->prev_x != o->center_x || o->prev_y != o->center_y;
+}
+
+// Facing
+
+void object_setFacingToPoint(struct Object* o, SDL_Point p)
+{
+	double dx, dy;
+	dx = o->center_x - p.x;
+	dy = o->center_y - p.y;
+	o->facing = (atan2(dx, dy) * 180.0) / M_PI *-1;
+}
+
+// Speed
+
+void object_accelerateSpeedX(struct Object* o)
+{
+	o->speed_x += o->acc;
+	if (o->speed_x > o->speed_max)
+		o->speed_x = o->speed_max;
+}
+
+void object_accelerateSpeedY(struct Object* o)
+{
+	o->speed_y += o->acc;
+	if (o->speed_y > o->speed_max)
+		o->speed_y = o->speed_max;
+}
+
+void object_deaccelerateSpeedX(struct Object* o)
+{
+	o->speed_x -= o->acc;
+	if (o->speed_x < -1 * o->speed_max)
+		o->speed_x = -1 * o->speed_max;
+}
+
+void object_deaccelerateSpeedY(struct Object* o)
+{
+	o->speed_y -= o->acc;
+	if (o->speed_y < -1 * o->speed_max)
+		o->speed_y = -1 * o->speed_max;
+}
+
+
+
+
+
+
+
+
+/*
 #include "animation.h"
 #include "sprite.h"
 #include "collision.h"
+
 
 struct Object_type {
 	Animation *anim;			// Animation
@@ -119,13 +243,13 @@ int object_getY(Object *o)
 	return o->pos_center->y;
 }
 
-/* Returns a pointer to the center position, useful for linking one point to this object. */
+// Returns a pointer to the center position, useful for linking one point to this object. 
 SDL_Point* object_getPosPtr(Object* o)
 {
 	return o->pos_center;
 }
 
-/* links the center point to another pointer useful for attaching this object onto another */
+// links the center point to another pointer useful for attaching this object onto another 
 void object_setPosPtr(Object* o, SDL_Point* p)
 {
 	o->pos_center = p;
@@ -150,13 +274,13 @@ double object_getFacingAngle(Object *o)
 	return o->facingAngle;
 }
 
-/* Returns a pointer to the facing angle useful for linking one point to this object. */
+// Returns a pointer to the facing angle useful for linking one point to this object. 
 double* object_getFacingAnglePtr(Object* o)
 {
 	return o->facingAnglePtr;
 }
 
-/* links the facing angle to a pointer, useful when linking two objects together */	
+/* links the facing angle to a pointer, useful when linking two objects together 
 void object_setFacingAnglePtr(Object* o, double* p)
 {
 	o->facingAnglePtr = p;
@@ -308,7 +432,7 @@ int object_getObjId(Object *o)
 	return o->obj_id;
 }
 
-/* Used to link this object to another index */
+/* Used to link this object to another index 
 void object_setCustomId(Object* o, int id)
 {
 	o->custom_id = id;
@@ -364,7 +488,7 @@ int object_getDeltaY(Object *o)
 	return o->delta_y;
 }
 
-/* Adds delta_x and delta_y to the objects delta x and y*/
+/* Adds delta_x and delta_y to the objects delta x and y
 void object_addToDelta(Object* o, int delta_x, int delta_y)
 {
 	o->delta_x += delta_x;
@@ -479,3 +603,5 @@ void objectIndex_print()
 		printf("%d, ", obj_index.recycledNumber[i]);
 	}
 }
+
+*/

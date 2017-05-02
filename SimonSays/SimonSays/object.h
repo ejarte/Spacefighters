@@ -1,10 +1,38 @@
 #pragma once
 
 #include "libraries.h"
+#include "definition.h"
 #include "animation.h"
 #include "sprite.h"
-#include "collision.h"
 
+
+int objIndex_size;
+struct Object object[MAX_NUM_OBJ];
+
+void object_init();	// Initializes the object index
+int object_index();
+void object_deindex(int index);
+
+void object_setup(struct Object* o, int index, int type, int x, int y, int w, int h, double facingAng, double facingImgOffset, struct Sprite *s, struct Animation *a);
+void object_render(SDL_Renderer* renderer, struct Object* o);
+void object_tick(struct Object* o);
+void object_move(struct Object* o);
+
+bool object_isMoving(struct Object* o);
+// Facing
+
+void object_setFacingToPoint(struct Object* o, SDL_Point p);
+
+// Speed
+void object_accelerateSpeedX(struct Object* o);
+void object_accelerateSpeedY(struct Object* o);
+void object_deaccelerateSpeedX(struct Object* o);
+void object_deaccelerateSpeedY(struct Object* o);
+
+
+
+
+/*
 typedef struct Object_type Object;
 
 #define MAX_OBJECTS 1000
@@ -36,10 +64,10 @@ int object_getX(Object *o);
 
 int object_getY(Object *o);
 
-/* Returns a pointer to the center position, useful for linking one point to this object. */
+ //Returns a pointer to the center position, useful for linking one point to this object. 
 SDL_Point* object_getPosPtr(Object* o);
 
-/* links the center point to another pointer useful for attaching this object onto another */
+ //links the center point to another pointer useful for attaching this object onto another 
 void object_setPosPtr(Object* o, SDL_Point* p);
 
 // Facing Angle
@@ -54,10 +82,10 @@ void object_setFacingAngle(Object *o, double angle);
 
 double object_getFacingAngle(Object *o);
 
-/* Returns a pointer to the facing angle useful for linking one point to this object. */
+/* Returns a pointer to the facing angle useful for linking one point to this object. 
 double* object_getFacingAnglePtr(Object* o);
 
-/* links the facing angle to a pointer, useful when linking two objects together */
+/* links the facing angle to a pointer, useful when linking two objects together 
 void object_setFacingAnglePtr(Object* o, double* p);
 
 // Status
@@ -148,3 +176,5 @@ void objectIndex_deindexInt(int index);
 void objectIndex_print();
 
 int getObjectIndexMax();
+
+*/

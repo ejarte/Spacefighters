@@ -12,6 +12,8 @@
 
 #define SPACESHIP_GUN_COOLDOWN 200
 
+/*
+
 struct Spaceship_type {
 
 	// Representation
@@ -71,7 +73,6 @@ dest->scale = srcs->scale;
 return dest;
 }
 
-*/
 
 // Not complete
 void destroySpaceship(Spaceship* s)
@@ -263,3 +264,5 @@ void spaceship_onDeath(Spaceship* s)
 {
 
 }
+
+*/

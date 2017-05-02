@@ -1,5 +1,5 @@
 #include "collision.h"
-
+/*
 struct Collision_Type {
 	SDL_Point* p;
 	int x_offset;
@@ -136,3 +136,5 @@ void collision_print(Collision* c)
 	printf("x, y \t\t%d, %d\n", c->p->x, c->p->y);
 	printf("-----------------------------------------\n");
 }
+
+*/

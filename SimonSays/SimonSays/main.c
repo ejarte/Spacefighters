@@ -1,7 +1,6 @@
 #include "events.h";
 #include "graphics.h"
 #include "state_handler.h"
-#include "game_state.h"
 #include "audio.h"
 #include "world.h"
 #include "game.h"
@@ -12,14 +11,10 @@ int main(int argc, char* args[])
 	initWindow();
 	initEventHandler();
 	game_init();
-	initCommands();
+	//initCommands();
 
 	// seed random - call only once!
 	srand(time(NULL));
-
-	//initNormal();
-	//spaceShipSetup();
-	//initSky();
 
 	// Audio
 	initAudio();
@@ -42,10 +37,8 @@ int main(int argc, char* args[])
 			executeNextState();
 		}
 		// Syncronize frame rate
-		SDL_Delay(20);
+		SDL_Delay(33);
 	}
-
-	printf("Detta är ett commit test.\n");
 
 	return 0;
 }

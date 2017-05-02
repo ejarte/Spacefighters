@@ -2,6 +2,7 @@
 #include "object.h"
 #include "animation.h"
 
+
 #define MAX_EFFECTS 300
 bool effect_initialized = false;
 

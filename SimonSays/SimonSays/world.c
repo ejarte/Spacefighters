@@ -1,12 +1,84 @@
-/*	Author(s): Tiago Redaelli, Jacob Ekedahl
-	Last modified: 2017-04-25
-	
-	To-do:
-	3) Adding item drops to asteroids
-	4) Generating dx and dy based on angle
-	5) Add a weight variable to vary likelyhood of lower/higher speeds
-*/
+#include "world.h"
 
+#define AST_MAX_SCALE		5
+#define AST_MIN_SCALE		1
+#define AST_TOP_SPEED_XY	6
+#define AST_MIN_SPEED_XY	2
+
+struct Sprite spr_asteroid_gray;
+struct Animation anim_asteroid_gray[8];
+
+void world_init()
+{
+	//void animation_setup(struct Animation *a, int col, int row, int cyclesPerFrame);
+
+	sprite_setup(&spr_asteroid_gray, renderer, "images/asteroid_01.png", 8, 8, createColor(0, 0, 0, 0));
+	for (int r = 0; r < 8; r++) {
+		animation_setup(&anim_asteroid_gray[r], 8, 1, 12);
+		for (int c = 0; c < 8; c++) {
+			animation_addFrameColRow(&anim_asteroid_gray[r], c, r);
+		}
+	}
+}
+
+void world_spawnEnteringAsteroid()
+{
+	int side, dx, dy, screen_w, screen_h, speed, k, i;
+	double facingAngle, scale, targetAngle;
+	SDL_Point rdmPoint;
+	SDL_Point spawnPoint;
+
+	side = rand() % 4;
+	facingAngle = rand() % 360;
+	scale = rand() % AST_MAX_SCALE + AST_MIN_SCALE;		
+	screen_w = getWindowWidth();
+	screen_h = getWindowHeight();
+
+	k = 50; // distance from/to world edge, used to spawn the asteroid outside the world
+
+	// Asteroid spawn coordinates
+	if (side == WORLD_LEFT) {
+		spawnPoint.x = 0 - k / 2;
+		spawnPoint.y = k + rand() % screen_h;
+	}
+	else if (side == WORLD_RIGHT) {
+		spawnPoint.x = screen_w + k / 2;
+		spawnPoint.y = k + rand() % screen_h;
+	}
+	else if (side == WORLD_TOP) {
+		spawnPoint.x = k + rand() % screen_w;
+		spawnPoint.y = 0 - k / 2;
+	}
+	else if (side == WORLD_BOT) {
+		spawnPoint.x = k + rand() % screen_w;
+		spawnPoint.y = screen_h + k / 2;
+	}
+
+	speed = rand() % AST_TOP_SPEED_XY + AST_MIN_SPEED_XY;
+	rdmPoint.x = rand() % (screen_w - 2 * k);						// A random point on the world
+	rdmPoint.y = rand() % (screen_h - 2 * k);
+	targetAngle = angleBetweenPointsRad(spawnPoint, rdmPoint);	// Angle between spawn point and random point
+	dx = (double)speed * cos(targetAngle);						// velocity vector
+	dy = (double)speed * sin(targetAngle);
+
+	i = object_index();
+	object_setup(&object[i], i, OBJ_TYPE_ASTEROID, spawnPoint.x, spawnPoint.y, spr_asteroid_gray.frame_w / 4, spr_asteroid_gray.frame_h / 4, rand() % 360, 0, &spr_asteroid_gray, &anim_asteroid_gray[rand() % 8]);
+	object[i].delta_x = dx;
+	object[i].delta_y = dy;
+	object[i].hp = LIFE_ASTEROID;
+}
+
+// Used by misc objects to detect when they have guaranteedly left the world
+bool hasLeftWorld(struct Object* o)
+{
+	int topX = o->center_x - o->w/2;
+	int topY = o->center_y - o->h/2;
+	int botX = o->center_x + o->w/2;
+	int botY = o->center_y + o->h/2;
+	return (topX < -100 || topY < -100 || botX > getWindowWidth() + 100 || botY > getWindowHeight() + 100);
+}
+
+/*
 #include "world.h"
 #include "graphics.h"
 #include "object.h"
@@ -44,7 +116,7 @@ void initWorld()
 	}
 }
 
-/* Internal function to spawn projectiles on the world from a given spaceship */
+// Internal function to spawn projectiles on the world from a given spaceship
 void spawnProjectile(Spaceship* source, int x, int y, int projSpeed, double angle)
 {
 	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, x, y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
@@ -163,7 +235,7 @@ void spawnEnteringAsteroid()
 	object_setLife(lastCreatedObj, ASTEROID_LIFE);
 }
 
-/* Used by mostly spaceship to detect when it is trying to leave */
+// Used by mostly spaceship to detect when it is trying to leave 
 bool isInsideWorld(Object* o, int *side)
 {
 	int w = object_getWidth(o)/2;
@@ -195,16 +267,4 @@ bool isInsideWorld(Object* o, int *side)
 	return isInside;
 }
 
-/* Used by misc objects to detect when they have guaranteedly left the world*/
-bool hasLeftWorld(Object* o) 
-{
-	int w = object_getWidth(o) / 2;
-	int h = object_getHeight(o) / 2;
-	int x = object_getX(o);
-	int y = object_getY(o);
-	int topX = x - w;
-	int topY = y - h;
-	int botX = x + w;
-	int botY = y + h;
-	return (topX < - 100 || topY < - 100 || botX > getWindowWidth() + 100 || botY > getWindowHeight() + 100);
-}
+*/

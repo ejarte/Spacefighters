@@ -1,5 +1,6 @@
 #include "projectile.h"
 
+/*
 struct Projectile_type {
 	double damage;			// Damage on impact
 	Object* obj;			// Projectile object
@@ -44,7 +45,7 @@ void destroyProjectile(Projectile *p)
 	projectile[i] = NULL;
 }
 
-/* if the custom value of the object is equal to the object id of the other it means that one of them is a projectile */
+// if the custom value of the object is equal to the object id of the other it means that one of them is a projectile 
 bool projectile_objectIsSource(Object* proj_obj, Object* other_obj)
 {
 	return object_getCustomId(proj_obj) == object_getObjId(other_obj);
@@ -58,3 +59,5 @@ double projectile_getDamage(Projectile *p)
 	}
 	return p->damage;
 }
+
+*/

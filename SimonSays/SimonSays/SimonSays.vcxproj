@@ -163,10 +163,9 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="audio.h" />
     <ClInclude Include="collision.h" />
-    <ClInclude Include="effect.h" />
+    <ClInclude Include="definition.h" />
     <ClInclude Include="events.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="game_state.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="libraries.h" />
     <ClInclude Include="object.h" />
@@ -175,15 +174,12 @@
     <ClInclude Include="sprite.h" />
     <ClInclude Include="state_handler.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="text_commands.h" />
     <ClInclude Include="world.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation.c" />
     <ClCompile Include="audio.c" />
     <ClCompile Include="collision.c" />
-    <ClCompile Include="text_commands.c" />
-    <ClCompile Include="effect.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="libraries.c" />
@@ -192,7 +188,6 @@
     <ClCompile Include="spaceship.c" />
     <ClCompile Include="sprite.c" />
     <ClCompile Include="state_handler.c" />
-    <ClCompile Include="game_state.c" />
     <ClCompile Include="graphics.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="world.c" />

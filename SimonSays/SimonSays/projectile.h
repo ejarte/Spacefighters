@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include "libraries.h"
 #include "object.h"
@@ -15,3 +16,5 @@ bool projectile_objectIsSource(Object* proj_obj, Object* other_obj);
 
 
 double projectile_getDamage(Projectile *p);
+
+*/

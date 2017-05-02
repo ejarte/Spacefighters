@@ -1,36 +1,105 @@
 #include "game.h"
-#include "spaceship.h"
-#include "graphics.h"
-#include "sprite.h"
-#include "animation.h"
-#include "effect.h"
-#include "object.h"
-#include "events.h"
-#include "state_handler.h"
-#include "world.h"
-#include "collision.h"
-#include "projectile.h"
-#include "text_commands.h"
 
 // Background
-
-bool collided = false;
 SDL_Rect background_rect;
-
 SDL_Rect back_rect;
-SDL_Texture *backgroundImage;
-
 SDL_Rect stars_rect;
-SDL_Texture* stars_box;
+SDL_Texture* backgroundImage;
 SDL_Texture *starsImage;
 
+int free_obj_index[500];
+int free_obj_size;
 
+void game_init()
+{
+	// Background
+	backgroundImage = IMG_LoadTexture(renderer, "images/skyBackground.png");
+	background_rect.x = background_rect.y = 0;
+	starsImage = IMG_LoadTexture(renderer, "images/skyForeground.png");
+	stars_rect.x = stars_rect.y = 0;
+	stars_rect.w = stars_rect.h = 800;
+
+	world_init();
+}
+
+void game_execute()
+{
+	game_events();
+	game_update();
+	game_render();
+}
+
+void game_events()
+{
+	if (quitEventTriggered()) {
+		setNextState(STATE_EXIT);
+		return;
+	}
+	if (keyEventPressed(SDL_SCANCODE_Z)) {
+		world_spawnEnteringAsteroid();
+	}
+}
+
+void game_update()
+{
+	free_obj_size = 0;
+
+	for (int i = 0; i < objIndex_size; i++) {
+		object_tick(&object[i]);
+		object_move(&object[i]);
+
+		if (hasLeftWorld(&object[i])) {
+			free_obj_index[free_obj_size++] = i;
+		}
+	}
+
+	// Free removed objects
+	for (int i = 0; i < free_obj_size; i++) {
+		object_deindex(free_obj_index[i]);
+	}
+}
+
+void game_render()
+{
+	int x = 0;
+	int y = 0;
+
+
+	SDL_RenderClear(renderer);
+
+
+	stars_rect.x = x / 10;
+	stars_rect.y = y / 10;
+	back_rect.x = x / 15;
+	back_rect.y = y / 15;
+	back_rect.w = background_rect.w;
+	back_rect.h = background_rect.h;
+	background_rect.w = getWindowWidth();
+	background_rect.h = getWindowHeight();
+
+	SDL_RenderCopy(renderer, backgroundImage, &back_rect, &background_rect);
+	SDL_RenderCopy(renderer, starsImage, &stars_rect, &background_rect);
+
+	for (int i = 0; i < objIndex_size; i++) {
+		object_render(renderer, &object[i]);
+	}
+	SDL_RenderPresent(renderer);
+}
+
+
+
+
+/*
+
+bool collided = false;
 Sprite* sprite[100];				
 Animation* animation[100];
 Spaceship* spaceship[20];
 
 char* user_input;
 #define MSG_MAX_CHAR 200
+
+
 
 void game_init()
 {
@@ -48,6 +117,8 @@ void game_init()
 	stars_rect.x = stars_rect.y = 0;
 	stars_rect.w = stars_rect.h = 800;
 
+
+	/*
 	// Sprites
 	// Green wind effect
 	sprite[1] = createSprite(renderer, "images/wind_eff_001.png", 5, 6, createColor(0, 0, 0, 0));
@@ -541,3 +612,4 @@ void game_render()
 
 	SDL_RenderPresent(renderer);
 }
+*/
