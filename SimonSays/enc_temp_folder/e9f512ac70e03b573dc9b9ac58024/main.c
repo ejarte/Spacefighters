@@ -44,8 +44,5 @@ int main(int argc, char* args[])
 		// Syncronize frame rate
 		SDL_Delay(20);
 	}
-
-	printf("Detta är ett commit test.\n");
-
 	return 0;
 }
