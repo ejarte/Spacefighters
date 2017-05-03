@@ -24,6 +24,7 @@ void enableTextInput();
 SDL_Point getMousePos();
 int getMouseX();
 int getMouseY();
+bool mouseMotionEvent();
 
 int getTimeStamp(int flag, SDL_Scancode sc);
 

@@ -10,6 +10,9 @@ SDL_Texture *starsImage;
 int free_obj_index[500];
 int free_obj_size;
 
+struct Player player[MAX_PLAYERS];
+struct Player thisPlayer = { NULL };
+
 void game_init()
 {
 	// Background
@@ -20,6 +23,28 @@ void game_init()
 	stars_rect.w = stars_rect.h = 800;
 
 	world_init();
+
+	// On Server
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		player[i].name = malloc(sizeof(30));
+		player[i].name[0] = '\0';
+		player[i].color = i;
+		player[i].connected = false;			// Set true on connection
+	}
+
+	world_spawnEnteringAsteroid();
+	world_spawnEnteringAsteroid();
+	world_spawnEnteringAsteroid();
+	world_spawnEnteringAsteroid();
+
+	// On Client
+	thisPlayer.name = "MyName";
+	thisPlayer.connected = true;
+	thisPlayer.color = PL_COLOR_ORANGE;
+	world_spawnSpaceship(&thisPlayer, 200, 200, 0);
+
+	// Debug variables
+	debug_show_collision_box = false;
 }
 
 void game_execute()
@@ -38,13 +63,91 @@ void game_events()
 	if (keyEventPressed(SDL_SCANCODE_Z)) {
 		world_spawnEnteringAsteroid();
 	}
+	if (keyEventHeld(SDL_SCANCODE_W)) {
+		thisPlayer.accelerating = true;
+		object_deaccelerateSpeedY(thisPlayer.spaceship);
+	}
+	if (keyEventHeld(SDL_SCANCODE_S)) {
+		thisPlayer.accelerating = true;
+		object_accelerateSpeedY(thisPlayer.spaceship);
+	}
+	if (keyEventHeld(SDL_SCANCODE_A)) {
+		thisPlayer.accelerating = true;
+		object_deaccelerateSpeedX(thisPlayer.spaceship);
+	}
+	if (keyEventHeld(SDL_SCANCODE_D)) {
+		thisPlayer.accelerating = true;
+		object_accelerateSpeedX(thisPlayer.spaceship);
+	}
+	if (mouseMotionEvent()) {
+		object_setFacingToPoint(thisPlayer.spaceship, getMousePos());
+	}
+}
+
+void handleWallCollision(int i, int side)
+{
+	if (side == WORLD_TOP) {
+		object[i].delta_y = object[i].delta_y *-1;
+		object[i].speed_y = object[i].speed_y *-1;
+	}
+	if (side == WORLD_BOT) {
+		object[i].delta_y = object[i].delta_y *-1;
+		object[i].speed_y = object[i].speed_y *-1;
+	}
+	if (side == WORLD_LEFT) {
+		object[i].delta_x = object[i].delta_x *-1;
+		object[i].speed_x = object[i].speed_x *-1;
+	}
+	if (side == WORLD_RIGHT) {
+		object[i].delta_x = object[i].delta_x *-1;
+		object[i].speed_x = object[i].speed_x *-1;
+	}
+	object_move(&object[i]);
 }
 
 void game_update()
 {
+	int ptr_side;
 	free_obj_size = 0;
-
 	for (int i = 0; i < objIndex_size; i++) {
+		if (object[i].id_type == OBJ_TYPE_SPACESHIP) {
+			if (!isInsideWorld(&thisPlayer, &ptr_side)) {
+				handleWallCollision(i, ptr_side);
+			}
+			if (world_spaceshipLost(&thisPlayer)) {
+				printf("Your spaceship got lost and has respawned in the center...\n");
+				thisPlayer.spaceship->center_x = getWindowWidth() / 2;
+				thisPlayer.spaceship->center_y = getWindowHeight() / 2;
+			}
+		}
+
+		// Collision
+
+		for (int j = i + 1; j < objIndex_size; j++) {
+			if (object_instersection(&object[i], &object[j])) {
+				
+				if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_ASTEROID) {
+					object_calculateCollisionSpeed(&object[i], &object[j]);
+					printf("spaceship collided with asteroid!\n");
+				}
+				if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_SPACESHIP) {
+					object_calculateCollisionSpeed(&object[i], &object[j]);
+					printf("asteroid collided with spaceship!\n");
+				}
+				if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_ASTEROID) {
+					object_calculateCollisionSpeed(&object[i], &object[j]);
+					printf("asteroid collided with asteroid!\n");
+				}
+				if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_SPACESHIP) {
+					object_calculateCollisionSpeed(&object[i], &object[j]);
+					printf("asteroid collided with asteroid!\n");
+				}
+			}
+
+			// object_calculateCollisionSpeed
+		}
+
+
 		object_tick(&object[i]);
 		object_move(&object[i]);
 
@@ -55,18 +158,17 @@ void game_update()
 
 	// Free removed objects
 	for (int i = 0; i < free_obj_size; i++) {
-		object_deindex(free_obj_index[i]);
+		object_deindex(&thisPlayer, free_obj_index[i]);		// &thisPlayer on client NULL on server
 	}
 }
 
 void game_render()
 {
-	int x = 0;
-	int y = 0;
+	int x = thisPlayer.spaceship->center_x;
+	int y = thisPlayer.spaceship->center_y;
 
 
 	SDL_RenderClear(renderer);
-
 
 	stars_rect.x = x / 10;
 	stars_rect.y = y / 10;

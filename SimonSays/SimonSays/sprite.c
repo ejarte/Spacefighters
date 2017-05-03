@@ -23,13 +23,28 @@ void sprite_setup(struct Sprite *s, SDL_Renderer* renderer, char* filepath, int 
 	int texture_w;
 	int texture_h;
 	SDL_QueryTexture(s->texture, NULL, NULL, &texture_w, &texture_h);
-
 	s->frame_w = texture_w / s->col;
 	s->frame_h = texture_h / s->row;
-
 	for (int r = 0; r < rows; r++) {		// Default number of frames initiated per row
 		s->frames_on_row[r] = columns;
 	}
+
+
+	/*
+	struct Sprite {
+		SDL_Texture* texture;				// Texture
+		SDL_Rect clip[MAX_FRAME_COL];		// Frame clip
+		int frames_on_row[MAX_FRAME_ROW];	// Declared frames on row
+		int frame_w;						// Frame width
+		int frame_h;						// Frame height
+		int col;							// Columns on spritesheet
+		int row;							// Rows on spritesheet
+	};
+	#define MAX_FRAME_COL				10
+	#define MAX_FRAME_ROW				10
+	#define MAX_FRAME_TOT				100
+	*/
+	printf("Sprite created. Col: %d = %d Row: %d = %d. Frame w/h = %d/%d\n", s->col, columns, s->row, rows, s->frame_w, s->frame_h);
 
 	for (int c = 0; c < MAX_FRAME_COL; c++) {
 		for (int r = 0; r < MAX_FRAME_ROW; r++) {
@@ -47,8 +62,14 @@ void sprite_setup(struct Sprite *s, SDL_Renderer* renderer, char* filepath, int 
 			}
 		}
 	}
+	printf("Sprite created. Col: %d = %d Row: %d = %d. Frame w/h = %d/%d\n", s->col, columns, s->row, rows, s->frame_w, s->frame_h);
+
+
 	if (s->texture == NULL) {
 		printf("ERROR: Failed to load sprite texture.\n");
+	}
+	else {
+		printf("Sprite created. Col: %d = %d Row: %d = %d. Frame w/h = %d/%d\n", s->col, columns, s->row, rows, s->frame_w, s->frame_h);
 	}
 }
 
@@ -56,7 +77,7 @@ SDL_Rect sprite_getClipRect(struct Sprite *s, int col, int row)
 {
 	SDL_Rect r = { 0, 0, 0, 0 };
 	if (row >= s->row || col >= s->col) {
-		printf("Error: sprite_getClipRect: IndexOutOfBounds!\n");
+		printf("Error: sprite_getClipRect: IndexOutOfBounds! %d %d\n", col, row);
 		return r;
 	}
 	return s->clip[col + row*MAX_FRAME_COL];

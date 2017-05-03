@@ -1,20 +1,25 @@
 #pragma once
 
+// Players
+#define MAX_PLAYERS					4
+#define PL_COLOR_RED				0
+#define PL_COLOR_BLUE				1
+#define PL_COLOR_ORANGE				2
+#define PL_COLOR_YELLOW				3
+
 // Sprite limitations
-#define MAX_FRAME_COL	10
-#define MAX_FRAME_ROW	10
-#define MAX_FRAME_TOT	100
+#define MAX_FRAME_COL				10
+#define MAX_FRAME_ROW				10
+#define MAX_FRAME_TOT				100
 
 // Object Types 
-#define OBJ_TYPE_GREENWIND			1
-#define OBJ_TYPE_SPACESHIP			2
-#define OBJ_TYPE_EXPLOSION			3
-#define OBJ_TYPE_BLACKHOLE			4
-#define OBJ_TYPE_ASTEROID			5
-#define OBJ_TYPE_ITEM_HEALTH		6
-#define OBJ_TYPE_ITEM_INVUL			7
-#define OBJ_TYPE_ITEM_SPEED			8
-#define OBJ_TYPE_PROJECTILE			9
+#define OBJ_TYPE_SPACESHIP			1
+#define OBJ_TYPE_EXPLOSION			2
+#define OBJ_TYPE_ASTEROID			3
+#define OBJ_TYPE_ITEM_HEALTH		4
+#define OBJ_TYPE_ITEM_INVUL			5
+#define OBJ_TYPE_ITEM_SPEED			6
+#define OBJ_TYPE_PROJECTILE			7
 
 #define MAX_NUM_OBJ					1000
 
@@ -28,12 +33,15 @@
 #define WORLD_TOP					2
 #define WORLD_BOT					3
 
+// Collision Types
+#define COLLISION_TYPE_BOX			1
+#define COLLISION_TYPE_CIRCLE		2
+
 // Life
 
 #define LIFE_ASTEROID				3
 
 // Window
-
 SDL_Renderer*	renderer;
 SDL_Window*		window;
 
@@ -54,12 +62,20 @@ struct Animation {
 
 struct Sprite {
 	SDL_Texture* texture;				// Texture
-	SDL_Rect clip[MAX_FRAME_COL];		// Frame clip
+	SDL_Rect clip[MAX_FRAME_TOT];		// Frame clip
 	int frames_on_row[MAX_FRAME_ROW];	// Declared frames on row
 	int frame_w;						// Frame width
 	int frame_h;						// Frame height
 	int col;							// Columns on spritesheet
 	int row;							// Rows on spritesheet
+};
+
+struct Collision {
+	int w;
+	int h;
+	int r; 
+	int type;
+	bool enabled;
 };
 
 struct Object {
@@ -69,9 +85,6 @@ struct Object {
 	int prev_y;
 	int w;
 	int h;
-
-	int collision_w;
-	int collision_h;
 
 	int id_type;
 	int id_index;
@@ -93,4 +106,18 @@ struct Object {
 
 	struct Animation animation;
 	struct Sprite* sprite;
+	struct Collision collision;
 };
+
+struct Player {
+	char* name;
+	int color;
+	bool alive;
+	bool mobile;
+	bool connected;
+	bool accelerating;
+	struct Object* spaceship;
+};
+
+// DEBUG Variables
+bool debug_show_collision_box;

@@ -11,7 +11,7 @@ struct Object object[MAX_NUM_OBJ];
 
 void object_init();	// Initializes the object index
 int object_index();
-void object_deindex(int index);
+void  object_deindex(struct Player *p, int index);
 
 void object_setup(struct Object* o, int index, int type, int x, int y, int w, int h, double facingAng, double facingImgOffset, struct Sprite *s, struct Animation *a);
 void object_render(SDL_Renderer* renderer, struct Object* o);
@@ -29,8 +29,10 @@ void object_accelerateSpeedY(struct Object* o);
 void object_deaccelerateSpeedX(struct Object* o);
 void object_deaccelerateSpeedY(struct Object* o);
 
-
-
+// Collision
+void object_setCollisionBox(struct Object* o, int w, int h);
+void object_setCollisionCircle(struct Object* o, int r);
+bool object_instersection(struct Object* o1, struct Object* o2);
 
 /*
 typedef struct Object_type Object;

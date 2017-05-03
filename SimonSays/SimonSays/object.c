@@ -1,4 +1,5 @@
 #include "object.h"
+#include "collision.h"
 
 void object_init()
 {
@@ -10,10 +11,17 @@ int object_index()
 	return objIndex_size++;
 }
 
-void  object_deindex(int index)
+void  object_deindex(struct Player *p, int index)
 {
+	int newSize = --objIndex_size;
 	printf("object %d was deindexed\n", index);
-	object[index] = object[--objIndex_size];
+	object[index] = object[newSize];
+	object[index].id_index = index;
+	if (p != NULL) {
+		if (object[newSize].id_index == p->spaceship->id_index) {	
+			p->spaceship = &object[index];	// Re-address the pointer to the new object index
+		}
+	}
 }
 
 void object_setup(struct Object* o, int index, int type, int x, int y, int w, int h, double facingAng, double facingImgOffset, struct Sprite *s, struct Animation *a)
@@ -38,6 +46,7 @@ void object_setup(struct Object* o, int index, int type, int x, int y, int w, in
 	o->speed_max = DEFAULT_MAX_SPEED;
 	o->drag = DEFAULT_DRAG;
 	o->acc = DEFAULT_ACC;
+	o->collision.enabled = false;
 }
 
 void object_render(SDL_Renderer* renderer, struct Object* o)
@@ -47,7 +56,12 @@ void object_render(SDL_Renderer* renderer, struct Object* o)
 		SDL_Rect srect = sprite_getClipRect(o->sprite, animation_getCurColumn(&(o->animation)), animation_getCurRow(&(o->animation)));
 		SDL_Point center = { o->w / 2, o->h / 2 };
 		SDL_RenderCopyEx(renderer, o->sprite->texture, &srect, &dsrect, o->facing + o->IMG_facingOffset, &center, SDL_FLIP_NONE);
+		if (debug_show_collision_box) {
+			collision_boxRender(renderer, &o->collision, o->center_x, o->center_y);
+		}
+
 	}
+
 }
 
 void object_tick(struct Object* o)
@@ -114,10 +128,60 @@ void object_deaccelerateSpeedY(struct Object* o)
 		o->speed_y = -1 * o->speed_max;
 }
 
+void object_setCollisionBox(struct Object* o, int w, int h) {
+	o->collision.w = w;
+	o->collision.h = h;
+	o->collision.enabled = true;
+	o->collision.type = COLLISION_TYPE_BOX;
+	if (w > h)
+		o->collision.r = w;
+	else o->collision.r = h;
+}
 
+void object_setCollisionCircle(struct Object* o, int r)
+{
+	o->collision.r = r;
+	o->collision.w = r;
+	o->collision.h = r;
+	o->collision.enabled = true;
+	o->collision.type = COLLISION_TYPE_CIRCLE;
+}
 
+bool object_instersection(struct Object* o1, struct Object* o2)
+{
+	if (o1->collision.enabled == false ||  o2->collision.enabled == false) {
+		return false;
+	}
+	if (o1->collision.type == COLLISION_TYPE_BOX) {
+		return collision_boxIntersection(o1->collision, o1->center_x, o1->center_y, o2->collision, o2->center_x, o2->center_y);
+	}
+	else if (o1->collision.type == COLLISION_TYPE_CIRCLE) {
+		return collision_circleIntersection(o1->collision, o1->center_x, o1->center_y, o2->collision, o2->center_x, o2->center_y);
+	}
+	return false;
+}
 
+void object_calculateCollisionSpeed(struct Object* o1, struct Object* o2)
+{
+	double tempX, tempY;	//sparar värdena temporärt i temp så att andra objektet kan få dess hastighet
 
+	o1->delta_x += o1->speed_x;
+	o1->delta_y += o1->speed_y;
+	o2->delta_x += o2->speed_x;
+	o2->delta_y += o2->speed_y;
+	o1->speed_x = 0;
+	o1->speed_y = 0;
+	o2->speed_x = 0;
+	o2->speed_y = 0;
+	tempX = o1->delta_x;
+	tempY = o1->delta_y;
+	o1->delta_x = o2->delta_x;
+	o2->delta_x = tempX;
+	o1->delta_y = o2->delta_y;
+	o2->delta_y = tempY;
+	object_move(o1);
+	object_move(o2);
+}
 
 
 

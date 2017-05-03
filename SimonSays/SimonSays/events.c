@@ -35,6 +35,7 @@ struct TextEventData {
 struct	EventData event_data;
 struct TextEventData txt_event_data;
 bool quit_event;		// Flag for quit event
+bool mouse_motion_event;
 SDL_Point mouse_point;
 
 int getWindowWidth()
@@ -50,6 +51,11 @@ int getWindowHeight()
 SDL_Point getMousePos()
 {
 	return mouse_point;
+}
+
+bool mouseMotionEvent()
+{
+	return mouse_motion_event;
 }
 
 int getMouseX()
@@ -157,6 +163,9 @@ void refreshEventHandler() {
 
 	SDL_GetMouseState(&mouse_point.x, &mouse_point.y);
 
+	// Mouse motion
+	mouse_motion_event = false;
+
 	/* Poll for new events */
 
 	while (SDL_PollEvent(&event)) {
@@ -165,7 +174,7 @@ void refreshEventHandler() {
 				if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
 					SDL_GetWindowSize(window, &ev_window_w, &ev_window_h);
 				} break;
-			case SDL_MOUSEMOTION: break;	
+			case SDL_MOUSEMOTION: mouse_motion_event = true;  break;
 				// Not yet implemented 
 
 			case SDL_MOUSEWHEEL: break;		
@@ -247,5 +256,6 @@ void initEventHandler()
 	txt_event_data.str_input = malloc(30);
 	txt_event_data.str_input[0] = '\0';
 	disableTextInput();
-	quit_event = false;		
+	quit_event = false;
+	mouse_motion_event = false;
 }

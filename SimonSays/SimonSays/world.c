@@ -6,11 +6,17 @@
 #define AST_MIN_SPEED_XY	2
 
 struct Sprite spr_asteroid_gray;
+struct Sprite spr_spaceship_1[4];
 struct Animation anim_asteroid_gray[8];
+struct Animation anim_spaceship[4];
+struct Animation anim_none;
 
 void world_init()
 {
-	//void animation_setup(struct Animation *a, int col, int row, int cyclesPerFrame);
+	sprite_setup(&spr_spaceship_1[0], renderer, "images/spaceships/playerShip1_red.png", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_spaceship_1[1], renderer, "images/spaceships/playerShip1_blue.png", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_spaceship_1[2], renderer, "images/spaceships/playerShip1_orange.png", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_spaceship_1[3], renderer, "images/spaceships/playerShip1_green.png", 1, 1, createColor(0, 0, 0, 0));
 
 	sprite_setup(&spr_asteroid_gray, renderer, "images/asteroid_01.png", 8, 8, createColor(0, 0, 0, 0));
 	for (int r = 0; r < 8; r++) {
@@ -19,6 +25,27 @@ void world_init()
 			animation_addFrameColRow(&anim_asteroid_gray[r], c, r);
 		}
 	}
+	animation_setup(&anim_none, 1, 1, 9999);
+	animation_addFrameColRow(&anim_none, 0, 0);
+}
+
+void world_spawnSpaceship(struct Player* p, int x, int y, double facingAng)
+{
+	double facing = 0;
+	double facingOff = 0;
+	int w = 112/3;
+	int h = 75/3;
+	int i = object_index();
+	p->accelerating = false;
+	p->alive = true;
+	p->mobile = true;
+	p->spaceship = &object[i];
+	object_setup(&object[i], i, OBJ_TYPE_SPACESHIP, x, y, w, h, facing, facingOff, &spr_spaceship_1[p->color], &anim_none);
+	object[i].acc = 0.7;
+	object[i].speed_max = 9.;
+	object[i].drag = 0.98;
+	p->spaceship = &object[i];
+	object_setCollisionCircle(&object[i], 30, 30);
 }
 
 void world_spawnEnteringAsteroid()
@@ -66,6 +93,7 @@ void world_spawnEnteringAsteroid()
 	object[i].delta_x = dx;
 	object[i].delta_y = dy;
 	object[i].hp = LIFE_ASTEROID;
+	object_setCollisionCircle(&object[i], 30, 30);
 }
 
 // Used by misc objects to detect when they have guaranteedly left the world
@@ -76,6 +104,48 @@ bool hasLeftWorld(struct Object* o)
 	int botX = o->center_x + o->w/2;
 	int botY = o->center_y + o->h/2;
 	return (topX < -100 || topY < -100 || botX > getWindowWidth() + 100 || botY > getWindowHeight() + 100);
+}
+
+// Used by mostly spaceship to detect when it is trying to leave 
+bool isInsideWorld(struct Player* p, int *side)
+{
+	int w = p->spaceship->w / 2;
+	int h = p->spaceship->h / 2;
+	int x = p->spaceship->center_x;
+	int y = p->spaceship->center_y;
+	int window_w = getWindowWidth();
+	int window_h = getWindowHeight();
+	int topX = x - w;
+	int topY = y - h;
+	int botX = x + w;
+	int botY = y + h;
+	bool isInside = true;
+	isInside = (topX > 0 && topY > 0 && botX < window_w && botY < window_h);
+	if (isInside == false)
+	{
+		if (x > window_w - 30) {
+			*side = WORLD_RIGHT;
+		}
+		else if (x < 30) {
+			*side = WORLD_LEFT;
+		}
+		else if (y > window_h - 40) {
+			*side = WORLD_BOT;
+		}
+		else if (y < 40) {
+			*side = WORLD_TOP;
+		}
+	}
+	return isInside;
+}
+
+bool world_spaceshipLost(struct Player* p)
+{
+	int x = p->spaceship->center_x;
+	int y = p->spaceship->center_y;
+	int window_w = getWindowWidth();
+	int window_h = getWindowHeight();
+	return (x > window_w || x < 0 || y > window_h || y < 0);
 }
 
 /*
