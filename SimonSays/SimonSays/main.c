@@ -8,6 +8,20 @@
 
 int main(int argc, char* args[])
 {
+	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
+		printf("SDL_Init: %s\n", SDL_GetError());
+		exit(-1);
+	}
+	else printf("SDL Initialized...\n");
+
+	if (TTF_Init() == -1) {
+		printf("TTF_Init: %s\n", TTF_GetError());
+		exit(2);
+	}
+	else printf("TTF Initialized...\n");
+
+
+
 	initWindow();
 	initEventHandler();
 	game_init();
@@ -20,8 +34,6 @@ int main(int argc, char* args[])
 	initAudio();
 	SDL_Delay(50);
 	//playMusic("audio/music/SPACE.mp3", -1);
-
-	
 
 	bool run = true;
 

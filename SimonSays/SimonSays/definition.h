@@ -7,8 +7,8 @@
 #define MAX_PLAYERS					4
 #define PL_COLOR_RED				0
 #define PL_COLOR_BLUE				1
-#define PL_COLOR_ORANGE				2
-#define PL_COLOR_YELLOW				3
+#define PL_COLOR_GREEN				2
+#define PL_COLOR_ORANGE				3
 
 // Sprite limitations
 #define MAX_FRAME_COL				10
@@ -162,6 +162,12 @@ struct Player {
 	bool speed_active;
 	int current_attack_type;
 	int shipIndex;
+
+	int killstreak_tot;
+	int killstreak_round;		
+	int kills;
+	int deaths;
+	int won_rounds;
 };
 
 // DEBUG Variables

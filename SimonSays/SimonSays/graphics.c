@@ -2,6 +2,8 @@
 
 #include "graphics.h"
 
+// Denna fil verkar ha blivit rörig! :
+
 void initWindow()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);	// Audio!!!
@@ -26,10 +28,16 @@ void initWindow()
 	SDL_GetRendererOutputSize(renderer, &screenW, &screenH);
 }
 
+void loadFont(TTF_Font *font, const char* filepath, int fontsize)
+{
+	font = TTF_OpenFont(filepath, fontsize);
+	if (font == NULL) {
+		printf("TTF_ERROR: %s\n", TTF_GetError());
+	}
+}
 
 
-
-// Loads a texture with a file
+// Nedan används ej, kan tas bort
 
 void loadTexture(char *filepath, SDL_Texture **ptr_texture)
 {
@@ -41,13 +49,6 @@ void loadTexture(char *filepath, SDL_Texture **ptr_texture)
 void renderCopy(SDL_Texture* texture, const SDL_Rect* source, SDL_Rect* dest)
 {
 	SDL_RenderCopy(renderer, texture, source, dest);
-}
-
-void loadFont(const char *filepath, int fontsize, TTF_Font** font)
-{
-	(*font) = TTF_OpenFont(filepath, fontsize);
-	if ((*font) == NULL)
-		printf("TTF_ERROR: %s", TTF_GetError());
 }
 
 void createTextureText(char *text, TTF_Font *font, SDL_Color textcolor, SDL_Texture **ptr_texture)

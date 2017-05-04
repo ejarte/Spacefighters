@@ -1,6 +1,7 @@
 #include "game.h"
 //#include "TCP.h"
 //#include "UDP.h"
+#include "interface_lib.h"
 
 // Background
 SDL_Rect background_rect;
@@ -16,6 +17,14 @@ struct Player player[MAX_PLAYERS];
 
 int client_player_num;
 
+// Temp
+SDL_Texture* texture_chat_box;
+TTF_Font* font_roboto_black;
+
+struct Plane plane_chat_box;
+struct Label label_chat_msg;
+struct Label playerNameColored[MAX_PLAYERS];
+
 void game_init()
 {
 	// Background
@@ -28,18 +37,27 @@ void game_init()
 	world_init();
 	object_init();
 
+	// Hide cursor
+	//SDL_ShowCursor(SDL_DISABLE);
+
 	// On Server
 	for (int i = 0; i < MAX_PLAYERS; i++) {
 		player[i].name = malloc(sizeof(30));
 		player[i].name[0] = '\0';
 		player[i].color = i;
-		player[i].connected = false;			// Set true on connection
+		player[i].connected = true;		// Set true on connection
 		player[i].shipIndex = UNDEFINED;
 		player[i].death_timestamp = 0;
 		player[i].attack_timestamp = 0;
 		player[i].rune_atk_timestamp = 0;
 		player[i].acceleration_timestamp = 0;
 		player[i].current_attack_type = ATK_TYPE_1;
+
+		player[i].deaths = 0;
+		player[i].kills = 0;
+		player[i].killstreak_tot = 0;
+		player[i].killstreak_round = 0;
+		player[i].won_rounds = 0;
 	}
 
 	world_spawnEnteringAsteroid();
@@ -47,22 +65,42 @@ void game_init()
 	world_spawnEnteringAsteroid();
 	world_spawnEnteringAsteroid();
 
-	client_player_num = 1;
+	client_player_num = 0;
 
 	// Player 1
-	player[0].name = "Tiago";
+	player[0].name = "Player 1";
 	player[0].connected = true;
 	world_spawnSpaceship(&player[0], 200, 200, 0);
 
 	// Player 2
-	player[1].name = "Farhad";
+	player[1].name = "Player 2";
 	player[1].connected = true;
 	world_spawnSpaceship(&player[1], 400, 200, 0);
 
-	// Player 2
-	player[2].name = "Gustav";
+	// Player 3
+	player[2].name = "Player 3";
 	player[2].connected = true;
 	world_spawnSpaceship(&player[2], 400, 400, 0);
+
+	// Player 2
+	player[3].name = "Player 4";
+	player[3].connected = true;
+	world_spawnSpaceship(&player[3], 299, 400, 0);
+
+	texture_chat_box = IMG_LoadTexture(renderer, "images/greensquare.bmp");
+
+
+	interface_setup_plane(&plane_chat_box, texture_chat_box, 200, 200, 100, 100, true);
+
+	font_roboto_black = TTF_OpenFont("fonts/roboto/Roboto-Black.ttf", 18);
+
+
+	//interface_setup_label(&label_chat_msg, renderer, "|c00FF00AAHello!|r", font_roboto_black, createColor(255, 0, 0, 0), 200, 200, true);
+
+	interface_setup_label(&playerNameColored[0], renderer, player[0].name, font_roboto_black, createColor(0xFF, 0, 0, 0), 100, 100, true);
+	interface_setup_label(&playerNameColored[1], renderer, player[1].name, font_roboto_black, createColor(0, 0, 0xFF, 0), 800, 100, true);
+	interface_setup_label(&playerNameColored[2], renderer, player[2].name, font_roboto_black, createColor(0, 0xFF, 0, 0), 100, 800, true);
+	interface_setup_label(&playerNameColored[3], renderer, player[3].name, font_roboto_black, createColor(0xFF, 0x78, 0x1C, 0), 800, 600, true);
 
 	// Debug variables
 	debug_show_collision_box = false;
@@ -136,6 +174,12 @@ void game_events()
 	if (keyEventHeld(SDL_SCANCODE_D) && player[client_player_num].mobile) {
 		player[client_player_num].acceleration_timestamp = time;
 		object_accelerateSpeedX(player[client_player_num].spaceship);
+	}
+	if (keyEventPressed(SDL_SCANCODE_C)) {
+		client_player_num++;
+		if (client_player_num == MAX_PLAYERS) {
+			client_player_num = 0;
+		}
 	}
 
 	object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
@@ -269,6 +313,12 @@ int getPlayer(int objIndex)
 	return UNDEFINED;
 }
 
+int getPlayerFromSource(int objIndex)
+{
+	int ship_index = object[objIndex].source_id;
+	return getPlayer(ship_index);
+}
+
 void handleShipDeath(int ship)
 {
 	int time = SDL_GetTicks();
@@ -344,9 +394,25 @@ void handleShipResurrection(int p)
 	// Kolla ifall det är tomt där skeppet ska spawna annars spawna någn annan stanns.
 }
 
+void handlePlayerKillsAndDeaths(int killer, int victim) 
+{
+	player[victim].killstreak_tot = 0;
+	player[victim].killstreak_round = 0;
+	player[victim].deaths++;
+	player[killer].kills++;
+	player[killer].killstreak_tot++;
+	player[killer].killstreak_round++;
+	if (killer != victim)
+		printf("%s killed %s\n", player[killer].name, player[victim].name);
+	if (killer == victim) {
+		printf("%s took his own life.\n", player[victim]);
+	}
+}
+
+
 void game_update()
 {
-	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy;
+	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy, killer, victim;
 
 	free_obj_size = 0; // clears the array of removed objects
 	
@@ -399,6 +465,8 @@ void game_update()
 		int j = object[i].next;
 		while (j != UNDEFINED) {
 			if (object_instersection(&object[i], &object[j])) {
+
+				// Bouncing things
 				if (object[i].id_type != OBJ_TYPE_PROJECTILE && object[j].id_type != OBJ_TYPE_PROJECTILE && resolveCollisionSpaceshipPowerup(i, j, &i_item, &i_item) == false) {
 					object_calculateCollisionSpeed(&object[i], &object[j]);
 				}
@@ -408,6 +476,9 @@ void game_update()
 					object[i_ship].hp -= object[i_projectile].dmg_on_impact;
 					if (object[i_ship].hp <= 0) {
 						handleShipDeath(i_ship);
+						victim = getPlayer(i_ship);
+						killer = getPlayerFromSource(i_projectile);
+						handlePlayerKillsAndDeaths(killer, victim);
 					}
 				}
 				// Projectile hits asteroid
@@ -450,28 +521,9 @@ void game_update()
 					}
 					if (object[i_ship].hp <= 0) {
 						handleShipDeath(i_ship);
+						victim = getPlayer(i_ship);
+						handlePlayerKillsAndDeaths(victim, victim);
 					}
-				}
-				if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_ASTEROID) {
-					object[i].hp -= object[j].dmg_on_impact;
-					object[j].hp -= object[i].dmg_on_impact;
-					if (object[i].hp <= 0) {
-						markForRemoval(i);
-					}
-					if (object[j].hp <= 0) {
-						markForRemoval(j);
-					}
-				}
-				if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_SPACESHIP) {
-					object[i].hp -= object[j].dmg_on_impact;
-					object[j].hp -= object[i].dmg_on_impact;
-					if (object[i].hp <= 0) {
-						handleShipDeath(i);
-					}
-					if (object[j].hp <= 0) {
-						handleShipDeath(j);
-					}
-
 				}
 			}
 			j = object[j].next;
@@ -520,6 +572,12 @@ void game_render()
 		i = object[i].next;
 	}
 
+	//interface_render_plane(&plane_chat_box, renderer);
+	//interface_render_label(&label_chat_msg, renderer);
+	interface_render_label(&playerNameColored[0], renderer);
+	interface_render_label(&playerNameColored[1], renderer);
+	interface_render_label(&playerNameColored[2], renderer);
+	interface_render_label(&playerNameColored[3], renderer);
 
 	SDL_RenderPresent(renderer);
 }

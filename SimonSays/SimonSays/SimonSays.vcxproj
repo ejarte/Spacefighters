@@ -167,6 +167,7 @@
     <ClInclude Include="events.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="interface_lib.h" />
     <ClInclude Include="libraries.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="particle.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="collision.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="interface_lib.c" />
     <ClCompile Include="libraries.c" />
     <ClCompile Include="object.c" />
     <ClCompile Include="particle.c" />

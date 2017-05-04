@@ -57,9 +57,25 @@ void playMusic(char *filepath, int repeats)
 	}
 }
 
-
-void playSound(char *filepath, int channel, int loops)
+void sound_quake_roundStart()
 {
-	bool found = false;
 
 }
+
+void sound_quake_firstblood()
+{
+
+}
+
+void sound_quake_doublekill()
+{
+	int rdm = rand() % 3;
+
+}
+
+void sound_quake_suicide()
+{
+
+}
+
+
