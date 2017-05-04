@@ -92,7 +92,9 @@ void game_init()
 
 	interface_setup_plane(&plane_chat_box, texture_chat_box, 200, 200, 100, 100, true);
 
-	font_roboto_black = TTF_OpenFont("fonts/roboto/Roboto-Black.ttf", 18);
+	font_roboto_black = TTF_OpenFont("fonts/roboto/Roboto-Black.ttf", 12);
+
+
 
 
 	//interface_setup_label(&label_chat_msg, renderer, "|c00FF00AAHello!|r", font_roboto_black, createColor(255, 0, 0, 0), 200, 200, true);
@@ -101,6 +103,18 @@ void game_init()
 	interface_setup_label(&playerNameColored[1], renderer, player[1].name, font_roboto_black, createColor(0, 0, 0xFF, 0), 800, 100, true);
 	interface_setup_label(&playerNameColored[2], renderer, player[2].name, font_roboto_black, createColor(0, 0xFF, 0, 0), 100, 800, true);
 	interface_setup_label(&playerNameColored[3], renderer, player[3].name, font_roboto_black, createColor(0xFF, 0x78, 0x1C, 0), 800, 600, true);
+
+	//	printf("%d %d\n", *object[0].ptr_center_x, 0);
+
+	int* x = player[0].spaceship->ptr_center_x;
+	int* y = player[0].spaceship->ptr_center_y;
+
+	interface_attach_label(&playerNameColored[0], object[4].ptr_center_x, object[4].ptr_center_y, -50, -50);
+	interface_attach_label(&playerNameColored[1], object[5].ptr_center_x, object[5].ptr_center_y, -50, -50);
+	interface_attach_label(&playerNameColored[2], object[6].ptr_center_x, object[6].ptr_center_y, -50, -50);
+	interface_attach_label(&playerNameColored[3], object[7].ptr_center_x, object[7].ptr_center_y, -50, -50);
+
+	//printf("lol? %d %d\n", *object[4].ptr_center_x, *object[4].ptr_center_y);
 
 	// Debug variables
 	debug_show_collision_box = false;

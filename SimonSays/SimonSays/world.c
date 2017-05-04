@@ -21,8 +21,8 @@ void world_init()
 {
 	sprite_setup(&spr_spaceship_1[0], renderer, "images/spaceships/playerShip1_red.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_spaceship_1[1], renderer, "images/spaceships/playerShip1_blue.png", 1, 1, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_spaceship_1[2], renderer, "images/spaceships/playerShip1_orange.png", 1, 1, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_spaceship_1[3], renderer, "images/spaceships/playerShip1_green.png", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_spaceship_1[2], renderer, "images/spaceships/playerShip1_green.png", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_spaceship_1[3], renderer, "images/spaceships/playerShip1_orange.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_asteroid_gray, renderer, "images/asteroid_01.png", 8, 8, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_speed, renderer, "images/power-ups/powerupRed_bolt.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_hp, renderer, "images/power-ups/pill_green.png", 1, 1, createColor(0, 0, 0, 0));

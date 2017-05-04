@@ -10,7 +10,7 @@ void animation_setup(struct Animation *a, int col, int row, int cyclesPerFrame)
 	a->numOfFrames = col*row;
 	a->col = col;
 	a->row = row;
-	printf("Animation created: %d frames and %d cycles per frame.\n", a->numOfFrames, a->cyclesPerFrame);
+	//printf("Animation created: %d frames and %d cycles per frame.\n", a->numOfFrames, a->cyclesPerFrame);
 }
 
 void animation_addFrameColRow(struct Animation *a, int col, int row) {

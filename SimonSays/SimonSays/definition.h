@@ -119,6 +119,9 @@ struct Object {
 	int prev_y;
 	int w;
 	int h;
+	
+	int* ptr_center_x;
+	int* ptr_center_y;
 
 	int id_type;
 	int id_index;

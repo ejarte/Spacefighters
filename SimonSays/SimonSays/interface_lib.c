@@ -43,12 +43,27 @@ void interface_setup_label(struct Label* l, SDL_Renderer* renderer, char* text, 
 	l->rect.w = surface->w;
 	l->rect.h = surface->h;
 	l->show = show;
-	SDL_FreeSurface(surface);
+	SDL_FreeSurface(surface);	
+	l->attached = false;
+}
+
+void interface_attach_label(struct Label *l, int* ptr_x, int* ptr_y, int x_offset, int y_offset)
+{
+	l->attached = true;
+	l->attach_offset_x = x_offset;
+	l->attach_offset_y = y_offset;
+	l->ptr_attach_x = ptr_x;
+	l->ptr_attach_y = ptr_y;
 }
 
 void interface_render_label(struct Label* l, SDL_Renderer* r)
 {
-	if (l->show)
+	if (l->show) {
+		if (l->attached) {
+			l->rect.x = *l->ptr_attach_x + l->attach_offset_x;
+			l->rect.y = *l->ptr_attach_y + l->attach_offset_y;
+			printf("%d %d\n", l->rect.x, l->rect.y);
+		}
 		SDL_RenderCopy(r, l->texture, NULL, &l->rect);
-
+	}
 }

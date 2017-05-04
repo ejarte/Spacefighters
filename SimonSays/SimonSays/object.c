@@ -104,6 +104,10 @@ void object_setup(struct Object* o, int index, int type, int x, int y, int w, in
 	o->prev_y = y;
 	o->w = w;
 	o->h = h;
+
+	o->ptr_center_x = &o->center_x;
+	o->ptr_center_y = &o->center_y;
+
 	o->facing = facingAng;
 	o->IMG_facingOffset = facingImgOffset;
 	o->sprite = s;
