@@ -1,25 +1,94 @@
 #include "object.h"
 #include "collision.h"
 
+int obj_recycled[MAX_NUM_OBJ];
+int obj_recycle_size;
+
 void object_init()
 {
+	objHead = UNDEFINED;
+	objTail = UNDEFINED;
 	objIndex_size = 0;
+	obj_recycle_size = 0;
+	printf("Object Index Initialized...\n");
+
+	for (int i = 0; i < MAX_NUM_OBJ; i++) {
+		object[i].next = UNDEFINED;
+	}
 }
 
 int object_index()
 {
-	return objIndex_size++;
+	int index;
+
+	// Gets a unique index number
+
+	// First it looks for a recycled number
+	if (obj_recycle_size > 0) {
+		obj_recycle_size--;
+		index = obj_recycled[obj_recycle_size];
+	}
+	// Otherwise it generates a new one
+	else {
+		index = objIndex_size++;
+	}
+
+	// Links the new index into the chain
+
+	// Add first
+	if (objHead == UNDEFINED) {
+		objHead = index;
+		objHead = index;
+		if (objTail == UNDEFINED) {
+			objTail = index;
+		}
+	//	object[index].prev = UNDEFINED;	// define previous node
+	}
+	// Add after
+	else {
+		object[objTail].next = index;
+		//object[index].prev = objTail;	// define previous node
+		objTail = index;
+	}
+	object[index].next = UNDEFINED;		// define next node
+
+	printf("%d indexed.\n", index);
+
+	return index;
 }
 
-void  object_deindex(struct Player *p, int index)
+
+void  object_deindex(int index)	
 {
-	int newSize = --objIndex_size;
-	printf("object %d was deindexed\n", index);
-	object[index] = object[newSize];
-	object[index].id_index = index;
-	if (p != NULL) {
-		if (object[newSize].id_index == p->spaceship->id_index) {	
-			p->spaceship = &object[index];	// Re-address the pointer to the new object index
+
+	int prev, next;
+
+	// Recycles the number
+	obj_recycled[obj_recycle_size++] = index;
+
+	printf("Object deindexed: %d\n", index);
+
+	// Removes the index from the linked list chain
+
+	// Remove first
+	if (objHead == index) {
+		objHead = object[index].next;
+	}
+	// Remove after
+	else {
+		int prev = objHead;
+		int cur = object[objHead].next;
+		while (cur != UNDEFINED) {
+			if (index == cur) {
+				object[prev].next = object[cur].next;
+				// remove tail
+				if (index == objTail) {
+					objTail = prev;
+				}
+				break;
+			}
+			prev = cur;
+			cur = object[cur].next;
 		}
 	}
 }
@@ -47,6 +116,10 @@ void object_setup(struct Object* o, int index, int type, int x, int y, int w, in
 	o->drag = DEFAULT_DRAG;
 	o->acc = DEFAULT_ACC;
 	o->collision.enabled = false;
+	o->dmg_on_impact;				// used by projectiles
+	o->next = UNDEFINED;			// used to iterate through all objects
+	o->source_id = UNDEFINED;		// used by projectiles
+	o->power_id = UNDEFINED;
 }
 
 void object_render(SDL_Renderer* renderer, struct Object* o)
@@ -56,12 +129,13 @@ void object_render(SDL_Renderer* renderer, struct Object* o)
 		SDL_Rect srect = sprite_getClipRect(o->sprite, animation_getCurColumn(&(o->animation)), animation_getCurRow(&(o->animation)));
 		SDL_Point center = { o->w / 2, o->h / 2 };
 		SDL_RenderCopyEx(renderer, o->sprite->texture, &srect, &dsrect, o->facing + o->IMG_facingOffset, &center, SDL_FLIP_NONE);
+	
+		// Debug reveals collision box
 		if (debug_show_collision_box) {
 			collision_boxRender(renderer, &o->collision, o->center_x, o->center_y);
 		}
 
 	}
-
 }
 
 void object_tick(struct Object* o)
@@ -149,7 +223,7 @@ void object_setCollisionCircle(struct Object* o, int r)
 
 bool object_instersection(struct Object* o1, struct Object* o2)
 {
-	if (o1->collision.enabled == false ||  o2->collision.enabled == false) {
+	if (o1->collision.enabled == false ||  o2->collision.enabled == false || o1->show == false || o2->show == false) {
 		return false;
 	}
 	if (o1->collision.type == COLLISION_TYPE_BOX) {

@@ -1,5 +1,8 @@
 #pragma once
 
+#define UNDEFINED					9999
+#define OBJ_INDEX_HEAD				8888
+
 // Players
 #define MAX_PLAYERS					4
 #define PL_COLOR_RED				0
@@ -16,10 +19,8 @@
 #define OBJ_TYPE_SPACESHIP			1
 #define OBJ_TYPE_EXPLOSION			2
 #define OBJ_TYPE_ASTEROID			3
-#define OBJ_TYPE_ITEM_HEALTH		4
-#define OBJ_TYPE_ITEM_INVUL			5
-#define OBJ_TYPE_ITEM_SPEED			6
-#define OBJ_TYPE_PROJECTILE			7
+#define OBJ_TYPE_POWERUP			4
+#define OBJ_TYPE_PROJECTILE			5
 
 #define MAX_NUM_OBJ					1000
 
@@ -38,8 +39,23 @@
 #define COLLISION_TYPE_CIRCLE		2
 
 // Life
-
+#define LIFE_POWERUP				1
 #define LIFE_ASTEROID				3
+#define LIFE_SPACESHIP				20
+
+// Power Up
+#define POWER_SPEED					0
+#define POWER_ATK_2					1
+#define POWER_ATK_3					2
+#define POWER_HP					3
+
+#define POWER_INVUL					4	// Not implemented
+#define POWER_OVERPOWER				5	// Not implemented
+#define NUM_OF_POWERS				3
+
+// Time (ms)
+#define TIME_DEATH					20000	
+#define TIME_SHOOT					300		
 
 // Window
 SDL_Renderer*	renderer;
@@ -88,7 +104,8 @@ struct Object {
 
 	int id_type;
 	int id_index;
-	int id_custom;
+	int source_id;		// used by projectiles
+	int power_id;		// used to distinguish different powerups
 
 	double delta_x;
 	double delta_y;
@@ -101,12 +118,15 @@ struct Object {
 	double facing;
 	double IMG_facingOffset;
 	int hp;
-
-	bool show;
+	int dmg_on_impact;			
+	bool show;					// show/hide the object and the collision from the world
 
 	struct Animation animation;
 	struct Sprite* sprite;
 	struct Collision collision;
+
+	// node
+	int next;
 };
 
 struct Player {
@@ -115,8 +135,17 @@ struct Player {
 	bool alive;
 	bool mobile;
 	bool connected;
-	bool accelerating;
-	struct Object* spaceship;
+	bool accelerating;				
+	struct Object* spaceship;	
+	int death_timestamp;
+	int attack_timestamp;
+	int rune_speed_timestamp;
+	int rune_atk_2_timestamp;
+	int rune_atk_3_timestamp;
+	bool speed_active;
+	bool atk_2_active;
+	bool atk_3_active;
+	int shipIndex;
 };
 
 // DEBUG Variables

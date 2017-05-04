@@ -5,13 +5,14 @@
 #include "animation.h"
 #include "sprite.h"
 
-
+int objHead;
+int objTail;
 int objIndex_size;
 struct Object object[MAX_NUM_OBJ];
 
 void object_init();	// Initializes the object index
 int object_index();
-void  object_deindex(struct Player *p, int index);
+void  object_deindex(int index);
 
 void object_setup(struct Object* o, int index, int type, int x, int y, int w, int h, double facingAng, double facingImgOffset, struct Sprite *s, struct Animation *a);
 void object_render(SDL_Renderer* renderer, struct Object* o);

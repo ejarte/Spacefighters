@@ -11,7 +11,8 @@ int free_obj_index[500];
 int free_obj_size;
 
 struct Player player[MAX_PLAYERS];
-struct Player thisPlayer = { NULL };
+
+int client_player_num;
 
 void game_init()
 {
@@ -23,6 +24,7 @@ void game_init()
 	stars_rect.w = stars_rect.h = 800;
 
 	world_init();
+	object_init();
 
 	// On Server
 	for (int i = 0; i < MAX_PLAYERS; i++) {
@@ -30,6 +32,9 @@ void game_init()
 		player[i].name[0] = '\0';
 		player[i].color = i;
 		player[i].connected = false;			// Set true on connection
+		player[i].shipIndex = UNDEFINED;
+		player[i].death_timestamp = 0;
+		player[i].attack_timestamp = 0;
 	}
 
 	world_spawnEnteringAsteroid();
@@ -37,11 +42,22 @@ void game_init()
 	world_spawnEnteringAsteroid();
 	world_spawnEnteringAsteroid();
 
-	// On Client
-	thisPlayer.name = "MyName";
-	thisPlayer.connected = true;
-	thisPlayer.color = PL_COLOR_ORANGE;
-	world_spawnSpaceship(&thisPlayer, 200, 200, 0);
+	client_player_num = 1;
+
+	// Player 1
+	player[0].name = "Tiago";
+	player[0].connected = true;
+	world_spawnSpaceship(&player[0], 200, 200, 0);
+
+	// Player 2
+	player[1].name = "Farhad";
+	player[1].connected = true;
+	world_spawnSpaceship(&player[1], 400, 200, 0);
+
+	// Player 2
+	player[2].name = "Gustav";
+	player[2].connected = true;
+	world_spawnSpaceship(&player[2], 400, 400, 0);
 
 	// Debug variables
 	debug_show_collision_box = false;
@@ -54,33 +70,46 @@ void game_execute()
 	game_render();
 }
 
+
 void game_events()
 {
+	int time = SDL_GetTicks();
+
 	if (quitEventTriggered()) {
 		setNextState(STATE_EXIT);
 		return;
 	}
+
+	if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
+		spawnNormalProjectile(player[client_player_num].spaceship, player[client_player_num].color);
+		player[client_player_num].attack_timestamp = time;
+	}
+	if (keyEventHeld(SDL_SCANCODE_W) && player[client_player_num].mobile == true) {
+		player[client_player_num].accelerating = true;
+		object_deaccelerateSpeedY(player[client_player_num].spaceship);
+	}
+	if (keyEventHeld(SDL_SCANCODE_S) && player[client_player_num].mobile) {
+		player[0].accelerating = true;
+		object_accelerateSpeedY(player[client_player_num].spaceship);
+	}
+	if (keyEventHeld(SDL_SCANCODE_A) && player[client_player_num].mobile) {
+		player[0].accelerating = true;
+		object_deaccelerateSpeedX(player[client_player_num].spaceship);
+	}
+	if (keyEventHeld(SDL_SCANCODE_D) && player[client_player_num].mobile) {
+		player[0].accelerating = true;
+		object_accelerateSpeedX(player[client_player_num].spaceship);
+	}
+	if (mouseMotionEvent() && player[client_player_num].alive) {
+		object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
+	}
+
+	// Testing 
 	if (keyEventPressed(SDL_SCANCODE_Z)) {
 		world_spawnEnteringAsteroid();
 	}
-	if (keyEventHeld(SDL_SCANCODE_W)) {
-		thisPlayer.accelerating = true;
-		object_deaccelerateSpeedY(thisPlayer.spaceship);
-	}
-	if (keyEventHeld(SDL_SCANCODE_S)) {
-		thisPlayer.accelerating = true;
-		object_accelerateSpeedY(thisPlayer.spaceship);
-	}
-	if (keyEventHeld(SDL_SCANCODE_A)) {
-		thisPlayer.accelerating = true;
-		object_deaccelerateSpeedX(thisPlayer.spaceship);
-	}
-	if (keyEventHeld(SDL_SCANCODE_D)) {
-		thisPlayer.accelerating = true;
-		object_accelerateSpeedX(thisPlayer.spaceship);
-	}
-	if (mouseMotionEvent()) {
-		object_setFacingToPoint(thisPlayer.spaceship, getMousePos());
+	if (keyEventPressed(SDL_SCANCODE_X)) {
+		spawnPowerUpType(rand() % NUM_OF_POWERS);
 	}
 }
 
@@ -105,67 +134,249 @@ void handleWallCollision(int i, int side)
 	object_move(&object[i]);
 }
 
+bool resolveCollisionSpaceshipPowerup(int i, int j, int* ptr_ship, int* ptr_power)
+{
+	if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_POWERUP) {
+		*ptr_ship = i;
+		*ptr_power = j;
+		return true;
+	}
+	if (object[i].id_type == OBJ_TYPE_POWERUP && object[j].id_type == OBJ_TYPE_SPACESHIP) {
+		*ptr_ship = j;
+		*ptr_power = i;
+		return true;
+	}
+	return false;
+}
+
+bool resolveCollisionProjPowerup(int i, int j, int* ptr_proj, int* ptr_power)
+{
+	if (object[i].id_type == OBJ_TYPE_PROJECTILE && object[j].id_type == OBJ_TYPE_POWERUP) {
+		*ptr_proj = i;
+		*ptr_power = j;
+		return true;
+	}
+	if (object[i].id_type == OBJ_TYPE_POWERUP && object[j].id_type == OBJ_TYPE_PROJECTILE) {
+		*ptr_proj = j;
+		*ptr_power = i;
+		return true;
+	}
+	return false;
+}
+
+bool resolveCollisionProjSpaceship(int i, int j, int* ptr_proj, int* ptr_ship)
+{
+	if (object[i].id_type == OBJ_TYPE_PROJECTILE && object[j].id_type == OBJ_TYPE_SPACESHIP && object[i].source_id != j) {
+		*ptr_proj = i;
+		*ptr_ship = j;
+		return true;
+	}
+	if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_PROJECTILE && object[j].source_id != i) {
+		*ptr_proj = j;
+		*ptr_ship = i;
+		return true;
+	}
+	return false;
+}
+
+bool resolveCollisionProjAsteroid(int i, int j, int* ptr_proj, int* ptr_asteroid)
+{
+	if (object[i].id_type == OBJ_TYPE_PROJECTILE && object[j].id_type == OBJ_TYPE_ASTEROID) {
+		*ptr_proj = i;
+		*ptr_asteroid = j;
+		return true;
+	}
+	if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_PROJECTILE) {
+		*ptr_proj = j;
+		*ptr_asteroid = i;
+		return true;
+	}
+	return false;
+}
+
+bool resolveCollisionSpaceshipAsteroid(int i, int j, int* ptr_asteroid, int* ptr_ship)
+{
+	if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_ASTEROID) {
+		*ptr_ship = i;
+		*ptr_asteroid = j;
+		return true;
+	}
+	if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_SPACESHIP) {
+		*ptr_ship = j;
+		*ptr_asteroid = i;
+		return true;
+	}
+	return false;
+}
+
+
+void markForRemoval(int index) {
+	bool add = true;
+	// Prevents duplications
+	for (int i = 0; i < free_obj_size; i++) {
+		if (free_obj_index[i] == index) {
+			add = false;
+		}
+	}
+	if (add) {
+		free_obj_index[free_obj_size++] = index;
+	}
+}
+
+void handleShipDeath(int ship)
+{
+	int time = SDL_GetTicks();
+	object[ship].show = false;
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		if (player[i].shipIndex == ship) {
+			printf("Player %d's ship was destroyed (%d) @time: %d\n", i, ship, time); 
+			player[i].mobile = false;
+			player[i].alive = false;
+			player[i].death_timestamp = time;
+		}
+	}
+}
+
+void handleShipResurrection(int p)
+{
+	int time = SDL_GetTicks();
+	int i = player[p].shipIndex;
+	object[i].show = true;
+	object[i].hp = LIFE_SPACESHIP;
+	player[p].mobile = true;
+	player[p].alive = true;
+	printf("Player %d's ship was resurrected (%d) @time: %d\n", p, i, time);
+
+	// Kolla ifall det är tomt där skeppet ska spawna annars spawna någn annan stanns.
+}
+
 void game_update()
 {
-	int ptr_side;
-	free_obj_size = 0;
-	for (int i = 0; i < objIndex_size; i++) {
+	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power;
+	
+	free_obj_size = 0; // clears the array of removed objects
+	
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		if (player[i].connected && player[i].alive == false && player[i].death_timestamp + TIME_DEATH < SDL_GetTicks()) {
+			handleShipResurrection(i);
+		}
+	}
+
+	i = objHead;
+	while (i != UNDEFINED) {
 		if (object[i].id_type == OBJ_TYPE_SPACESHIP) {
-			if (!isInsideWorld(&thisPlayer, &ptr_side)) {
+			if (!isInsideWorld(&object[i], &ptr_side)) {
 				handleWallCollision(i, ptr_side);
 			}
-			if (world_spaceshipLost(&thisPlayer)) {
-				printf("Your spaceship got lost and has respawned in the center...\n");
-				thisPlayer.spaceship->center_x = getWindowWidth() / 2;
-				thisPlayer.spaceship->center_y = getWindowHeight() / 2;
+
+			// Debug when the player manages to leave the map
+			if (world_spaceshipLost(&object[i])) {
+				object[i].center_x = getWindowWidth() / 2;
+				object[i].center_y = getWindowHeight() / 2;
 			}
 		}
-
-		// Collision
-
-		for (int j = i + 1; j < objIndex_size; j++) {
-			if (object_instersection(&object[i], &object[j])) {
-				
-				if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_ASTEROID) {
-					object_calculateCollisionSpeed(&object[i], &object[j]);
-					printf("spaceship collided with asteroid!\n");
-				}
-				if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_SPACESHIP) {
-					object_calculateCollisionSpeed(&object[i], &object[j]);
-					printf("asteroid collided with spaceship!\n");
-				}
-				if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_ASTEROID) {
-					object_calculateCollisionSpeed(&object[i], &object[j]);
-					printf("asteroid collided with asteroid!\n");
-				}
-				if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_SPACESHIP) {
-					object_calculateCollisionSpeed(&object[i], &object[j]);
-					printf("asteroid collided with asteroid!\n");
-				}
-			}
-
-			// object_calculateCollisionSpeed
-		}
-
 
 		object_tick(&object[i]);
 		object_move(&object[i]);
 
-		if (hasLeftWorld(&object[i])) {
-			free_obj_index[free_obj_size++] = i;
+		// Collision
+		int j = object[i].next;
+		while (j != UNDEFINED) {
+			if (object_instersection(&object[i], &object[j])) {
+				if (object[i].id_type != OBJ_TYPE_PROJECTILE && object[j].id_type != OBJ_TYPE_PROJECTILE && resolveCollisionSpaceshipPowerup(i, j, &i_item, &i_item) == false) {
+					object_calculateCollisionSpeed(&object[i], &object[j]);
+				}
+				// Projectile hits spaceship
+				if (resolveCollisionProjSpaceship(i, j, &i_projectile, &i_ship)) {
+					markForRemoval(i_projectile);
+					object[i_ship].hp -= object[i_projectile].dmg_on_impact;
+					if (object[i_ship].hp <= 0) {
+						handleShipDeath(i_ship);
+					}
+				}
+				// Projectile hits asteroid
+				else if (resolveCollisionProjAsteroid(i, j, &i_projectile, &i_asteroid)) {
+					markForRemoval(i_projectile);
+					object[i_asteroid].hp -= object[i_projectile].dmg_on_impact;
+					// On asteroid death
+					if (object[i_asteroid].hp <= 0) {
+						markForRemoval(i_asteroid);
+					}
+				}
+				// Projectile hits powerup
+				else if (resolveCollisionProjPowerup(i, j, &i_projectile, &i_power)) {
+					markForRemoval(i);
+					markForRemoval(j);
+				}
+				// Spaceship picksup powerup
+				if (resolveCollisionSpaceshipPowerup(i, j, &i_ship, &i_power)) {
+					markForRemoval(i_power);
+					if (object[i_power].power_id == POWER_SPEED) {
+						printf("speed boost!\n");
+					}
+					else if (object[i_power].power_id == POWER_HP) {
+						printf("life boost!\n");
+					}
+					else if (object[i_power].power_id == POWER_ATK_2) {
+						printf("change attack to type 2.\n");
+					}
+					else if (object[i_power].power_id == POWER_ATK_3) {
+						printf("change attack to type 3.\n");
+					}
+				}
+
+				// Spaceship and asteroid collide
+				else if (resolveCollisionSpaceshipAsteroid(i, j, &i_asteroid, &i_ship)) {
+					object[i_asteroid].hp -= object[i_ship].dmg_on_impact;
+					object[i_ship].hp -= object[i_asteroid].dmg_on_impact;
+					if (object[i_asteroid].hp <= 0) {
+						markForRemoval(i_asteroid);
+					}
+					if (object[i_ship].hp <= 0) {
+						handleShipDeath(i_ship);
+					}
+				}
+				if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_ASTEROID) {
+					object[i].hp -= object[j].dmg_on_impact;
+					object[j].hp -= object[i].dmg_on_impact;
+					if (object[i].hp <= 0) {
+						markForRemoval(i);
+					}
+					if (object[j].hp <= 0) {
+						markForRemoval(j);
+					}
+				}
+				if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_SPACESHIP) {
+					object[i].hp -= object[j].dmg_on_impact;
+					object[j].hp -= object[i].dmg_on_impact;
+					if (object[i].hp <= 0) {
+						handleShipDeath(i);
+					}
+					if (object[j].hp <= 0) {
+						handleShipDeath(j);
+					}
+
+				}
+			}
+			j = object[j].next;
 		}
+
+		if (hasLeftWorld(&object[i])) {
+			markForRemoval(i);
+		}
+		i = object[i].next;
 	}
 
 	// Free removed objects
 	for (int i = 0; i < free_obj_size; i++) {
-		object_deindex(&thisPlayer, free_obj_index[i]);		// &thisPlayer on client NULL on server
+		object_deindex(free_obj_index[i]);		// &thisPlayer on client NULL on server
 	}
 }
 
 void game_render()
 {
-	int x = thisPlayer.spaceship->center_x;
-	int y = thisPlayer.spaceship->center_y;
+	int x = player[client_player_num].spaceship->center_x;
+	int y = player[client_player_num].spaceship->center_y;
 
 
 	SDL_RenderClear(renderer);
@@ -182,8 +393,10 @@ void game_render()
 	SDL_RenderCopy(renderer, backgroundImage, &back_rect, &background_rect);
 	SDL_RenderCopy(renderer, starsImage, &stars_rect, &background_rect);
 
-	for (int i = 0; i < objIndex_size; i++) {
+	int i = objHead;
+	while (i != UNDEFINED) {
 		object_render(renderer, &object[i]);
+		i = object[i].next;
 	}
 	SDL_RenderPresent(renderer);
 }
