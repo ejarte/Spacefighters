@@ -1,6 +1,6 @@
 #include "game.h"
-#include "TCP.h"
-#include "UDP.h"
+//#include "TCP.h"
+//#include "UDP.h"
 
 // Background
 SDL_Rect background_rect;
@@ -38,6 +38,7 @@ void game_init()
 		player[i].death_timestamp = 0;
 		player[i].attack_timestamp = 0;
 		player[i].rune_atk_timestamp = 0;
+		player[i].acceleration_timestamp = 0;
 		player[i].current_attack_type = ATK_TYPE_1;
 	}
 
@@ -88,7 +89,7 @@ void game_events()
 
 		SDL_Thread *TCPThread;
 		const char *TCPThreadReturnValue;
-		TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
+		//TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
 
 		if (NULL == TCPThread) {
 			printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
@@ -107,13 +108,13 @@ void game_events()
 	}
 
 	if (keyEventPressed(SDL_SCANCODE_O)) {
-		SDL_Thread *TCPThread;
-		const char *TCPThreadReturnValue;
-		TCPThread = SDL_CreateThread(UDP, "TestThreadUDP", "127.0.0.1");
+		//SDL_Thread *TCPThread;
+		//const char *TCPThreadReturnValue;
+		//TCPThread = SDL_CreateThread(UDP, "TestThreadUDP", "127.0.0.1");
 
-		if (NULL == TCPThread) {
-			printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
-		}
+		//if (NULL == TCPThread) {
+		//	printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+		//}
 	}
 
 	if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
@@ -121,19 +122,19 @@ void game_events()
 		player[client_player_num].attack_timestamp = time;
 	}
 	if (keyEventHeld(SDL_SCANCODE_W) && player[client_player_num].mobile == true) {
-		player[client_player_num].accelerating = true;
+		player[client_player_num].acceleration_timestamp = time;
 		object_deaccelerateSpeedY(player[client_player_num].spaceship);
 	}
 	if (keyEventHeld(SDL_SCANCODE_S) && player[client_player_num].mobile) {
-		player[0].accelerating = true;
+		player[client_player_num].acceleration_timestamp = time;
 		object_accelerateSpeedY(player[client_player_num].spaceship);
 	}
 	if (keyEventHeld(SDL_SCANCODE_A) && player[client_player_num].mobile) {
-		player[0].accelerating = true;
+		player[client_player_num].acceleration_timestamp = time;
 		object_deaccelerateSpeedX(player[client_player_num].spaceship);
 	}
 	if (keyEventHeld(SDL_SCANCODE_D) && player[client_player_num].mobile) {
-		player[0].accelerating = true;
+		player[client_player_num].acceleration_timestamp = time;
 		object_accelerateSpeedX(player[client_player_num].spaceship);
 	}
 
@@ -345,7 +346,8 @@ void handleShipResurrection(int p)
 
 void game_update()
 {
-	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time;
+	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy;
+	double angle;
 	
 	free_obj_size = 0; // clears the array of removed objects
 	
@@ -363,8 +365,14 @@ void game_update()
 		if (player[i].current_attack_type != ATK_TYPE_1 && player[i].rune_atk_timestamp + TIME_ATK < time) {
 			handleAttackReset(i);
 		}
-
-		//TIME_SPEED
+		if (player[i].acceleration_timestamp + TIME_ACC > time) {
+			dx = player[i].spaceship->delta_x;
+			dy = player[i].spaceship->delta_y;
+			angle = pointToAngle(dx, dy);
+			x = player[i].spaceship->center_x;
+			y = player[i].spaceship->center_y;
+			world_createParticleFlightPath(0, x, y, angle);
+		}
 	}
 
 	i = objHead;
@@ -383,6 +391,11 @@ void game_update()
 
 		object_tick(&object[i]);
 		object_move(&object[i]);
+
+		// Tick particles
+		
+		particle_tick_all();
+
 
 		// Collision
 		int j = object[i].next;
@@ -495,14 +508,21 @@ void game_render()
 	background_rect.w = getWindowWidth();
 	background_rect.h = getWindowHeight();
 
+	// Background
 	SDL_RenderCopy(renderer, backgroundImage, &back_rect, &background_rect);
 	SDL_RenderCopy(renderer, starsImage, &stars_rect, &background_rect);
 
+	// Particles
+	particle_render_all(renderer);
+
+	// Objects
 	int i = objHead;
 	while (i != UNDEFINED) {
 		object_render(renderer, &object[i]);
 		i = object[i].next;
 	}
+
+
 	SDL_RenderPresent(renderer);
 }
 

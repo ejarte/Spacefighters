@@ -12,6 +12,7 @@ struct Sprite spr_powerup_speed;
 struct Sprite spr_powerup_hp;
 struct Sprite spr_powerup_atk_2;
 struct Sprite spr_powerup_atk_3;
+struct Sprite spr_green_particle;
 struct Animation anim_asteroid_gray[8];
 struct Animation anim_spaceship[4];
 struct Animation anim_none;
@@ -27,7 +28,7 @@ void world_init()
 	sprite_setup(&spr_powerup_hp, renderer, "images/power-ups/pill_green.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_atk_2, renderer, "images/power-ups/things_silver.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_atk_3, renderer, "images/power-ups/things_gold.png", 1, 1, createColor(0, 0, 0, 0));
-
+	sprite_setup(&spr_green_particle, renderer, "images/particles/green.bmp", 1, 1, createColor(0, 0, 0, 0));
 	for (int r = 0; r < 8; r++) {
 		animation_setup(&anim_asteroid_gray[r], 8, 1, 12);
 		for (int c = 0; c < 8; c++) {
@@ -45,7 +46,6 @@ void world_spawnSpaceship(struct Player* p, int x, int y, double facingAng)
 	int w = 112/3;
 	int h = 75/3;
 	int i = object_index();
-	p->accelerating = false;
 	p->alive = true;
 	p->mobile = true;
 	p->spaceship = &object[i];
@@ -55,11 +55,62 @@ void world_spawnSpaceship(struct Player* p, int x, int y, double facingAng)
 	object[i].speed_max = SPEED_MAX_DEFAULT;
 	object[i].drag = DRAG_SPACESHIP;
 	object[i].hp = LIFE_SPACESHIP;
-	object[i].dmg_on_impact = 1;
+	object[i].dmg_on_impact = 0;
 	p->spaceship = &object[i];
 	p->shipIndex = i;
-	object_setCollisionCircle(&object[i], 30);
+	object_setCollisionBox(&object[i], 25, 25);
 }
+
+void world_createParticleExplosionAngled(int x, int y, double angleCenter)
+{
+	double angle, speed;
+	int life, size, newX, newY;
+	for (int i = 0; i < 20; i++) {
+		angle = rand() % 25 + angleCenter + 180;
+		speed = rand() % 4 + 1;
+		life = rand() % 8 + 5;
+		size = rand() % 2 + 2;
+		newX = rand() % 6 - 4 + x;
+		newY = rand() % 6 - 4 + y;
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+	}
+	for (int i = 0; i < 30; i++) {
+		angle = rand() % 45 + angleCenter + 180;
+		speed = rand() % 5 + 5;
+		life = rand() % 3 + 5;
+		size = rand() % 2 + 2;
+		newX = rand() % 6 - 4 + x;
+		newY = rand() % 6 - 4 + y;
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+	}
+}
+
+void world_createParticleFlightPath(int color, int x, int y, double angleCenterDeg)
+{
+	double angle, speed;
+	int life, size, newX, newY;
+	for (int i = 0; i < 20; i++) {
+		angle = rand() % 10 + angleCenterDeg + 180;
+		speed = rand() % 4 + 1;
+		life = rand() % 8 + 10;
+		size = rand() % 2 + 2;
+		newX = rand() % 6 - 4 + x;
+		newY = rand() % 6 - 4 + y;
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+	}
+	/*
+	for (int i = 0; i < 30; i++) {
+		angle = rand() % 45 + angleCenterDeg + 180;
+		speed = rand() % 5 + 5;
+		life = rand() % 3 + 5;
+		size = rand() % 2 + 2;
+		newX = rand() % 6 - 4 + x;
+		newY = rand() % 6 - 4 + y;
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+	}
+	*/
+}
+
 
 void spawnNormalProjectile(struct Object* source, int color)
 {
@@ -151,7 +202,7 @@ void spawnPowerUpType(int type)
 	object[i].delta_y = dy;
 	object[i].hp = LIFE_POWERUP;
 	object[i].dmg_on_impact = 0;
-	object_setCollisionCircle(&object[i], 15);
+	object_setCollisionBox(&object[i], 15, 15);
 }
 
 void world_spawnEnteringAsteroid()

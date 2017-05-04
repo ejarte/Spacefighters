@@ -12,14 +12,5 @@ bool hasLeftWorld(struct Object* o);
 bool isInsideWorld(struct Object* o, int *side);
 bool world_spaceshipLost(struct Object* spaceship);
 void spawnPowerUpType(int type);
-
-
-/*
-
-bool isInsideWorld(Object* o);
-void initWorld();
-void spawnEnteringAsteroid();
-void spawnNormalProjectile(Spaceship* source);
-void spawnProjectileSpecial_1(Spaceship* source);
-
-*/
+void world_createParticleExplosionAngled(int x, int y, double angleCenter);
+void world_createParticleFlightPath(int color, int x, int y, double angleCenterDeg);

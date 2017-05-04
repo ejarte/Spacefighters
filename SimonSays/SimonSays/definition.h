@@ -57,6 +57,7 @@
 #define TIME_SHOOT					300		// Shoot cooldown
 #define TIME_SPEED					6000	// Speed boost duration
 #define TIME_ATK					6000	// Duration of unique projectile bonus
+#define TIME_ACC					100		// The amount of time that a acceleration effect lasts
 
 // Speed
 #define SPEED_ACC_DEFAULT			0.7		// default spaceship acceleration added per tick
@@ -151,13 +152,13 @@ struct Player {
 	int color;
 	bool alive;
 	bool mobile;
-	bool connected;
-	bool accelerating;				
+	bool connected;			
 	struct Object* spaceship;	
 	int death_timestamp;
 	int attack_timestamp;
 	int rune_speed_timestamp;
 	int rune_atk_timestamp;
+	int acceleration_timestamp;
 	bool speed_active;
 	int current_attack_type;
 	int shipIndex;

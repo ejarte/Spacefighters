@@ -90,6 +90,7 @@ void  object_deindex(int index)
 			prev = cur;
 			cur = object[cur].next;
 		}
+		object[index].next = UNDEFINED;
 	}
 }
 
