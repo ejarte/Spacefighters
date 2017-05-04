@@ -49,10 +49,11 @@ void world_spawnSpaceship(struct Player* p, int x, int y, double facingAng)
 	p->alive = true;
 	p->mobile = true;
 	p->spaceship = &object[i];
+	p->speed_active = false;
 	object_setup(&object[i], i, OBJ_TYPE_SPACESHIP, x, y, w, h, facing, facingOff, &spr_spaceship_1[p->color], &anim_none);
-	object[i].acc = 0.7;
-	object[i].speed_max = 9.;
-	object[i].drag = 0.98;
+	object[i].acc = SPEED_ACC_DEFAULT;
+	object[i].speed_max = SPEED_MAX_DEFAULT;
+	object[i].drag = DRAG_SPACESHIP;
 	object[i].hp = LIFE_SPACESHIP;
 	object[i].dmg_on_impact = 1;
 	p->spaceship = &object[i];
@@ -141,6 +142,10 @@ void spawnPowerUpType(int type)
 	else if (type == POWER_ATK_3) {
 		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawnPoint.x, spawnPoint.y, spr_powerup_atk_3.frame_w / 2, spr_powerup_atk_3.frame_h / 2, rand() % 360, 0, &spr_powerup_atk_3, &anim_none);
 		object[i].power_id = POWER_ATK_3;
+	}
+	else if (type == POWER_HP) {
+		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawnPoint.x, spawnPoint.y, spr_powerup_hp.frame_w / 2, spr_powerup_hp.frame_h / 2, rand() % 360, 0, &spr_powerup_hp, &anim_none);
+		object[i].power_id = POWER_HP;
 	}
 	object[i].delta_x = dx;
 	object[i].delta_y = dy;

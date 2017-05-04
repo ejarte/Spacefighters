@@ -35,6 +35,8 @@ void game_init()
 		player[i].shipIndex = UNDEFINED;
 		player[i].death_timestamp = 0;
 		player[i].attack_timestamp = 0;
+		player[i].rune_atk_timestamp = 0;
+		player[i].current_attack_type = ATK_TYPE_1;
 	}
 
 	world_spawnEnteringAsteroid();
@@ -100,9 +102,9 @@ void game_events()
 		player[0].accelerating = true;
 		object_accelerateSpeedX(player[client_player_num].spaceship);
 	}
-	if (mouseMotionEvent() && player[client_player_num].alive) {
-		object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
-	}
+
+	object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
+
 
 	// Testing 
 	if (keyEventPressed(SDL_SCANCODE_Z)) {
@@ -223,18 +225,75 @@ void markForRemoval(int index) {
 	}
 }
 
+int getPlayer(int objIndex)
+{
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		if (player[i].spaceship->id_index == objIndex)
+			return i;
+	}
+	return UNDEFINED;
+}
+
 void handleShipDeath(int ship)
 {
 	int time = SDL_GetTicks();
+	int p = getPlayer(ship);
 	object[ship].show = false;
-	for (int i = 0; i < MAX_PLAYERS; i++) {
-		if (player[i].shipIndex == ship) {
-			printf("Player %d's ship was destroyed (%d) @time: %d\n", i, ship, time); 
-			player[i].mobile = false;
-			player[i].alive = false;
-			player[i].death_timestamp = time;
-		}
-	}
+	printf("Player %d's ship was destroyed (%d) @time: %d\n", p, ship, time); 
+	player[p].mobile = false;
+	player[p].alive = false;
+	player[p].death_timestamp = time;
+}
+
+void handleSpeedBoost(int ship) {
+	int p = getPlayer(ship);
+	int time = SDL_GetTicks();
+	object[ship].acc = SPEED_ACC_POWER;
+	object[ship].speed_max = SPEED_MAX_POWER;
+	player[p].speed_active = true;
+	player[p].rune_speed_timestamp = time;
+	printf("player %d got a speed boost! @time: %d\n", getPlayer(ship), time);
+}
+
+void disableSpeedBoost(int p) 
+{
+	player[p].spaceship->acc = SPEED_ACC_DEFAULT;
+	player[p].spaceship->speed_max = SPEED_MAX_DEFAULT;
+	player[p].speed_active = false;
+	printf("player %d speed boost expired! @time: %d\n", p, SDL_GetTicks());
+}
+
+void handleLifePickup(int ship)
+{
+	int p = getPlayer(ship);
+	object[ship].hp += POWER_LIFE_ADDED;
+	if (object[ship].hp > LIFE_SPACESHIP)
+		object[ship].hp = LIFE_SPACESHIP;
+	printf("player %d recieved %d life back (%d) @time: %d\n", p, POWER_LIFE_ADDED, object[ship].hp, SDL_GetTicks());
+}
+
+void handleAttack_2_Pickup(int ship) 
+{
+	int time = SDL_GetTicks();
+	int p = getPlayer(ship);
+	player[p].current_attack_type = ATK_TYPE_2;
+	player[p].rune_atk_timestamp = time;
+	printf("player %d aquired attack type (%d) @time: %d\n", p, 2, time);
+}
+
+void handleAttack_3_Pickup(int ship)
+{
+	int time = SDL_GetTicks();
+	int p = getPlayer(ship);
+	player[p].current_attack_type = ATK_TYPE_3;
+	player[p].rune_atk_timestamp = time;
+	printf("player %d aquired attack type (%d) @time: %d\n", p, 3, time);
+}
+
+void handleAttackReset(int p)
+{
+	player[p].current_attack_type = ATK_TYPE_1;
+	printf("player %d now has a normal attack again (%d) @time: %d\n", p, 1, SDL_GetTicks());
 }
 
 void handleShipResurrection(int p)
@@ -252,14 +311,26 @@ void handleShipResurrection(int p)
 
 void game_update()
 {
-	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power;
+	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time;
 	
 	free_obj_size = 0; // clears the array of removed objects
 	
+	// Update player activities
+	time = SDL_GetTicks();
 	for (int i = 0; i < MAX_PLAYERS; i++) {
-		if (player[i].connected && player[i].alive == false && player[i].death_timestamp + TIME_DEATH < SDL_GetTicks()) {
+		// Resurrection triggered
+		if (player[i].connected && player[i].alive == false && player[i].death_timestamp + TIME_DEATH < time) {
 			handleShipResurrection(i);
 		}
+		// Spped boost expired
+		if (player[i].speed_active && player[i].rune_speed_timestamp + TIME_SPEED < time) {
+			disableSpeedBoost(i);
+		}
+		if (player[i].current_attack_type != ATK_TYPE_1 && player[i].rune_atk_timestamp + TIME_ATK < time) {
+			handleAttackReset(i);
+		}
+
+		//TIME_SPEED
 	}
 
 	i = objHead;
@@ -312,16 +383,16 @@ void game_update()
 				if (resolveCollisionSpaceshipPowerup(i, j, &i_ship, &i_power)) {
 					markForRemoval(i_power);
 					if (object[i_power].power_id == POWER_SPEED) {
-						printf("speed boost!\n");
+						handleSpeedBoost(i_ship);
 					}
 					else if (object[i_power].power_id == POWER_HP) {
-						printf("life boost!\n");
+						handleLifePickup(i_ship);
 					}
 					else if (object[i_power].power_id == POWER_ATK_2) {
-						printf("change attack to type 2.\n");
+						handleAttack_2_Pickup(i_ship);
 					}
 					else if (object[i_power].power_id == POWER_ATK_3) {
-						printf("change attack to type 3.\n");
+						handleAttack_2_Pickup(i_ship);
 					}
 				}
 
