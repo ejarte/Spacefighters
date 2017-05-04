@@ -1,4 +1,6 @@
 #include "game.h"
+#include "TCP.h"
+#include "UDP.h"
 
 // Background
 SDL_Rect background_rect;
@@ -80,6 +82,38 @@ void game_events()
 	if (quitEventTriggered()) {
 		setNextState(STATE_EXIT);
 		return;
+	}
+
+	if (keyEventPressed(SDL_SCANCODE_P)) {
+
+		SDL_Thread *TCPThread;
+		const char *TCPThreadReturnValue;
+		TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
+
+		if (NULL == TCPThread) {
+			printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+		}
+		else {
+			//SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
+			//printf("\nThread returned value: %d", TCPThreadReturnValue);
+		}
+		/*
+		char* text = malloc(sizeof(100));
+		text[0] = '\0';
+		strcat(text, TCP("127.0.0.1"));
+		printf("%s\n", text);
+		free(text);
+		*/
+	}
+
+	if (keyEventPressed(SDL_SCANCODE_O)) {
+		SDL_Thread *TCPThread;
+		const char *TCPThreadReturnValue;
+		TCPThread = SDL_CreateThread(UDP, "TestThreadUDP", "127.0.0.1");
+
+		if (NULL == TCPThread) {
+			printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+		}
 	}
 
 	if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
