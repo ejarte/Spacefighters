@@ -63,12 +63,13 @@ void world_spawnSpaceship(struct Player* p, int x, int y, double facingAng)
 
 void world_createParticleExplosionAngled(int x, int y, double angleCenter)
 {
+	printf("%f\n", angleCenter);
 	double angle, speed;
 	int life, size, newX, newY;
 	for (int i = 0; i < 20; i++) {
 		angle = rand() % 25 + angleCenter + 180;
 		speed = rand() % 4 + 1;
-		life = rand() % 8 + 5;
+		life = rand() % 10 + 5;
 		size = rand() % 2 + 2;
 		newX = rand() % 6 - 4 + x;
 		newY = rand() % 6 - 4 + y;

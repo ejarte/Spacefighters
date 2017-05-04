@@ -405,7 +405,7 @@ void handleShipResurrection(int p)
 	player[p].alive = true;
 	printf("Player %d's ship was resurrected (%d) @time: %d\n", p, i, time);
 
-	// Kolla ifall det är tomt där skeppet ska spawna annars spawna någn annan stanns.
+	// Kvar att göra: ??? Kolla ifall det är tomt där skeppet ska spawna annars spawna någn annan stanns.
 }
 
 void handlePlayerKillsAndDeaths(int killer, int victim) 
@@ -427,6 +427,7 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 void game_update()
 {
 	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy, killer, victim;
+	double angle;
 
 	free_obj_size = 0; // clears the array of removed objects
 	
@@ -486,8 +487,16 @@ void game_update()
 				}
 				// Projectile hits spaceship
 				if (resolveCollisionProjSpaceship(i, j, &i_projectile, &i_ship)) {
-					markForRemoval(i_projectile);
-					object[i_ship].hp -= object[i_projectile].dmg_on_impact;
+					// Particle explosion on impact
+					dx = object[i_projectile].delta_x;
+					dy = object[i_projectile].delta_y;
+					angle = radiansToDegrees(pointToAngle(dx, dy));
+					world_createParticleExplosionAngled(object[i_ship].center_x, object[i_ship].center_y, angle);	
+					// Remove projectile
+					markForRemoval(i_projectile);		
+					// Damage ship
+					object[i_ship].hp -= object[i_projectile].dmg_on_impact;	
+					// Death
 					if (object[i_ship].hp <= 0) {
 						handleShipDeath(i_ship);
 						victim = getPlayer(i_ship);
@@ -497,8 +506,12 @@ void game_update()
 				}
 				// Projectile hits asteroid
 				else if (resolveCollisionProjAsteroid(i, j, &i_projectile, &i_asteroid)) {
+					dx = object[i_projectile].delta_x;
+					dy = object[i_projectile].delta_y;
+					angle = radiansToDegrees(pointToAngle(dx, dy));
 					markForRemoval(i_projectile);
 					object[i_asteroid].hp -= object[i_projectile].dmg_on_impact;
+					world_createParticleExplosionAngled(object[i_asteroid].center_x, object[i_asteroid].center_y, angle);		// Particle explosion on impact
 					// On asteroid death
 					if (object[i_asteroid].hp <= 0) {
 						markForRemoval(i_asteroid);

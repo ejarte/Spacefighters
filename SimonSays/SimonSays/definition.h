@@ -37,7 +37,7 @@
 // Life
 #define LIFE_POWERUP				1		// Powerup hitpoints
 #define LIFE_ASTEROID				3		// Asteroid hitpoints
-#define LIFE_SPACESHIP				20		// Spaceship hitpoints
+#define LIFE_SPACESHIP				10		// Spaceship hitpoints
 
 // Power Up
 #define POWER_SPEED					0

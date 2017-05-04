@@ -62,7 +62,6 @@ void interface_render_label(struct Label* l, SDL_Renderer* r)
 		if (l->attached) {
 			l->rect.x = *l->ptr_attach_x + l->attach_offset_x;
 			l->rect.y = *l->ptr_attach_y + l->attach_offset_y;
-			printf("%d %d\n", l->rect.x, l->rect.y);
 		}
 		SDL_RenderCopy(r, l->texture, NULL, &l->rect);
 	}
