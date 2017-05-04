@@ -177,30 +177,38 @@ void object_setFacingToPoint(struct Object* o, SDL_Point p)
 
 void object_accelerateSpeedX(struct Object* o)
 {
-	o->speed_x += o->acc;
-	if (o->speed_x > o->speed_max)
-		o->speed_x = o->speed_max;
+	if (o->speed_x < o->speed_max) {
+		o->speed_x += o->acc;
+		if (o->speed_x > o->speed_max)
+			o->speed_x = o->speed_max;
+	}
 }
 
 void object_accelerateSpeedY(struct Object* o)
 {
-	o->speed_y += o->acc;
-	if (o->speed_y > o->speed_max)
-		o->speed_y = o->speed_max;
+	if (o->speed_y < o->speed_max) {
+		o->speed_y += o->acc;
+		if (o->speed_y > o->speed_max)
+			o->speed_y = o->speed_max;
+	}
 }
 
 void object_deaccelerateSpeedX(struct Object* o)
 {
-	o->speed_x -= o->acc;
-	if (o->speed_x < -1 * o->speed_max)
-		o->speed_x = -1 * o->speed_max;
+	if (o->speed_x > o->speed_max * -1) {
+		o->speed_x -= o->acc;
+		if (o->speed_x < -1 * o->speed_max)
+			o->speed_x = -1 * o->speed_max;
+	}
 }
 
 void object_deaccelerateSpeedY(struct Object* o)
 {
-	o->speed_y -= o->acc;
-	if (o->speed_y < -1 * o->speed_max)
-		o->speed_y = -1 * o->speed_max;
+	if (o->speed_y > o->speed_max * -1) {
+		o->speed_y -= o->acc;
+		if (o->speed_y < -1 * o->speed_max)
+			o->speed_y = -1 * o->speed_max;
+	}
 }
 
 void object_setCollisionBox(struct Object* o, int w, int h) {

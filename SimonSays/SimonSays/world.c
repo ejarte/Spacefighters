@@ -85,30 +85,21 @@ void world_createParticleExplosionAngled(int x, int y, double angleCenter)
 	}
 }
 
-void world_createParticleFlightPath(int color, int x, int y, double angleCenterDeg)
+void world_createParticleFlightPath(int color, int x, int y, int dx, int dy)
 {
+	// angle = radiansToDegrees(pointToAngle(dx, dy));
 	double angle, speed;
-	int life, size, newX, newY;
-	for (int i = 0; i < 20; i++) {
-		angle = rand() % 10 + angleCenterDeg + 180;
+	int life, size, newX, newY, life_k;
+	life_k = sqrt(dx*dx + dy*dy);
+	for (int i = 0; i < 25; i++) {
+		angle = rand() % 10 + radiansToDegrees(pointToAngle(dx, dy)) + 180;
 		speed = rand() % 4 + 1;
-		life = rand() % 8 + 10;
+		life = rand() % 7 + life_k;
 		size = rand() % 2 + 2;
 		newX = rand() % 6 - 4 + x;
 		newY = rand() % 6 - 4 + y;
 		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
 	}
-	/*
-	for (int i = 0; i < 30; i++) {
-		angle = rand() % 45 + angleCenterDeg + 180;
-		speed = rand() % 5 + 5;
-		life = rand() % 3 + 5;
-		size = rand() % 2 + 2;
-		newX = rand() % 6 - 4 + x;
-		newY = rand() % 6 - 4 + y;
-		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
-	}
-	*/
 }
 
 
@@ -174,7 +165,6 @@ void spawnPowerUpType(int type)
 		spawnPoint.x = k + rand() % screen_w;
 		spawnPoint.y = screen_h + k / 2;
 	}
-
 	speed = rand() % AST_TOP_SPEED_XY + AST_MIN_SPEED_XY;
 	rdmPoint.x = rand() % (screen_w - 2 * k);						// A random point on the world
 	rdmPoint.y = rand() % (screen_h - 2 * k);

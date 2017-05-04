@@ -347,8 +347,7 @@ void handleShipResurrection(int p)
 void game_update()
 {
 	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy;
-	double angle;
-	
+
 	free_obj_size = 0; // clears the array of removed objects
 	
 	// Update player activities
@@ -366,12 +365,11 @@ void game_update()
 			handleAttackReset(i);
 		}
 		if (player[i].acceleration_timestamp + TIME_ACC > time) {
-			dx = player[i].spaceship->delta_x;
-			dy = player[i].spaceship->delta_y;
-			angle = pointToAngle(dx, dy);
+			dx = player[i].spaceship->speed_x;
+			dy = player[i].spaceship->speed_y;
 			x = player[i].spaceship->center_x;
 			y = player[i].spaceship->center_y;
-			world_createParticleFlightPath(0, x, y, angle);
+			world_createParticleFlightPath(player[i].color, x, y, dx, dy);
 		}
 	}
 
