@@ -17,6 +17,10 @@ typedef struct Sound {
 
 struct Music music;
 struct Sound sound;
+Mix_Chunk *suicide[4];
+Mix_Chunk *doubleKill[2];
+Mix_Chunk *firstBlood[3];
+Mix_Chunk *flawlessVictory;
 
 void initAudio()
 {
@@ -27,6 +31,18 @@ void initAudio()
 
 	music.index = 0;
 	sound.index = 0;
+
+	//Sound effects
+	suicide[0] = Mix_LoadWAV("audio/sounds/QuakeSounds/suicide.wav");			//sound in array for easy playback
+	suicide[1] = Mix_LoadWAV("audio/sounds/QuakeSounds/suicide2.wav");
+	suicide[2] = Mix_LoadWAV("audio/sounds/QuakeSounds/suicide3.wav");
+	suicide[3] = Mix_LoadWAV("audio/sounds/QuakeSounds/suicide4.wav");
+	doubleKill[0] = Mix_LoadWAV("audio/sounds/QuakeSounds/doublekill.wav");
+	doubleKill[1] = Mix_LoadWAV("audio/sounds/QuakeSounds/doublekill2.wav");
+	firstBlood[0] = Mix_LoadWAV("audio/sounds/QuakeSounds/firstblood.wav");
+	firstBlood[1] = Mix_LoadWAV("audio/sounds/QuakeSounds/firstblood2.wav");
+	firstBlood[2] = Mix_LoadWAV("audio/sounds/QuakeSounds/firstblood3.wav");
+	flawlessVictory = Mix_LoadWAV("audio/sounds/QuakeSounds/flawless.wav");
 }
 
 void playMusic(char *filepath, int repeats)
@@ -57,25 +73,28 @@ void playMusic(char *filepath, int repeats)
 	}
 }
 
-void sound_quake_roundStart()
+void sound_quake_roundStart()			//kanske inte kommer användas?
 {
-
+	
 }
 
 void sound_quake_firstblood()
 {
-
+	Mix_PlayChannel(-1, firstBlood[rand() % 4], 0);
 }
 
 void sound_quake_doublekill()
 {
-	int rdm = rand() % 3;
-
+	Mix_PlayChannel(-1, doubleKill[rand() % 2], 0);					//random sound
 }
 
-void sound_quake_suicide()
+void sound_quake_suicide()	//call when player commits suicide, for appropriate sound
 {
-
+	Mix_PlayChannel(-1, suicide[rand()%4], 0);					//random sound
+}
+void sound_quake_flawlessVictory()			//flawless victory = kill every other oponent
+{
+	Mix_PlayChannel(-1, flawlessVictory, 0);
 }
 
 

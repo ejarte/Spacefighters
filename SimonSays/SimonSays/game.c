@@ -421,6 +421,16 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 		printf("%s killed %s\n", player[killer].name, player[victim].name);
 	if (killer == victim) {
 		printf("%s took his own life.\n", player[victim]);
+		sound_quake_suicide();									
+	}
+	//play sound effects here maybe, killstreak, doublekill, and so on.
+	if (player[killer].killstreak_tot == 2)					//doublekill sound
+	{
+		sound_quake_doublekill();
+	}
+	if (player[killer].kills == 3)					//flawless victory = kill all three oponents
+	{
+		sound_quake_flawlessVictory();
 	}
 }
 
