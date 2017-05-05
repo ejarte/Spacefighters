@@ -122,5 +122,8 @@
     <ClCompile Include="UDP.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_menu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
