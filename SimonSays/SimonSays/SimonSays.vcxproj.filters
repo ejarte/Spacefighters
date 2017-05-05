@@ -63,6 +63,12 @@
     <ClInclude Include="interface_lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TCP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UDP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -105,6 +111,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="interface_lib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TCP.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UDP.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

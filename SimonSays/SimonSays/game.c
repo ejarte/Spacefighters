@@ -1,7 +1,8 @@
 #include "game.h"
-//#include "TCP.h"
-//#include "UDP.h"
+#include "TCP.h"
+#include "UDP.h"
 #include "interface_lib.h"
+
 
 // Background
 SDL_Rect background_rect;
@@ -160,13 +161,13 @@ void game_events()
 	}
 
 	if (keyEventPressed(SDL_SCANCODE_O)) {
-		//SDL_Thread *TCPThread;
-		//const char *TCPThreadReturnValue;
-		//TCPThread = SDL_CreateThread(UDP, "TestThreadUDP", "127.0.0.1");
+		SDL_Thread *TCPThread;
+		const char *TCPThreadReturnValue;
+		TCPThread = SDL_CreateThread(UDP, "TestThreadUDP", "127.0.0.1");
 
-		//if (NULL == TCPThread) {
-		//	printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
-		//}
+		if (NULL == TCPThread) {
+			printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+		}
 	}
 
 	if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
