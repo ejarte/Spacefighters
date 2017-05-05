@@ -69,6 +69,9 @@
     <ClInclude Include="UDP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game_menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
