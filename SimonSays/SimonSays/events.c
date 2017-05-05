@@ -155,8 +155,6 @@ void refreshEventHandler() {
 	}
 	// reset text_input
 	txt_event_data.event_flag = false;
-	free(txt_event_data.str_input);
-	txt_event_data.str_input = malloc(30);
 	txt_event_data.str_input[0] = '\0';
 
 	/* Update mouse point */
@@ -253,7 +251,7 @@ void initEventHandler()
 		event_data.cur_event_state[i] = STATE_RELEASED;
 	}
 	txt_event_data.event_flag = false;
-	txt_event_data.str_input = malloc(30);
+	txt_event_data.str_input = malloc(200);
 	txt_event_data.str_input[0] = '\0';
 	disableTextInput();
 	quit_event = false;

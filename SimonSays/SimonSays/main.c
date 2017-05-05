@@ -5,6 +5,7 @@
 #include "world.h"
 #include "game.h"
 #include "text_commands.h"
+#include "definition.h"
 
 int main(int argc, char* args[])
 {
@@ -19,7 +20,6 @@ int main(int argc, char* args[])
 		exit(2);
 	}
 	else printf("TTF Initialized...\n");
-
 
 
 	initWindow();

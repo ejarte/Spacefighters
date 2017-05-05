@@ -73,12 +73,6 @@ void game_init()
 	player[2].sdl_color = createColor(0, 0xFF, 0, 0);
 	player[3].sdl_color = createColor(0xFF, 0x78, 0x1C, 0);
 
-	world_spawnEnteringAsteroid();
-	world_spawnEnteringAsteroid();
-	world_spawnEnteringAsteroid();
-	world_spawnEnteringAsteroid();
-
-
 	// The recieved player id of this client
 	client_player_num = 0;
 
@@ -109,8 +103,9 @@ void game_init()
 
 	font_roboto_black = TTF_OpenFont("fonts/roboto/Roboto-Black.ttf", 12);
 
-
-
+	// Exempel på connect/disconnect meddelande
+	addPlayerEmoteMessageToDisplay(renderer, client_player_num, "connected.", MSG_DURATION);
+	addPlayerEmoteMessageToDisplay(renderer, client_player_num, "disconnected.", MSG_DURATION);
 
 	//interface_setup_label(&label_chat_msg, renderer, "|c00FF00AAHello!|r", font_roboto_black, createColor(255, 0, 0, 0), 200, 200, true);
 
@@ -166,7 +161,6 @@ void game_events()
 			printf("enter text msg...\n");
 		}
 	}
-
 	if (textEvent()) {
 		strcat(player_text_input, getTextInput());
 		printf("%s\n", player_text_input);
