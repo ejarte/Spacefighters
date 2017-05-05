@@ -117,6 +117,9 @@ void game_init()
 
 	//printf("lol? %d %d\n", *object[4].ptr_center_x, *object[4].ptr_center_y);
 
+	// game menu
+	initInterface();
+	all_button_positions_Interface();
 	// Debug variables
 	debug_show_collision_box = false;
 }
@@ -137,7 +140,7 @@ void game_events()
 		setNextState(STATE_EXIT);
 		return;
 	}
-
+	runInterface();
 	if (keyEventPressed(SDL_SCANCODE_P)) {
 
 		SDL_Thread *TCPThread;
@@ -606,6 +609,7 @@ void game_render()
 	interface_render_label(&playerNameColored[1], renderer);
 	interface_render_label(&playerNameColored[2], renderer);
 	interface_render_label(&playerNameColored[3], renderer);
+	rendererInterface();
 
 	SDL_RenderPresent(renderer);
 }
