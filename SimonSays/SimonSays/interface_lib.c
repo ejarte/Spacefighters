@@ -90,23 +90,25 @@ SDL_FreeSurface(surface);
 l->attached = false;
 */
 
-void interface_setup_textbox(struct TextBox* tb, SDL_Texture* background_text, SDL_Renderer* rend, TTF_Font *f, SDL_Color c, SDL_Rect box, bool show)
+void interface_setup_textbox(struct TextBox* tb, SDL_Texture* background_text, SDL_Renderer* rend, TTF_Font *f, SDL_Color c, SDL_Rect box)
 {
 	SDL_Surface* surface;
+	tb->size = 0;
 	tb->rect_box = box;
 	tb->rect_text_w = box;
 	tb->rect_text_wo = box;
-	tb->selected = show;
+	tb->selected = false;
 	tb->text[0] = '\0';
 	tb->color = c;
 	tb->font = f;
-	tb->show = show;
-	tb->selected = true;
+	tb->show = false;
 	tb->background = background_text;
 	surface = TTF_RenderText_Solid(tb->font, "|", tb->color);
 	tb->texture_w_cursor = SDL_CreateTextureFromSurface(rend, surface);
 	surface = TTF_RenderText_Solid(tb->font, " ", tb->color);
 	tb->texture_wo_cursor = SDL_CreateTextureFromSurface(rend, surface);
+	SDL_QueryTexture(tb->texture_w_cursor, NULL, NULL, &tb->rect_text_w.w, &tb->rect_text_w.h);
+	SDL_QueryTexture(tb->texture_wo_cursor, NULL, NULL, &tb->rect_text_wo.w, &tb->rect_text_wo.h);
 	SDL_FreeSurface(surface);
 }
 
@@ -130,6 +132,7 @@ void appendInTextBox(struct TextBox* tb, char* msg, SDL_Renderer* rend)
 	}
 	else {
 		// Remove previous textures
+		tb->size += strlen(msg);
 		SDL_DestroyTexture(tb->texture_wo_cursor);
 		SDL_DestroyTexture(tb->texture_w_cursor);
 		// Set a texture with a cursor
@@ -145,14 +148,57 @@ void appendInTextBox(struct TextBox* tb, char* msg, SDL_Renderer* rend)
 	free(str);
 }
 
-void removeLastFromTextBox()
+void removeLastFromTextBox(struct TextBox* tb, SDL_Renderer* rend)
 {
+	if (tb->size > 0) {
+		char* str;
+		SDL_Surface* surface;
+		tb->size--;
+		tb->text[tb->size] = '\0';
+		SDL_DestroyTexture(tb->texture_wo_cursor);
+		SDL_DestroyTexture(tb->texture_w_cursor);
+		surface = TTF_RenderText_Solid(tb->font, tb->text, tb->color);
+		tb->texture_wo_cursor = SDL_CreateTextureFromSurface(rend, surface);
+		str = malloc(100);
+		str[0] = '\0';
+		strcat(str, tb->text);
+		strcat(str, "| ");
+		surface = TTF_RenderText_Solid(tb->font, str, tb->color);
+		tb->texture_w_cursor = SDL_CreateTextureFromSurface(rend, surface);
+		SDL_QueryTexture(tb->texture_w_cursor, NULL, NULL, &tb->rect_text_w.w, &tb->rect_text_w.h);
+		SDL_QueryTexture(tb->texture_wo_cursor, NULL, NULL, &tb->rect_text_wo.w, &tb->rect_text_wo.h);
+		free(str);
+		SDL_FreeSurface(surface);
+	}
+}
 
+void clearTextBox(struct TextBox* tb, SDL_Renderer* rend)
+{
+	if (tb->size > 0) {
+		char* str;
+		SDL_Surface* surface;
+		tb->size = 0;
+		tb->text[0] = '\0';
+		SDL_DestroyTexture(tb->texture_wo_cursor);
+		SDL_DestroyTexture(tb->texture_w_cursor);
+		surface = TTF_RenderText_Solid(tb->font, tb->text, tb->color);
+		tb->texture_wo_cursor = SDL_CreateTextureFromSurface(rend, surface);
+		str = malloc(100);
+		str[0] = '\0';
+		strcat(str, tb->text);
+		strcat(str, "| ");
+		surface = TTF_RenderText_Solid(tb->font, str, tb->color);
+		tb->texture_w_cursor = SDL_CreateTextureFromSurface(rend, surface);
+		SDL_QueryTexture(tb->texture_w_cursor, NULL, NULL, &tb->rect_text_w.w, &tb->rect_text_w.h);
+		SDL_QueryTexture(tb->texture_wo_cursor, NULL, NULL, &tb->rect_text_wo.w, &tb->rect_text_wo.h);
+		free(str);
+		SDL_FreeSurface(surface);
+	}
 }
 
 void interface_render_textbox(struct TextBox* tb, SDL_Renderer* r)
 {
-	if (tb->show) {
+	if (tb->show == true) {
 		SDL_RenderCopy(r, tb->background, NULL, &tb->rect_box);
 		if (tb->selected && SDL_GetTicks() % 1200 < 600) {
 			SDL_RenderCopy(r, tb->texture_wo_cursor, NULL, &tb->rect_text_wo);

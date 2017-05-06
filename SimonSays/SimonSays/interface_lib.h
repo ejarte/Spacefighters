@@ -32,6 +32,7 @@ struct TextBox {
 	char text[MAX_CH_TEXT_BOX];
 	bool show;
 	bool selected;
+	int size;
 };
 
 // Plane
@@ -43,6 +44,9 @@ void interface_setup_label(struct Label* l, SDL_Renderer* renderer, char* text, 
 void interface_render_label(struct Label* l, SDL_Renderer* r);
 void interface_attach_label(struct Label *l, int* ptr_x, int* ptr_y, int x_offset, int y_offset);
 
-void interface_setup_textbox(struct TextBox* tb, SDL_Texture* background_text, SDL_Renderer* rend, TTF_Font *f, SDL_Color c, SDL_Rect box, bool show);
+
+void interface_setup_textbox(struct TextBox* tb, SDL_Texture* background_text, SDL_Renderer* rend, TTF_Font *f, SDL_Color c, SDL_Rect box);
 void appendInTextBox(struct TextBox* tb, char* msg, SDL_Renderer* rend);
 void interface_render_textbox(struct TextBox* tb, SDL_Renderer* r);
+void clearTextBox(struct TextBox* tb, SDL_Renderer* rend);
+void removeLastFromTextBox(struct TextBox* tb, SDL_Renderer* r);

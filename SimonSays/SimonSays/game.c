@@ -24,12 +24,10 @@ struct Plane plane_chat_box;
 struct Label label_chat_msg;
 struct Label playerNameColored[MAX_PLAYERS];
 
-struct TextBox tb;
+struct TextBox chat_box;
 
 SDL_Texture* t;
 
-// 
-char* player_text_input;
 
 void game_init()
 {
@@ -46,10 +44,6 @@ void game_init()
 
 	// Hide cursor
 	//SDL_ShowCursor(SDL_DISABLE);
-
-	// Text input
-	player_text_input = malloc(sizeof(80));
-	player_text_input[0] = '\0';
 
 	// On Server
 	for (int i = 0; i < MAX_PLAYERS; i++) {
@@ -129,9 +123,12 @@ void game_init()
 
 	t = IMG_LoadTexture(renderer, "images/greensquare.bmp");
 
-	interface_setup_textbox(&tb, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(200, 200, 200, 25), 10, true);
-	appendInTextBox(&tb, "hello!", renderer);
-	appendInTextBox(&tb, "there!", renderer);
+	interface_setup_textbox(&chat_box, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(200, 200, 200, 25), 10, 0);
+	chat_box.selected = true;
+
+
+	//appendInTextBox(&tb, "hello!", renderer);
+	//appendInTextBox(&tb, "there!", renderer);
 	// game menu
 	initInterface();
 	all_button_positions_Interface();
@@ -159,98 +156,106 @@ void game_events()
 
 		if (isTextEventEnabled()) {
 			disableTextInput();
-			if (player_text_input[0] != '\0') {
-				printf("msg: %s\n", player_text_input);
-				addPlayerMessageToDisplay(renderer, client_player_num, player_text_input, MSG_DURATION);
+			if (chat_box.size > 0) {
+				addPlayerMessageToDisplay(renderer, client_player_num, chat_box.text, MSG_DURATION);
 			}
+
+			chat_box.show = false;
+			clearTextBox(&chat_box, renderer);
 		}
 		else {
 			enableTextInput();
-			player_text_input[0] = '\0';
-			printf("enter text msg...\n");
+			chat_box.show = true;
 		}
 	}
+
+	if (keyEventHeld(SDL_SCANCODE_BACKSPACE) && isTextEventEnabled()) {
+		removeLastFromTextBox(&chat_box, renderer);
+	}
+
 	if (textEvent()) {
-		strcat(player_text_input, getTextInput());
-		printf("%s\n", player_text_input);
+		appendInTextBox(&chat_box, getTextInput(), renderer);
 	}
 
+	if (isTextEventEnabled() == false) {
+
+
+		runInterface();
 
 
 
-	runInterface();
 
+		if (keyEventPressed(SDL_SCANCODE_P)) {
 
+			SDL_Thread *TCPThread = NULL;
+			const char *TCPThreadReturnValue;
+			//TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
 
-
-	if (keyEventPressed(SDL_SCANCODE_P)) {
-
-		SDL_Thread *TCPThread = NULL;
-		const char *TCPThreadReturnValue;
-		//TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
-
-		if (NULL == TCPThread) {
-			printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+			if (NULL == TCPThread) {
+				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+			}
+			else {
+				//SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
+				//printf("\nThread returned value: %d", TCPThreadReturnValue);
+			}
+			/*
+			char* text = malloc(sizeof(100));
+			text[0] = '\0';
+			strcat(text, TCP("127.0.0.1"));
+			printf("%s\n", text);
+			free(text);
+			*/
 		}
-		else {
-			//SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
-			//printf("\nThread returned value: %d", TCPThreadReturnValue);
+
+		if (keyEventPressed(SDL_SCANCODE_O)) {
+			SDL_Thread *TCPThread;
+			const char *TCPThreadReturnValue;
+			TCPThread = SDL_CreateThread(UDP, "TestThreadUDP", "127.0.0.1");
+
+			if (NULL == TCPThread) {
+				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+			}
 		}
-		/*
-		char* text = malloc(sizeof(100));
-		text[0] = '\0';
-		strcat(text, TCP("127.0.0.1"));
-		printf("%s\n", text);
-		free(text);
-		*/
-	}
 
-	if (keyEventPressed(SDL_SCANCODE_O)) {
-		SDL_Thread *TCPThread;
-		const char *TCPThreadReturnValue;
-		TCPThread = SDL_CreateThread(UDP, "TestThreadUDP", "127.0.0.1");
-
-		if (NULL == TCPThread) {
-			printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+		if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
+			spawnNormalProjectile(player[client_player_num].spaceship, player[client_player_num].color);
+			player[client_player_num].attack_timestamp = time;
 		}
-	}
-
-	if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
-		spawnNormalProjectile(player[client_player_num].spaceship, player[client_player_num].color);
-		player[client_player_num].attack_timestamp = time;
-	}
-	if (keyEventHeld(SDL_SCANCODE_W) && player[client_player_num].mobile == true) {
-		player[client_player_num].acceleration_timestamp = time;
-		object_deaccelerateSpeedY(player[client_player_num].spaceship);
-	}
-	if (keyEventHeld(SDL_SCANCODE_S) && player[client_player_num].mobile) {
-		player[client_player_num].acceleration_timestamp = time;
-		object_accelerateSpeedY(player[client_player_num].spaceship);
-	}
-	if (keyEventHeld(SDL_SCANCODE_A) && player[client_player_num].mobile) {
-		player[client_player_num].acceleration_timestamp = time;
-		object_deaccelerateSpeedX(player[client_player_num].spaceship);
-	}
-	if (keyEventHeld(SDL_SCANCODE_D) && player[client_player_num].mobile) {
-		player[client_player_num].acceleration_timestamp = time;
-		object_accelerateSpeedX(player[client_player_num].spaceship);
-	}
-	if (keyEventPressed(SDL_SCANCODE_C)) {
-		client_player_num++;
-		if (client_player_num == MAX_PLAYERS) {
-			client_player_num = 0;
+		if (keyEventHeld(SDL_SCANCODE_W) && player[client_player_num].mobile == true) {
+			player[client_player_num].acceleration_timestamp = time;
+			object_deaccelerateSpeedY(player[client_player_num].spaceship);
 		}
-	}
+		if (keyEventHeld(SDL_SCANCODE_S) && player[client_player_num].mobile) {
+			player[client_player_num].acceleration_timestamp = time;
+			object_accelerateSpeedY(player[client_player_num].spaceship);
+		}
+		if (keyEventHeld(SDL_SCANCODE_A) && player[client_player_num].mobile) {
+			player[client_player_num].acceleration_timestamp = time;
+			object_deaccelerateSpeedX(player[client_player_num].spaceship);
+		}
+		if (keyEventHeld(SDL_SCANCODE_D) && player[client_player_num].mobile) {
+			player[client_player_num].acceleration_timestamp = time;
+			object_accelerateSpeedX(player[client_player_num].spaceship);
+		}
+		if (keyEventPressed(SDL_SCANCODE_C)) {
+			client_player_num++;
+			if (client_player_num == MAX_PLAYERS) {
+				client_player_num = 0;
+			}
+		}
 
-	object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
+		object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
 
 
-	// Testing 
-	if (keyEventPressed(SDL_SCANCODE_Z)) {
-		world_spawnEnteringAsteroid();
-	}
-	if (keyEventPressed(SDL_SCANCODE_X)) {
-		spawnPowerUpType(rand() % NUM_OF_POWERS);
+		// Testing 
+		if (keyEventPressed(SDL_SCANCODE_Z)) {
+			world_spawnEnteringAsteroid();
+		}
+		if (keyEventPressed(SDL_SCANCODE_X)) {
+			spawnPowerUpType(rand() % NUM_OF_POWERS);
+		}
+
+
 	}
 }
 
@@ -648,7 +653,8 @@ void game_render()
 	if (current_lines > 0)
 		renderMessageDisplay(renderer);
 
-	interface_render_textbox(&tb, renderer);
+	if (chat_box.show)
+		interface_render_textbox(&chat_box, renderer);
 
 	//interface_render_plane(&plane_chat_box, renderer);
 	//interface_render_label(&label_chat_msg, renderer);
