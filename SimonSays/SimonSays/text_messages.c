@@ -1,8 +1,8 @@
 #include "text_messages.h"
 #include "events.h"
 
-#define MAX_LINES		50	
-#define MSG_MAX_CHARS	40
+#define MAX_LINES		30	
+#define MSG_MAX_CHARS	80
 
 struct Text_Line line[MAX_LINES];
 
@@ -19,6 +19,7 @@ void init_text_messages()
 {
 	font_roboto_black = TTF_OpenFont("fonts/roboto/Roboto-Black.ttf", 12);
 	white = createColor(0xFF, 0xFF, 0xFF, 0);
+
 	dist_k = 10;
 
 	current_lines = 0;

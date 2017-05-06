@@ -24,6 +24,10 @@ struct Plane plane_chat_box;
 struct Label label_chat_msg;
 struct Label playerNameColored[MAX_PLAYERS];
 
+struct TextBox tb;
+
+SDL_Texture* t;
+
 // 
 char* player_text_input;
 
@@ -123,6 +127,11 @@ void game_init()
 
 	//printf("lol? %d %d\n", *object[4].ptr_center_x, *object[4].ptr_center_y);
 
+	t = IMG_LoadTexture(renderer, "images/greensquare.bmp");
+
+	interface_setup_textbox(&tb, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(200, 200, 200, 25), 10, true);
+	appendInTextBox(&tb, "hello!", renderer);
+	appendInTextBox(&tb, "there!", renderer);
 	// game menu
 	initInterface();
 	all_button_positions_Interface();
@@ -639,6 +648,7 @@ void game_render()
 	if (current_lines > 0)
 		renderMessageDisplay(renderer);
 
+	interface_render_textbox(&tb, renderer);
 
 	//interface_render_plane(&plane_chat_box, renderer);
 	//interface_render_label(&label_chat_msg, renderer);

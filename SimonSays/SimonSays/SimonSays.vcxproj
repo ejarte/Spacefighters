@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\SDLBIB\SDL2_ttf-2.0.14\include;C:\SDLBIB\SDL2_net-2.0.1\include;C:\SDLBIB\SDL2_mixer-2.0.1\include;C:\SDLBIB\SDL2_image-2.0.1\include;C:\SDLBIB\SDL2-2.0.5\include;$(VC_IncludePath);$(MSBuildProjectDirectory);$(WindowsSDK_IncludePath);$(MSBuildProjectDirectory)\SDL2_net-2.0.1\include;$(MSBuildProjectDirectory)\SDL2_image-2.0.1\include;$(MSBuildProjectDirectory)\SDL2-2.0.5\include;$(MSBuildProjectDirectory)\SDL2_ttf-2.0.14\include;$(MSBuildProjectDirectory)\SDL2_mixer-2.0.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\tiago\Source\Repo\SimonSaysRepo2\SimonSaysRepo2\SimonSays\SimonSays\SDL2-2.0.5\lib\x86;C:\SDLBIB\SDL2_ttf-2.0.14\lib\x86;C:\SDLBIB\SDL2_net-2.0.1\lib\x86;C:\SDLBIB\SDL2_mixer-2.0.1\lib\x86;C:\SDLBIB\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\SDLBIB\SDL2-2.0.5\lib\x86;C:\SDLBIB\SDL2_ttf-2.0.14\lib\x86;C:\SDLBIB\SDL2_net-2.0.1\lib\x86;C:\SDLBIB\SDL2_mixer-2.0.1\lib\x86;C:\SDLBIB\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

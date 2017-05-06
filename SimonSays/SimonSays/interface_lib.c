@@ -35,7 +35,6 @@ void interface_render_plane(struct Plane* p, SDL_Renderer* r)
 
 void interface_setup_label(struct Label* l, SDL_Renderer* renderer, char* text, TTF_Font* f, SDL_Color color, int x, int y, bool show)
 {
-
 	SDL_Surface* surface = TTF_RenderText_Solid(f, text, color);
 	l->texture = SDL_CreateTextureFromSurface(renderer, surface);
 	l->rect.x = x;
@@ -64,5 +63,102 @@ void interface_render_label(struct Label* l, SDL_Renderer* r)
 			l->rect.y = *l->ptr_attach_y + l->attach_offset_y;
 		}
 		SDL_RenderCopy(r, l->texture, NULL, &l->rect);
+	}
+}
+
+/*
+struct TextBox {
+	SDL_Texture* texture;
+	SDL_Rect rect_text;
+	SDL_Rect rect_box;
+	char message[100];
+	int max_ch;
+	bool show;
+	bool selected;
+};
+*/
+
+/*
+SDL_Surface* surface = TTF_RenderText_Solid(f, text, color);
+l->texture = SDL_CreateTextureFromSurface(renderer, surface);
+l->rect.x = x;
+l->rect.y = y;
+l->rect.w = surface->w;
+l->rect.h = surface->h;
+l->show = show;
+SDL_FreeSurface(surface);
+l->attached = false;
+*/
+
+void interface_setup_textbox(struct TextBox* tb, SDL_Texture* background_text, SDL_Renderer* rend, TTF_Font *f, SDL_Color c, SDL_Rect box, bool show)
+{
+	SDL_Surface* surface;
+	tb->rect_box = box;
+	tb->rect_text_w = box;
+	tb->rect_text_wo = box;
+	tb->selected = show;
+	tb->text[0] = '\0';
+	tb->color = c;
+	tb->font = f;
+	tb->show = show;
+	tb->selected = true;
+	tb->background = background_text;
+	surface = TTF_RenderText_Solid(tb->font, "|", tb->color);
+	tb->texture_w_cursor = SDL_CreateTextureFromSurface(rend, surface);
+	surface = TTF_RenderText_Solid(tb->font, " ", tb->color);
+	tb->texture_wo_cursor = SDL_CreateTextureFromSurface(rend, surface);
+	SDL_FreeSurface(surface);
+}
+
+void appendInTextBox(struct TextBox* tb, char* msg, SDL_Renderer* rend)
+{
+	SDL_Surface* surface;
+	SDL_Texture* t;
+	int w, h;
+	char* str = malloc(100);
+	str[0] = '\0';
+	strcat(tb->text, msg);
+	strcat(str, tb->text);
+	strcat(str, "| ");
+
+	// Creates a sample of the desired output
+	surface = TTF_RenderText_Solid(tb->font, str, tb->color);
+	t = SDL_CreateTextureFromSurface(rend, surface);
+	SDL_QueryTexture(tb->texture_w_cursor, NULL, NULL, &w, &h);
+	if (tb->rect_box.w - 10 < w) {
+		printf("Error: Text did not fit inside the box\n");
+	}
+	else {
+		// Remove previous textures
+		SDL_DestroyTexture(tb->texture_wo_cursor);
+		SDL_DestroyTexture(tb->texture_w_cursor);
+		// Set a texture with a cursor
+		tb->texture_w_cursor = t;
+		// Creates a texture without a cursor
+		surface = TTF_RenderText_Solid(tb->font, tb->text, tb->color);
+		tb->texture_wo_cursor = SDL_CreateTextureFromSurface(rend, surface);
+		SDL_QueryTexture(tb->texture_w_cursor, NULL, NULL, &tb->rect_text_w.w, &tb->rect_text_w.h);		
+		SDL_QueryTexture(tb->texture_wo_cursor, NULL, NULL, &tb->rect_text_wo.w, &tb->rect_text_wo.h);
+	}
+
+	SDL_FreeSurface(surface);
+	free(str);
+}
+
+void removeLastFromTextBox()
+{
+
+}
+
+void interface_render_textbox(struct TextBox* tb, SDL_Renderer* r)
+{
+	if (tb->show) {
+		SDL_RenderCopy(r, tb->background, NULL, &tb->rect_box);
+		if (tb->selected && SDL_GetTicks() % 1200 < 600) {
+			SDL_RenderCopy(r, tb->texture_wo_cursor, NULL, &tb->rect_text_wo);
+		}
+		else {
+			SDL_RenderCopy(r, tb->texture_w_cursor, NULL, &tb->rect_text_w);
+		}
 	}
 }
