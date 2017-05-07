@@ -169,6 +169,7 @@
     <ClInclude Include="game_menu.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="interface_lib.h" />
+    <ClInclude Include="intro_menu.h" />
     <ClInclude Include="libraries.h" />
     <ClInclude Include="text_messages.h" />
     <ClInclude Include="object.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="game.c" />
     <ClCompile Include="game_menu.c" />
     <ClCompile Include="interface_lib.c" />
+    <ClCompile Include="intro_menu.c" />
     <ClCompile Include="libraries.c" />
     <ClCompile Include="text_messages.c" />
     <ClCompile Include="object.c" />
