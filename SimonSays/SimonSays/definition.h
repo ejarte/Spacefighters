@@ -82,6 +82,10 @@
 SDL_Renderer*	renderer;					// Game Renderer
 SDL_Window*		window;						// Game Window
 
+// Time
+
+int curTime;	
+
 // Structs
 
 struct Animation {

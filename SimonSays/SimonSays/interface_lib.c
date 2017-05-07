@@ -119,22 +119,24 @@ void appendInTextBox(struct TextBox* tb, char* msg, SDL_Renderer* rend)
 	int w, h;
 	char* str = malloc(100);
 	str[0] = '\0';
-	strcat(tb->text, msg);
 	strcat(str, tb->text);
+	strcat(str, msg);
 	strcat(str, "| ");
 
 	// Creates a sample of the desired output
 	surface = TTF_RenderText_Solid(tb->font, str, tb->color);
 	t = SDL_CreateTextureFromSurface(rend, surface);
-	SDL_QueryTexture(tb->texture_w_cursor, NULL, NULL, &w, &h);
-	if (tb->rect_box.w - 10 < w) {
+	SDL_QueryTexture(t, NULL, NULL, &w, &h);
+	if (tb->rect_box.w < w) {
 		printf("Error: Text did not fit inside the box\n");
+		SDL_DestroyTexture(t);
 	}
 	else {
 		// Remove previous textures
 		tb->size += strlen(msg);
 		SDL_DestroyTexture(tb->texture_wo_cursor);
 		SDL_DestroyTexture(tb->texture_w_cursor);
+		strcat(tb->text, msg);
 		// Set a texture with a cursor
 		tb->texture_w_cursor = t;
 		// Creates a texture without a cursor
