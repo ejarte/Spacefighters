@@ -56,17 +56,17 @@ SDL_Rect infoHotkeys_rect;
 
 void initInterface()
 {
-	optionImage = IMG_LoadTexture(renderer, "images/Interface/opt.bmp");
-	chatImage = IMG_LoadTexture(renderer, "images/Interface/chat.bmp");
-	backImage = IMG_LoadTexture(renderer, "images/Interface/Back.bmp");
-	settingsImage = IMG_LoadTexture(renderer, "images/Interface/Settings.bmp");
-	aboutImage = IMG_LoadTexture(renderer, "images/Interface/About.bmp");
-	exitImage = IMG_LoadTexture(renderer, "images/Interface/Exit.bmp");
-	hotkeysImage = IMG_LoadTexture(renderer, "images/Interface/Hotkeys.bmp");
-	infoWindowImage = IMG_LoadTexture(renderer, "images/Interface/About-info.bmp");
+	optionImage = IMG_LoadTexture(renderer, "images/Interface/options.png");
+	chatImage = IMG_LoadTexture(renderer, "images/Interface/chat.png");
+	backImage = IMG_LoadTexture(renderer, "images/Interface/back.png");
+	settingsImage = IMG_LoadTexture(renderer, "images/Interface/settings.png");
+	aboutImage = IMG_LoadTexture(renderer, "images/Interface/about.png");
+	exitImage = IMG_LoadTexture(renderer, "images/Interface/quit.png");
+	hotkeysImage = IMG_LoadTexture(renderer, "images/Interface/hotkeys.png");
+	infoWindowImage = IMG_LoadTexture(renderer, "images/Interface/about-info.png");
 	soundONImage = IMG_LoadTexture(renderer, "images/Interface/SoundOn.bmp");
 	soundOFFImage = IMG_LoadTexture(renderer, "images/Interface/SoundOff.bmp");
-	infoHotkeysImage = IMG_LoadTexture(renderer, "images/Interface/arrows.bmp");
+	infoHotkeysImage = IMG_LoadTexture(renderer, "images/Interface/hotkeys-info.png");
 	// Done
 	//printf("Interface Initialized...\n");
 }
@@ -74,64 +74,64 @@ void initInterface()
 void all_button_positions_Interface() {
 
 	//SDL_Rect button_option;      // option  button
-	option_rect.w = 200;
-	option_rect.h = 70;
+	option_rect.w = 122;
+	option_rect.h = 47;
 	option_rect.x = 20;
 	option_rect.y = 0;
 
 	//SDL_Rect button_chat;    // chat button
-	chat_rect.w = 200;
-	chat_rect.h = 70;
+	chat_rect.w = 122;
+	chat_rect.h = 47;
 	chat_rect.x = 800;
 	chat_rect.y = 500;
 
 	//SDL_Rect button_Back;    //  Back button
-	backButton_rect.w = 185;
-	backButton_rect.h = 70;
+	backButton_rect.w = 122;
+	backButton_rect.h = 47;
 	backButton_rect.x = 250;
 	backButton_rect.y = 160;
 
 	//SDL_Rect button_settings;    //  Settings button
-	settings_rect.w = 200;
-	settings_rect.h = 70;
+	settings_rect.w = 122;
+	settings_rect.h = 47;
 	settings_rect.x = 250;
-	settings_rect.y = 230;
+	settings_rect.y = 210;
 
 	//SDL_Rect button_about;    //  About button
-	about_rect.w = 200;
-	about_rect.h = 70;
+	about_rect.w = 122;
+	about_rect.h = 47;
 	about_rect.x = 250;
-	about_rect.y = 300;
+	about_rect.y = 260;
 
 	//SDL_Rect button_exit;    //  Exit button
-	exit_rect.w = 200;
-	exit_rect.h = 70;
+	exit_rect.w = 122;
+	exit_rect.h = 47;
 	exit_rect.x = 250;
-	exit_rect.y = 370;
+	exit_rect.y = 310;
 
 	//SDL_Rect button_hotkeys;    //  Hotkeys button
-	hotkeys_rect.w = 180;
-	hotkeys_rect.h = 70;
-	hotkeys_rect.x = 480;
-	hotkeys_rect.y = 310;
+	hotkeys_rect.w = 122;
+	hotkeys_rect.h = 47;
+	hotkeys_rect.x = 420;
+	hotkeys_rect.y = 225;
 
 	//SDL_Rect button_AboutInfoWindow   // Info window
-	infoWindow_rect.w = 400;
-	infoWindow_rect.h = 180;
-	infoWindow_rect.x = 480;
-	infoWindow_rect.y = 160;
+	infoWindow_rect.w = 381;
+	infoWindow_rect.h = 111;
+	infoWindow_rect.x = 420;
+	infoWindow_rect.y = 210;
 
 	//SDL_Rect button_sound;    //  soundON button
-	soundON_rect.w = 100;
-	soundON_rect.h = 70;
-	soundON_rect.x = 480;
-	soundON_rect.y = 230;
+	soundON_rect.w = 70;
+	soundON_rect.h = 50;
+	soundON_rect.x = 445;
+	soundON_rect.y = 170;
 
 	//SDL_Rect button_movement_shot;    //  movement button
 	infoHotkeys_rect.w = 250;
-	infoHotkeys_rect.h = 180;
-	infoHotkeys_rect.x = 670;
-	infoHotkeys_rect.y = 290;
+	infoHotkeys_rect.h = 105;
+	infoHotkeys_rect.x = 550;
+	infoHotkeys_rect.y = 200;
 
 }
 
@@ -182,6 +182,7 @@ int gameState1()
 int gameState2() {
 
 	gameState1();
+	//SDL_RenderCopy(renderer, backImage, NULL, &backButton_rect);
 	SDL_RenderCopy(renderer, hotkeysImage, NULL, &hotkeys_rect);
 	SDL_RenderCopy(renderer, soundONImage, NULL, &soundON_rect);
 }
@@ -189,12 +190,13 @@ int gameState2() {
 int gameState3() {
 
 	gameState1();
+	//SDL_RenderCopy(renderer, backImage, NULL, &backButton_rect);
 	SDL_RenderCopy(renderer, infoWindowImage, NULL, &infoWindow_rect);
 }
 
 int gameState4()
 {
-	gameState1();
+	gameState2();
 	SDL_RenderCopy(renderer, soundONImage, NULL, &soundON_rect);
 	SDL_RenderCopy(renderer, hotkeysImage, NULL, &hotkeys_rect);
 	if (button_sound_pressed) {
@@ -204,6 +206,7 @@ int gameState4()
 
 int gameState5() {
 	gameState4();
+	//SDL_RenderCopy(renderer, backImage, NULL, &backButton_rect);
 	SDL_RenderCopy(renderer, infoHotkeysImage, NULL, &infoHotkeys_rect);
 }
 
@@ -248,7 +251,7 @@ void runInterface() {
 		interfaceState = 1;
 	}
 
-	if (interfaceState != 0) {
+	if (interfaceState != 0 ) {
 
 		if (SDL_PointInRect(&point, &backButton_rect) && mouseEventPressed(SDL_BUTTON_LEFT)) {
 			interfaceState = 0;
@@ -272,6 +275,7 @@ void runInterface() {
 		}
 		if (SDL_PointInRect(&point, &hotkeys_rect) && mouseEventPressed(SDL_BUTTON_LEFT)) {
 			interfaceState = 5;
+			
 		}
 	}
 }

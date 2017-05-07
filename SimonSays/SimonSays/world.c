@@ -16,7 +16,7 @@ struct Sprite spr_green_particle;
 struct Animation anim_asteroid_gray[8];
 struct Animation anim_spaceship[4];
 struct Animation anim_none;
-
+struct Sprite spr_fire_red;
 void world_init()
 {
 	sprite_setup(&spr_spaceship_1[0], renderer, "images/spaceships/playerShip1_red.png", 1, 1, createColor(0, 0, 0, 0));
@@ -24,11 +24,13 @@ void world_init()
 	sprite_setup(&spr_spaceship_1[2], renderer, "images/spaceships/playerShip1_green.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_spaceship_1[3], renderer, "images/spaceships/playerShip1_orange.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_asteroid_gray, renderer, "images/asteroid_01.png", 8, 8, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_fire_red, renderer, "images/projectiles/player_fire.bmp", 1, 1, createColor(0, 0, 0, 0));
+
 	sprite_setup(&spr_powerup_speed, renderer, "images/power-ups/powerupRed_bolt.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_hp, renderer, "images/power-ups/pill_green.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_atk_2, renderer, "images/power-ups/things_silver.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_atk_3, renderer, "images/power-ups/things_gold.png", 1, 1, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_green_particle, renderer, "images/particles/green.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_green_particle, renderer, "images/projectiles/fpath.png", 1, 1, createColor(0, 0, 0, 0));
 	for (int r = 0; r < 8; r++) {
 		animation_setup(&anim_asteroid_gray[r], 8, 1, 12);
 		for (int c = 0; c < 8; c++) {
@@ -114,20 +116,20 @@ void spawnNormalProjectile(struct Object* source, int color)
 	angle = angleBetweenPointsRad(p, getMousePos());
 	dx = (double)projSpeed * cos(angle);
 	dy = (double)projSpeed * sin(angle);
-	w = spr_asteroid_gray.frame_w/8;
-	h = spr_asteroid_gray.frame_h/8;
+	w = spr_fire_red.frame_w/3;
+	h = spr_fire_red.frame_h/3;
 	i = object_index();
 	if (color == PL_COLOR_RED) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_asteroid_gray, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	else if (color == PL_COLOR_BLUE) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_asteroid_gray, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	else if (color == PL_COLOR_ORANGE) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_asteroid_gray, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	else {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_asteroid_gray, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	object[i].source_id = source->id_index;
 	object[i].delta_x = dx;
