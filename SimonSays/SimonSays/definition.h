@@ -17,7 +17,7 @@
 
 // Object Types 
 #define OBJ_TYPE_SPACESHIP			1
-#define OBJ_TYPE_EXPLOSION			2
+#define OBJ_TYPE_EFFECT				2
 #define OBJ_TYPE_ASTEROID			3
 #define OBJ_TYPE_POWERUP			4
 #define OBJ_TYPE_PROJECTILE			5

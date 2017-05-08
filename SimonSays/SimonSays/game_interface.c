@@ -2,7 +2,7 @@
 #include "libraries.h"
 #include "graphics.h"
 #include "events.h"
-#include "game_menu.h"
+#include "game_interface.h"
 #include "state_handler.h"
 
 
@@ -77,6 +77,7 @@ void initInterface()
 	infoHotkeysImage = IMG_LoadTexture(renderer, "images/Interface/hotkeys-info.png");
 	hpBarImage = IMG_LoadTexture(renderer, "images/Interface/damageSym.bmp");
 	hpBarBackgroundImage =IMG_LoadTexture(renderer, "images/Interface/damageSymBackground.bmp");
+
 	// Done
 	//printf("Interface Initialized...\n");
 }
@@ -175,34 +176,38 @@ int gameState0() {
 	
 	SDL_RenderCopy(renderer, optionImage, NULL, &option_rect);
 	SDL_RenderCopy(renderer, chatImage, NULL, &chat_rect);
+}
+
+void interface_renderPlayerHP(double percentage_life)
+{
+	if (percentage_life > 1.0)
+		percentage_life = 1.0;
+	if (percentage_life < 0)
+		percentage_life = 0;
 
 	hpBar_rect.w = hpBarWidth;
 	hpBar_rect.h = hpBarLength;
 	hpBar_rect.x = 20;
-	hpBar_rect.y = getWindowHeight() - hpBarLength-6;
+	hpBar_rect.y = getWindowHeight() - hpBarLength - 6;
 
-	double damage_amount = 0.6;      //  Damage amount
-	int lifeLength = (double)damage_amount * 10.0;
-	if (0 <= damage_amount ||damage_amount <= 1)
+	int lifeLength = (double)percentage_life * 10.0;
+	int hpBarMaxlength = 10;
+	if (0 <= percentage_life || percentage_life <= 1)
 	{
-		printf("%d\n", lifeLength);
 
-		for (int i = 0; i <lifeLength; ++i) {                        // Hpbar 
+		for (int i = 0; i <lifeLength; ++i) {
 			SDL_Rect rect;
-			rect.x = hpBar_rect.x + i*rect.w;
-			rect.y = hpBar_rect.y;
 			rect.w = hpBar_rect.w;
 			rect.h = hpBar_rect.h;
+			rect.x = hpBar_rect.x + i*rect.w;
+			rect.y = hpBar_rect.y;
 			SDL_RenderCopy(renderer, hpBarImage, NULL, &rect);
 		}
-			
+
 	}
-	
-	
-	int hpBarMaxlength = 10;
 	for (int i = lifeLength; i < hpBarMaxlength; ++i) {
 		SDL_Rect hpBarBackground_rect;
-		
+
 		hpBarBackground_rect.w = hpBar_rect.w;
 		hpBarBackground_rect.x = hpBar_rect.x + i*hpBarBackground_rect.w;
 		hpBarBackground_rect.y = hpBar_rect.y;
@@ -312,6 +317,7 @@ void runInterface() {
 			printf("CHAT BUTTON CLICKED.\n");
 		}
 
+		// ?????
 		if (SDL_PointInRect(&point, &hpBar_rect) && mouseEventPressed(SDL_BUTTON_LEFT)) {
 
 			printf("HPBAR BUTTON CLICKED.\n");

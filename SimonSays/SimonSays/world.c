@@ -13,31 +13,53 @@ struct Sprite spr_powerup_hp;
 struct Sprite spr_powerup_atk_2;
 struct Sprite spr_powerup_atk_3;
 struct Sprite spr_green_particle;
+struct Sprite spr_explosion_1;
+struct Sprite spr_fire_red;
+struct Sprite spr_ast_exp;
+
+struct Sprite spr_mine[4];
+
+struct Animation anim_explosion_1;
 struct Animation anim_asteroid_gray[8];
 struct Animation anim_spaceship[4];
 struct Animation anim_none;
-struct Sprite spr_fire_red;
-struct Sprite spr_fire_blue;
-struct Sprite spr_fire_green;
-struct Sprite spr_fire_orange;
+struct Animation anim_mine;
+
 
 void world_init()
 {
+
+	// skybusterexplosion
+
 	sprite_setup(&spr_spaceship_1[0], renderer, "images/spaceships/playerShip1_red.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_spaceship_1[1], renderer, "images/spaceships/playerShip1_blue.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_spaceship_1[2], renderer, "images/spaceships/playerShip1_green.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_spaceship_1[3], renderer, "images/spaceships/playerShip1_orange.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_asteroid_gray, renderer, "images/asteroid_01.png", 8, 8, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_fire_red, renderer, "images/projectiles/player_fire.bmp", 1, 1, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_fire_blue, renderer, "images/projectiles/player_fire_blue.png", 1, 1, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_fire_green, renderer, "images/projectiles/player_fire_green.png", 1, 1, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_fire_orange, renderer, "images/projectiles/player_fire_orange.png", 1, 1, createColor(0, 0, 0, 0));
 
 	sprite_setup(&spr_powerup_speed, renderer, "images/power-ups/powerupRed_bolt.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_hp, renderer, "images/power-ups/pill_green.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_atk_2, renderer, "images/power-ups/things_silver.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_atk_3, renderer, "images/power-ups/things_gold.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_green_particle, renderer, "images/projectiles/fpath.png", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_explosion_1, renderer, "images/skybusterexplosion.png", 4, 5, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_mine[0], renderer, "images/projectiles/red_mine.bmp", 2, 1, createColor(0, 0, 0, 0));
+
+	// Explosion animation
+	animation_setup(&anim_explosion_1, 4, 5, 3);
+	for (int r = 0; r < 5; r++) {
+		for (int c = 0; c < 4; c++) {
+			animation_addFrameColRow(&anim_explosion_1, c, r);
+		}
+	}
+	// Blinking mine animation
+	animation_setup(&anim_mine, 2, 1, 40);
+	animation_addFrameColRow(&anim_mine, 0, 0);
+	animation_addFrameColRow(&anim_mine, 1, 0);
+
+
+	// Asteroid animation
 	for (int r = 0; r < 8; r++) {
 		animation_setup(&anim_asteroid_gray[r], 8, 1, 12);
 		for (int c = 0; c < 8; c++) {
@@ -48,12 +70,35 @@ void world_init()
 	animation_addFrameColRow(&anim_none, 0, 0);
 }
 
+void world_spawnExplosionEffect(int x, int y, int w, int h)
+{
+	double facing = rand() % 360;
+	int i = object_index();
+	object_setup(&object[i], i, OBJ_TYPE_EFFECT, x, y, w, h, facing, 0, &spr_explosion_1, &anim_explosion_1);
+	object_setCollisionBox(&object[i], 25, 25);
+}
+
+void world_spawnAsteroidExplosion(int x, int y)
+{
+	double angle, speed;
+	int life, size, newX, newY;
+	for (int i = 0; i < 300; i++) {
+		angle = rand() % 360;
+		speed = rand() % 2 + 1;
+		life = rand() % 30 + 8;
+		size = rand() % 2 + 2;
+		newX = rand() % 6 - 4 + x;
+		newY = rand() % 6 - 4 + y;
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+	}
+}
+
 void world_spawnSpaceship(struct Player* p, int x, int y, double facingAng)
 {
 	double facing = 0;
 	double facingOff = 0;
-	int w = 112/3;
-	int h = 75/3;
+	int w = 112 / 3;
+	int h = 75 / 3;
 	int i = object_index();
 	p->alive = true;
 	p->mobile = true;
@@ -72,7 +117,6 @@ void world_spawnSpaceship(struct Player* p, int x, int y, double facingAng)
 
 void world_createParticleExplosionAngled(int x, int y, double angleCenter)
 {
-	printf("%f\n", angleCenter);
 	double angle, speed;
 	int life, size, newX, newY;
 	for (int i = 0; i < 20; i++) {
@@ -112,36 +156,76 @@ void world_createParticleFlightPath(int color, int x, int y, int dx, int dy)
 	}
 }
 
-
-void spawnNormalProjectile(struct Object* source, int color)
+void spawnProjectile(struct Object* source, int color, int x, int y, int w, int h, int dx, int dy, int dmg)
 {
-	SDL_Point p = { source->center_x, source->center_y };
-	// SDL_Point getPolarProjectionPoint(SDL_Point source, double distance, double angle_rad);
-	double angle;
-	int dx, dy, w, h, projSpeed, i;
-	projSpeed = 15;
-	angle = angleBetweenPointsRad(p, getMousePos());
-	dx = (double)projSpeed * cos(angle);
-	dy = (double)projSpeed * sin(angle);
-	w = spr_fire_red.frame_w/3;
-	h = spr_fire_red.frame_h/3;
-	i = object_index();
+	int i = object_index();
 	if (color == PL_COLOR_RED) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	else if (color == PL_COLOR_BLUE) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_blue, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	else if (color == PL_COLOR_ORANGE) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_orange, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	else {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_green, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	object[i].source_id = source->id_index;
 	object[i].delta_x = dx;
 	object[i].delta_y = dy;
-	object[i].dmg_on_impact = 1;
+	object[i].dmg_on_impact = dmg;
+	object_setCollisionCircle(&object[i], 5);
+}
+
+void spawnNormalProjectile(struct Object* source, int color)
+{
+	SDL_Point p = { source->center_x, source->center_y };
+	double angle;
+	int dx, dy, w, h, projSpeed, i;
+	w = spr_fire_red.frame_w / 3;
+	h = spr_fire_red.frame_h / 3;
+	projSpeed = 15;
+	angle = angleBetweenPointsRad(p, getMousePos());
+	dx = (double)projSpeed * cos(angle);
+	dy = (double)projSpeed * sin(angle);
+	spawnProjectile(source, color, p.x, p.y, w, h, dx, dy, 1);
+}
+
+void spawnShotgunProjectiles(struct Object* source, int color)
+{
+	SDL_Point p = { source->center_x, source->center_y };
+	double angle;
+	int dx, dy, w, h, projSpeed, i;
+	projSpeed = 15;
+	w = spr_fire_red.frame_w / 3;
+	h = spr_fire_red.frame_h / 3;
+	angle = angleBetweenPointsRad(p, getMousePos()) - 15 * M_PI / 180;
+	for (int i = 0; i < 3; i++) {
+		dx = (double)projSpeed * cos(angle);
+		dy = (double)projSpeed * sin(angle);
+		angle += 15 * M_PI / 180;
+		spawnProjectile(source, color, p.x, p.y, w, h, dx, dy, 1);
+	}
+}
+
+void spawnMineProjectiles(struct Object* source, int color)
+{
+	SDL_Point p = { source->center_x, source->center_y };
+	double angle;
+	int dx, dy, w, h, projSpeed, i;
+	w = spr_mine[0].frame_h;
+	h = spr_mine[0].frame_h;
+	projSpeed = 4;
+	angle = angleBetweenPointsRad(p, getMousePos());
+	dx = (double)projSpeed * cos(angle);
+	dy = (double)projSpeed * sin(angle);
+	i = object_index();
+	object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_mine[0], &anim_mine);
+	object[i].source_id = source->id_index;
+	object[i].delta_x = dx;
+	object[i].delta_y = dy;
+	object[i].dmg_on_impact = 5;
 	object_setCollisionCircle(&object[i], 5);
 
 }
@@ -214,13 +298,13 @@ void world_spawnEnteringAsteroid()
 
 	side = rand() % 4;
 	facingAngle = rand() % 360;
-	scale = rand() % AST_MAX_SCALE + AST_MIN_SCALE;		
+	scale = rand() % AST_MAX_SCALE + AST_MIN_SCALE;
 	screen_w = getWindowWidth();
 	screen_h = getWindowHeight();
 
 	k = 50; // distance from/to world edge, used to spawn the asteroid outside the world
 
-	// Asteroid spawn coordinates
+			// Asteroid spawn coordinates
 	if (side == WORLD_LEFT) {
 		spawnPoint.x = 0 - k / 2;
 		spawnPoint.y = k + rand() % screen_h;
@@ -257,10 +341,10 @@ void world_spawnEnteringAsteroid()
 // Used by misc objects to detect when they have guaranteedly left the world
 bool hasLeftWorld(struct Object* o)
 {
-	int topX = o->center_x - o->w/2;
-	int topY = o->center_y - o->h/2;
-	int botX = o->center_x + o->w/2;
-	int botY = o->center_y + o->h/2;
+	int topX = o->center_x - o->w / 2;
+	int topY = o->center_y - o->h / 2;
+	int botX = o->center_x + o->w / 2;
+	int botY = o->center_y + o->h / 2;
 	return (topX < -100 || topY < -100 || botX > getWindowWidth() + 100 || botY > getWindowHeight() + 100);
 }
 
@@ -305,236 +389,3 @@ bool world_spaceshipLost(struct Object* spaceship)
 	int window_h = getWindowHeight();
 	return (x > window_w || x < 0 || y > window_h || y < 0);
 }
-
-
-
-
-
-
-
-
-/*
-
-void spawnProjectile(Spaceship* source, int x, int y, int projSpeed, double angle)
-{
-	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, x, y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
-	x = (double)projSpeed * cos(angle);
-	y = (double)projSpeed * sin(angle);
-	object_setDeltaX(lastCreatedObj, x);
-	object_setDeltaY(lastCreatedObj, y);
-	object_setCollisionCircleDiameter(lastCreatedObj, 5, 0, 0);
-	// Create projectile data
-	createProjectile(lastCreatedObj, source, 1);
-}
-
-void spawnNormalProjectile(Spaceship* source)
-{
-	// SDL_Point getPolarProjectionPoint(SDL_Point source, double distance, double angle_rad);
-	double angle;
-	int x, y, projSpeed;
-	SDL_Point pSource = spaceship_getPosition(source);
-	projSpeed = 12;												
-	angle = angleBetweenPointsRad(pSource, getMousePos());
-	x = (double) projSpeed * cos(angle);					
-	y = (double) projSpeed * sin(angle);	
-	//double facing = object_getFacingAngle(spaceship_getBody(source));
-	//pSource = getPolarProjectionPoint(pSource, 100, degreesToRadians(facing));
-	spawnProjectile(source, pSource.x, pSource.y, projSpeed, angle);
-}
-
-*/
-
-
-
-
-
-/*
-#include "world.h"
-#include "graphics.h"
-#include "object.h"
-#include "animation.h"
-#include "sprite.h"
-#include "events.h"
-#include "spaceship.h"
-#include "projectile.h"
-
-#define LEFT			0
-#define RIGHT			1
-#define TOP				2
-#define BOT				3
-#define MIN_SPEED_XY	1
-#define TOP_SPEED_XY	6
-#define MIN_SCALE		1
-#define MAX_SCALE		5
-#define ASTEROID_MASS	5
-#define ASTEROID_LIFE	5
-
-Sprite* spr_asteroid_gray;
-Animation* asteroid_anim[12];
-
-void initWorld()
-{
-	// Sprite
-	spr_asteroid_gray = createSprite(renderer, "images/asteroid_01.png", 8, 8, createColor(0, 0, 0, 0));
-
-	// Animation
-	for (int r = 0; r < 8; r++) {
-		asteroid_anim[r] = createAnimation(8, 7);			// Creates an asteroid with 8 frames and a frame time of 7
-		for (int c = 0; c < 8; c++) {
-			anim_addFrameColRow(asteroid_anim[r], c, r);	// adds columns 0 to 7 to at a given row the last created animation 
-		}
-	}
-}
-
-// Internal function to spawn projectiles on the world from a given spaceship
-void spawnProjectile(Spaceship* source, int x, int y, int projSpeed, double angle)
-{
-	Object* lastCreatedObj = createObject(OBJ_TYPE_PROJECTILE, x, y, sprite_getFrameWidth(spr_asteroid_gray) / 10, sprite_getFrameHeight(spr_asteroid_gray) / 10, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
-	x = (double)projSpeed * cos(angle);
-	y = (double)projSpeed * sin(angle);
-	object_setDeltaX(lastCreatedObj, x);
-	object_setDeltaY(lastCreatedObj, y);
-	object_setCollisionCircleDiameter(lastCreatedObj, 5, 0, 0);
-	// Create projectile data
-	createProjectile(lastCreatedObj, source, 1);
-}
-
-void spawnNormalProjectile(Spaceship* source)
-{
-	// SDL_Point getPolarProjectionPoint(SDL_Point source, double distance, double angle_rad);
-	double angle;
-	int x, y, projSpeed;
-	SDL_Point pSource = spaceship_getPosition(source);
-	projSpeed = 12;												
-	angle = angleBetweenPointsRad(pSource, getMousePos());
-	x = (double) projSpeed * cos(angle);					
-	y = (double) projSpeed * sin(angle);	
-	//double facing = object_getFacingAngle(spaceship_getBody(source));
-	//pSource = getPolarProjectionPoint(pSource, 100, degreesToRadians(facing));
-	spawnProjectile(source, pSource.x, pSource.y, projSpeed, angle);
-}
-
-// NEED FIX 
-
-void spawnProjectileSpecial_1(Spaceship* source)
-{
-	SDL_Point p;
-	Object* o = spaceship_getBody(source);
-	int x = object_getDeltaX(o);
-	int y = object_getDeltaY(o);
-	//double angle = pointToAngle(x, y);
-	double angle = object_getFacingAngle(spaceship_getBody(source));
-	int projSpeed = 12;
-	p.x = object_getX(o);
-	p.y = object_getY(o);
-
-	for (int i = 0; i < 4; i++) {
-		spawnProjectile(source, p.x, p.y, projSpeed, (angle + M_PI/4) + M_PI / 2 * i);
-	}
-}
-
-// Remove later
-void spawnAteroidTest()
-{
-	printf("Möte\n");
-
-	SDL_Point p1 = { 200, 350 };
-	SDL_Point p2 = { 800, 350 };
-	Object* lastCreatedObj;
-
-	lastCreatedObj = createObject(OBJ_TYPE_ASTEROID, p1.x, p1.y, sprite_getFrameWidth(spr_asteroid_gray) / 4, sprite_getFrameHeight(spr_asteroid_gray) / 4, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
-	object_setDeltaX(lastCreatedObj, 2);
-	object_setDeltaY(lastCreatedObj, 0);
-	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
-	object_setMass(lastCreatedObj, 10); //massa på asteroid1
-
-	lastCreatedObj = createObject(OBJ_TYPE_ASTEROID, p2.x, p2.y, sprite_getFrameWidth(spr_asteroid_gray) / 4, sprite_getFrameHeight(spr_asteroid_gray) / 4, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
-	object_setDeltaX(lastCreatedObj, -4);
-	object_setDeltaY(lastCreatedObj, 0);
-	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
-	object_setMass(lastCreatedObj, 20);
-}
-
-void spawnEnteringAsteroid()
-{
-	int side, dx, dy, screen_w, screen_h, speed, k;
-	double facingAngle, scale, targetAngle;
-	SDL_Point rdmPoint;
-	SDL_Point spawnPoint;
-
-	side = rand() % 4;
-	facingAngle = rand() % 360;
-	scale = rand() % MAX_SCALE + MIN_SCALE;			// NOT YET IMPLEMENTED
-	screen_w = getWindowWidth();
-	screen_h = getWindowHeight();
-
-	// distance from/to world edge
-	// used to spawn the asteroid outside the world
-	k = 100; 
-
-	// Asteroid spawn coordinates
-	if (side == LEFT) {
-		spawnPoint.x = 0 - k/2;
-		spawnPoint.y = k + rand() % screen_h;
-	}
-	else if (side == RIGHT) {
-		spawnPoint.x = screen_w + k/2;
-		spawnPoint.y = k + rand() % screen_h;
-	}
-	else if (side == TOP) {
-		spawnPoint.x = k + rand() % screen_w;
-		spawnPoint.y = 0 - k/2;
-	}
-	else if (side == BOT) {
-		spawnPoint.x = k + rand() % screen_w;
-		spawnPoint.y = screen_h + k/2;
-	}
-
-	speed = rand() % TOP_SPEED_XY + MIN_SPEED_XY;	
-	rdmPoint.x = rand() % (screen_w - 2*k);						// A random point on the world
-	rdmPoint.y = rand() % (screen_h - 2*k);
-	targetAngle = angleBetweenPointsRad(spawnPoint, rdmPoint);	// Angle between spawn point and random point
-	dx = (double)speed * cos(targetAngle);						// velocity vector
-	dy = (double)speed * sin(targetAngle);
-
-	Object* lastCreatedObj = createObject(OBJ_TYPE_ASTEROID, spawnPoint.x, spawnPoint.y, sprite_getFrameWidth(spr_asteroid_gray) / 4, sprite_getFrameHeight(spr_asteroid_gray) / 4, 0, 0, spr_asteroid_gray, asteroid_anim[rand() % 8]);
-	object_setDeltaX(lastCreatedObj, dx);
-	object_setDeltaY(lastCreatedObj, dy);
-	object_setCollisionCircleDiameter(lastCreatedObj, 22, 0, 0);
-	object_setMass(lastCreatedObj, ASTEROID_MASS);
-	object_setLife(lastCreatedObj, ASTEROID_LIFE);
-}
-
-// Used by mostly spaceship to detect when it is trying to leave 
-bool isInsideWorld(Object* o, int *side)
-{
-	int w = object_getWidth(o)/2;
-	int h = object_getHeight(o)/2;
-	int x = object_getX(o);
-	int y = object_getY(o);
-	int window_w = getWindowWidth();
-	int window_h = getWindowHeight();
-	int topX = x - w;
-	int topY = y - h;
-	int botX = x + w;
-	int botY = y + h;
-	bool isInside = true;
-	isInside = (topX > 0 && topY > 0 && botX < window_w && botY < window_h);
-
-	if (isInside == false)
-	{
-		if (x > window_w - 30 || x < 30) //right or left
-		{
-			*side = 0;
-		}
-
-		if (y > window_h -40 || y < 40) //top or bottom
-		{
-			*side = 1;
-		}
-	}
-		
-	return isInside;
-}
-
-*/

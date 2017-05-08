@@ -189,14 +189,14 @@ void game_events()
 
 			SDL_Thread *TCPThread = NULL;
 			const char *TCPThreadReturnValue;
-			TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
+			//TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
 
 			if (NULL == TCPThread) {
 				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
 			}
 			else {
-				SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
-				printf("\nThread returned value: %d", TCPThreadReturnValue);
+				//SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
+				//printf("\nThread returned value: %d", TCPThreadReturnValue);
 			}
 			/*
 			char* text = malloc(sizeof(100));
@@ -218,7 +218,15 @@ void game_events()
 		}
 
 		if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
-			spawnNormalProjectile(player[client_player_num].spaceship, player[client_player_num].color);
+			if (player[client_player_num].current_attack_type == ATK_TYPE_2) {
+				spawnShotgunProjectiles(player[client_player_num].spaceship, player[client_player_num].color);
+			}
+			else if (player[client_player_num].current_attack_type == ATK_TYPE_3) {
+				spawnMineProjectiles(player[client_player_num].spaceship, player[client_player_num].color);
+			}
+			else {
+				spawnNormalProjectile(player[client_player_num].spaceship, player[client_player_num].color);
+			}
 			player[client_player_num].attack_timestamp = time;
 		}
 		if (keyEventHeld(SDL_SCANCODE_W) && player[client_player_num].mobile == true) {
@@ -243,10 +251,7 @@ void game_events()
 				client_player_num = 0;
 			}
 		}
-
 		object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
-
-
 		// Testing 
 		if (keyEventPressed(SDL_SCANCODE_Z)) {
 			world_spawnEnteringAsteroid();
@@ -254,8 +259,6 @@ void game_events()
 		if (keyEventPressed(SDL_SCANCODE_X)) {
 			spawnPowerUpType(rand() % NUM_OF_POWERS);
 		}
-
-
 	}
 }
 
@@ -389,10 +392,11 @@ void handleShipDeath(int ship)
 	int time = SDL_GetTicks();
 	int p = getPlayer(ship);
 	object[ship].show = false;
-	printf("Player %d's ship was destroyed (%d) @time: %d\n", p, ship, time); 
+	printf("Player %d's ship was destroyed (%d) @time: %d\n", p, ship, time);
 	player[p].mobile = false;
 	player[p].alive = false;
 	player[p].death_timestamp = time;
+	world_spawnExplosionEffect(object[ship].center_x, object[ship].center_y, object[ship].w * 3, object[ship].h * 3);
 }
 
 void handleSpeedBoost(int ship) {
@@ -405,7 +409,7 @@ void handleSpeedBoost(int ship) {
 	printf("player %d got a speed boost! @time: %d\n", getPlayer(ship), time);
 }
 
-void disableSpeedBoost(int p) 
+void disableSpeedBoost(int p)
 {
 	player[p].spaceship->acc = SPEED_ACC_DEFAULT;
 	player[p].spaceship->speed_max = SPEED_MAX_DEFAULT;
@@ -422,7 +426,7 @@ void handleLifePickup(int ship)
 	printf("player %d recieved %d life back (%d) @time: %d\n", p, POWER_LIFE_ADDED, object[ship].hp, SDL_GetTicks());
 }
 
-void handleAttack_2_Pickup(int ship) 
+void handleAttack_2_Pickup(int ship)
 {
 	int time = SDL_GetTicks();
 	int p = getPlayer(ship);
@@ -455,11 +459,9 @@ void handleShipResurrection(int p)
 	player[p].mobile = true;
 	player[p].alive = true;
 	printf("Player %d's ship was resurrected (%d) @time: %d\n", p, i, time);
-
-	// Kvar att göra: ??? Kolla ifall det är tomt där skeppet ska spawna annars spawna någn annan stanns.
 }
 
-void handlePlayerKillsAndDeaths(int killer, int victim) 
+void handlePlayerKillsAndDeaths(int killer, int victim)
 {
 	player[victim].killstreak_tot = 0;
 	player[victim].killstreak_round = 0;
@@ -481,8 +483,8 @@ void game_update()
 	double angle;
 
 	free_obj_size = 0; // clears the array of removed objects
-	
-	// Update player activities
+
+					   // Update player activities
 	time = SDL_GetTicks();
 	for (int i = 0; i < MAX_PLAYERS; i++) {
 		// Resurrection triggered
@@ -522,10 +524,13 @@ void game_update()
 		object_tick(&object[i]);
 		object_move(&object[i]);
 
-		// Tick particles
-		
-		particle_tick_all();
+		// if the effect is complete remove it
+		if (object[i].id_type == OBJ_TYPE_EFFECT && object[i].animation.complete) {
+			markForRemoval(i);
+		}
 
+		// Tick particles		
+		particle_tick_all();
 
 		// Collision
 		int j = object[i].next;
@@ -542,11 +547,11 @@ void game_update()
 					dx = object[i_projectile].delta_x;
 					dy = object[i_projectile].delta_y;
 					angle = radiansToDegrees(pointToAngle(dx, dy));
-					world_createParticleExplosionAngled(object[i_ship].center_x, object[i_ship].center_y, angle);	
+					world_createParticleExplosionAngled(object[i_ship].center_x, object[i_ship].center_y, angle);
 					// Remove projectile
-					markForRemoval(i_projectile);		
+					markForRemoval(i_projectile);
 					// Damage ship
-					object[i_ship].hp -= object[i_projectile].dmg_on_impact;	
+					object[i_ship].hp -= object[i_projectile].dmg_on_impact;
 					// Death
 					if (object[i_ship].hp <= 0) {
 						handleShipDeath(i_ship);
@@ -563,9 +568,10 @@ void game_update()
 					markForRemoval(i_projectile);
 					object[i_asteroid].hp -= object[i_projectile].dmg_on_impact;
 					world_createParticleExplosionAngled(object[i_asteroid].center_x, object[i_asteroid].center_y, angle);		// Particle explosion on impact
-					// On asteroid death
+																																// On asteroid death
 					if (object[i_asteroid].hp <= 0) {
 						markForRemoval(i_asteroid);
+						world_spawnAsteroidExplosion(object[i_asteroid].center_x, object[i_asteroid].center_y);
 					}
 				}
 				// Projectile hits powerup
@@ -586,7 +592,7 @@ void game_update()
 						handleAttack_2_Pickup(i_ship);
 					}
 					else if (object[i_power].power_id == POWER_ATK_3) {
-						handleAttack_2_Pickup(i_ship);
+						handleAttack_3_Pickup(i_ship);
 					}
 				}
 
@@ -596,6 +602,7 @@ void game_update()
 					object[i_ship].hp -= object[i_asteroid].dmg_on_impact;
 					if (object[i_asteroid].hp <= 0) {
 						markForRemoval(i_asteroid);
+						world_spawnAsteroidExplosion(object[i_asteroid].center_x, object[i_asteroid].center_y);
 					}
 					if (object[i_ship].hp <= 0) {
 						handleShipDeath(i_ship);
@@ -663,6 +670,9 @@ void game_render()
 	interface_render_label(&playerNameColored[2], renderer);
 	interface_render_label(&playerNameColored[3], renderer);
 	rendererInterface();
+
+	//
+	interface_renderPlayerHP((double) player[client_player_num].spaceship->hp / LIFE_SPACESHIP);
 
 	SDL_RenderPresent(renderer);
 }

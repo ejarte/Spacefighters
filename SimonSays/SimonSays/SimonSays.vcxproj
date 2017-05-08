@@ -166,7 +166,7 @@
     <ClInclude Include="definition.h" />
     <ClInclude Include="events.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="game_menu.h" />
+    <ClInclude Include="game_interface.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="interface_lib.h" />
     <ClInclude Include="intro_menu.h" />
@@ -187,7 +187,7 @@
     <ClCompile Include="collision.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="game.c" />
-    <ClCompile Include="game_menu.c" />
+    <ClCompile Include="game_interface.c" />
     <ClCompile Include="interface_lib.c" />
     <ClCompile Include="intro_menu.c" />
     <ClCompile Include="libraries.c" />

@@ -69,13 +69,13 @@
     <ClInclude Include="UDP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game_menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="text_messages.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="intro_menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -128,13 +128,13 @@
     <ClCompile Include="UDP.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game_menu.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="text_messages.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="intro_menu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_interface.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
