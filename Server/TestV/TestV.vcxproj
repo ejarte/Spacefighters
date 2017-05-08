@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{77F2BD86-457B-4B8A-96C8-44A58F9F52B4}</ProjectGuid>
+    <ProjectGuid>{8E37B5FC-BC54-44AA-A7C7-AC63AF0A71ED}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>SimonSays</RootNamespace>
+    <RootNamespace>TestV</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -72,13 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDLBIB\SDL2_ttf-2.0.14\include;C:\SDLBIB\SDL2_net-2.0.1\include;C:\SDLBIB\SDL2_mixer-2.0.1\include;C:\SDLBIB\SDL2_image-2.0.1\include;C:\SDLBIB\SDL2-2.0.5\include;$(VC_IncludePath);$(MSBuildProjectDirectory);$(WindowsSDK_IncludePath);$(MSBuildProjectDirectory)\SDL2_net-2.0.1\include;$(MSBuildProjectDirectory)\SDL2_image-2.0.1\include;$(MSBuildProjectDirectory)\SDL2-2.0.5\include;$(MSBuildProjectDirectory)\SDL2_ttf-2.0.14\include;$(MSBuildProjectDirectory)\SDL2_mixer-2.0.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDLBIB\SDL2-2.0.5\lib\x86;C:\SDLBIB\SDL2_ttf-2.0.14\lib\x86;C:\SDLBIB\SDL2_net-2.0.1\lib\x86;C:\SDLBIB\SDL2_mixer-2.0.1\lib\x86;C:\SDLBIB\SDL2_image-2.0.1\lib\x86;$(MSBuildProjectDirectory)\SDL2-2.0.5\lib\x86;$(MSBuildProjectDirectory)\SDL2_ttf-2.0.14\lib\x86;$(MSBuildProjectDirectory)\SDL2_net-2.0.1\lib\x86;$(MSBuildProjectDirectory)\SDL2_mixer-2.0.1\lib\x86;$(MSBuildProjectDirectory)\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(MSBuildProjectDirectory)\SDL2_net-2.0.1\include;$(MSBuildProjectDirectory)\SDL2_image-2.0.1\include;$(MSBuildProjectDirectory)\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(MSBuildProjectDirectory)\SDL2_image-2.0.1\lib\x86;$(MSBuildProjectDirectory)\SDL2_net-2.0.1\lib\x86;$(MSBuildProjectDirectory)\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDLBIB\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDLBIB\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -93,21 +91,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <MinimumRequiredVersion>
-      </MinimumRequiredVersion>
-      <HeapReserveSize>
-      </HeapReserveSize>
-      <HeapCommitSize>
-      </HeapCommitSize>
-      <StackReserveSize>
-      </StackReserveSize>
-      <StackCommitSize>
-      </StackCommitSize>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_net.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,8 +107,6 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -157,50 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="animation.h" />
-    <ClInclude Include="audio.h" />
-    <ClInclude Include="collision.h" />
-    <ClInclude Include="definition.h" />
-    <ClInclude Include="events.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="game_menu.h" />
-    <ClInclude Include="graphics.h" />
-    <ClInclude Include="interface_lib.h" />
-    <ClInclude Include="intro_menu.h" />
-    <ClInclude Include="libraries.h" />
-    <ClInclude Include="text_messages.h" />
-    <ClInclude Include="object.h" />
-    <ClInclude Include="particle.h" />
-    <ClInclude Include="sprite.h" />
-    <ClInclude Include="state_handler.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="TCP.h" />
-    <ClInclude Include="UDP.h" />
-    <ClInclude Include="world.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="animation.c" />
-    <ClCompile Include="audio.c" />
-    <ClCompile Include="collision.c" />
-    <ClCompile Include="events.c" />
-    <ClCompile Include="game.c" />
-    <ClCompile Include="game_menu.c" />
-    <ClCompile Include="interface_lib.c" />
-    <ClCompile Include="intro_menu.c" />
-    <ClCompile Include="libraries.c" />
-    <ClCompile Include="text_messages.c" />
-    <ClCompile Include="object.c" />
-    <ClCompile Include="particle.c" />
-    <ClCompile Include="sprite.c" />
-    <ClCompile Include="state_handler.c" />
-    <ClCompile Include="graphics.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="TCP.c" />
-    <ClCompile Include="UDP.c" />
-    <ClCompile Include="world.c" />
+    <ClCompile Include="server.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
