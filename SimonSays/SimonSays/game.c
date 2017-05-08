@@ -189,14 +189,14 @@ void game_events()
 
 			SDL_Thread *TCPThread = NULL;
 			const char *TCPThreadReturnValue;
-			//TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
+			TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
 
 			if (NULL == TCPThread) {
 				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
 			}
 			else {
-				//SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
-				//printf("\nThread returned value: %d", TCPThreadReturnValue);
+				SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
+				printf("\nThread returned value: %d", TCPThreadReturnValue);
 			}
 			/*
 			char* text = malloc(sizeof(100));

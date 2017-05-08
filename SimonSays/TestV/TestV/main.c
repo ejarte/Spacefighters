@@ -10,7 +10,8 @@ int main()
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDLNet_Init();	
 
-	UDP();
+	//UDP();
+	TCP();
 
 
 
