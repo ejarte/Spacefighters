@@ -476,6 +476,24 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 }
 
 
+void resolveProjectileCollision(int i, int j)
+{
+	int p, dx, dy;
+	double angle;
+	p = getPlayer(object[i].source_id);	
+	dx = object[i].delta_x;
+	dy = object[i].delta_y;
+	angle = radiansToDegrees(pointToAngle(dx, dy));
+	world_createParticleExplosionAngled(object[i].center_x, object[i].center_y, angle, player[p].color);
+	p = getPlayer(object[j].source_id);	// gets the player from the source 
+	dx = object[i].delta_x;
+	dy = object[i].delta_y;
+	angle = radiansToDegrees(pointToAngle(dx, dy));
+	world_createParticleExplosionAngled(object[i].center_x, object[i].center_y, angle, player[p].color);
+	markForRemoval(i);
+	markForRemoval(j);
+}
+
 void game_update()
 {
 	int p, ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy, killer, victim;
@@ -537,19 +555,8 @@ void game_update()
 			if (object_instersection(&object[i], &object[j])) {
 
 				// Projectile hits projectile
-				if (object[i].id_type == OBJ_TYPE_PROJECTILE && object[j].id_type == OBJ_TYPE_PROJECTILE) {
-					p = getPlayer(object[i].source_id);	// gets the player from the source 
-					dx = object[i].delta_x;
-					dy = object[i].delta_y;
-					angle = radiansToDegrees(pointToAngle(dx, dy));
-					world_createParticleExplosionAngled(object[i].center_x, object[i].center_y, angle, player[p].color);
-					p = getPlayer(object[j].source_id);	// gets the player from the source 
-					dx = object[i].delta_x;
-					dy = object[i].delta_y;
-					angle = radiansToDegrees(pointToAngle(dx, dy));
-					world_createParticleExplosionAngled(object[i].center_x, object[i].center_y, angle, player[p].color);
-					markForRemoval(i);
-					markForRemoval(j);
+				if (object[i].id_type == OBJ_TYPE_PROJECTILE && object[j].id_type == OBJ_TYPE_PROJECTILE && object[i].source_id != object[j].source_id) {
+					resolveProjectileCollision(i, j);
 				}
 				else {
 					// Bouncing things

@@ -151,7 +151,7 @@ void world_createParticleExplosionAngled(int x, int y, double angleCenter, int c
 	for (int i = 0; i < 20; i++) {
 		angle = rand() % 25 + angleCenter + 180;
 		speed = rand() % 4 + 1;
-		life = rand() % 10 + 5;
+		life = rand() % 12 + 7;
 		size = rand() % 2 + 2;
 		newX = rand() % 6 - 4 + x;
 		newY = rand() % 6 - 4 + y;
