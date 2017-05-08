@@ -216,6 +216,10 @@ void game_events()
 			}
 		}
 
+
+
+
+
 		if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
 			if (player[client_player_num].current_attack_type == ATK_TYPE_2) {
 				spawnShotgunProjectiles(player[client_player_num].spaceship, player[client_player_num].color);
@@ -391,6 +395,7 @@ void handleShipDeath(int ship)
 	int time = SDL_GetTicks();
 	int p = getPlayer(ship);
 	object[ship].show = false;
+	playerNameColored[p].show = false;
 	printf("Player %d's ship was destroyed (%d) @time: %d\n", p, ship, time);
 	player[p].mobile = false;
 	player[p].alive = false;
@@ -457,6 +462,7 @@ void handleShipResurrection(int p)
 	object[i].hp = LIFE_SPACESHIP;
 	player[p].mobile = true;
 	player[p].alive = true;
+	playerNameColored[p].show = true;
 	printf("Player %d's ship was resurrected (%d) @time: %d\n", p, i, time);
 }
 
