@@ -58,6 +58,8 @@ SDL_Rect infoHotkeys_rect;
 SDL_Texture *hpBarImage;
 SDL_Rect hpBar_rect;
 
+SDL_Texture *hpBarBackgroundImage;
+
 
 
 void initInterface()
@@ -74,6 +76,7 @@ void initInterface()
 	soundOFFImage = IMG_LoadTexture(renderer, "images/Interface/SoundOff.bmp");
 	infoHotkeysImage = IMG_LoadTexture(renderer, "images/Interface/hotkeys-info.png");
 	hpBarImage = IMG_LoadTexture(renderer, "images/Interface/damageSym.bmp");
+	hpBarBackgroundImage =IMG_LoadTexture(renderer, "images/Interface/damageSymBackground.bmp");
 	// Done
 	//printf("Interface Initialized...\n");
 }
@@ -179,9 +182,9 @@ int gameState0() {
 	hpBar_rect.y = getWindowHeight() - hpBarLength-6;
 
 	double damage_amount = 0.6;      //  Damage amount
+	int lifeLength = (double)damage_amount * 10.0;
 	if (0 <= damage_amount ||damage_amount <= 1)
 	{
-		int lifeLength= (double)damage_amount * 10.0;
 		printf("%d\n", lifeLength);
 
 		for (int i = 0; i <lifeLength; ++i) {                        // Hpbar 
@@ -192,17 +195,21 @@ int gameState0() {
 			rect.h = hpBar_rect.h;
 			SDL_RenderCopy(renderer, hpBarImage, NULL, &rect);
 		}
-		//SDL_RenderCopy(renderer, hpBarImage, NULL, &hpBar_rect);
+			
 	}
 	
-
-	/*int hpBarMaxlength = 10;
-	if (hpBarMaxlength >MAXLIV)
-	{
-		hpBarMaxlength = MAXLIV;
-	}*/
-
 	
+	int hpBarMaxlength = 10;
+	for (int i = lifeLength; i < hpBarMaxlength; ++i) {
+		SDL_Rect hpBarBackground_rect;
+		
+		hpBarBackground_rect.w = hpBar_rect.w;
+		hpBarBackground_rect.x = hpBar_rect.x + i*hpBarBackground_rect.w;
+		hpBarBackground_rect.y = hpBar_rect.y;
+		hpBarBackground_rect.h = hpBar_rect.h;
+		SDL_RenderCopy(renderer, hpBarBackgroundImage, NULL, &hpBarBackground_rect);
+	}
+
 }
 
 int gameState1()
