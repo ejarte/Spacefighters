@@ -47,7 +47,7 @@ void world_init()
 	sprite_setup(&spr_mine[0], renderer, "images/projectiles/red_mine.bmp", 2, 1, createColor(0, 0, 0, 0));
 
 	// Explosion animation
-	animation_setup(&anim_explosion_1, 4, 5, 3);
+	animation_setup(&anim_explosion_1, 4, 5, 2);
 	for (int r = 0; r < 5; r++) {
 		for (int c = 0; c < 4; c++) {
 			animation_addFrameColRow(&anim_explosion_1, c, r);
@@ -66,7 +66,7 @@ void world_init()
 
 	// Asteroid animation
 	for (int r = 0; r < 8; r++) {
-		animation_setup(&anim_asteroid_gray[r], 8, 1, 12);
+		animation_setup(&anim_asteroid_gray[r], 8, 1, 8);
 		for (int c = 0; c < 8; c++) {
 			animation_addFrameColRow(&anim_asteroid_gray[r], c, r);
 		}
@@ -80,7 +80,6 @@ void world_spawnExplosionEffect(int x, int y, int w, int h)
 	double facing = rand() % 360;
 	int i = object_index();
 	object_setup(&object[i], i, OBJ_TYPE_EFFECT, x, y, w, h, facing, 0, &spr_explosion_1, &anim_explosion_1);
-	object_setCollisionBox(&object[i], 25, 25);
 }
 
 void world_spawnAsteroidExplosion(int x, int y)

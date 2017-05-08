@@ -46,7 +46,7 @@ void animation_tick(struct Animation *a)
 {
 	a->complete = false;
 	a->tick += 1;
-	if (a->tick == a->cyclesPerFrame) {
+	if (a->tick >= a->cyclesPerFrame) {
 		a->tick = 0;
 		a->index += 1;
 		if (a->index >= a->numOfFrames) {
