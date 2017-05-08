@@ -113,8 +113,8 @@ struct Collision {
 };
 
 struct Object {
-	int center_y;
-	int center_x;
+	int center_y; //skickas
+	int center_x; //skickas
 	int prev_x;
 	int prev_y;
 	int w;

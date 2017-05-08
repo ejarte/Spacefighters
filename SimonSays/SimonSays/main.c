@@ -20,6 +20,13 @@ int main(int argc, char* args[])
 	}
 	else printf("TTF Initialized...\n");
 
+	if (SDLNet_Init() == -1) {
+		printf("NET_Init: %s\n", SDLNet_GetError());
+	}
+	else
+	{
+		printf("NET Initialized...\n");
+	}
 
 
 	initWindow();
