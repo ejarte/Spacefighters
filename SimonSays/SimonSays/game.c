@@ -551,13 +551,13 @@ void game_update()
 					markForRemoval(i);
 					markForRemoval(j);
 				}
-
-				// Bouncing things
-				else if (object[i].id_type != OBJ_TYPE_PROJECTILE && object[j].id_type != OBJ_TYPE_PROJECTILE && resolveCollisionSpaceshipPowerup(i, j, &i_item, &i_item) == false) {
-					object_calculateCollisionSpeed(&object[i], &object[j]);
+				else {
+					// Bouncing things
+					if (!(object[i].id_type == OBJ_TYPE_PROJECTILE || object[j].id_type == OBJ_TYPE_PROJECTILE) && resolveCollisionSpaceshipPowerup(i, j, &i_item, &i_item) == false)
+						object_calculateCollisionSpeed(&object[i], &object[j]);
 				}
 				// Projectile hits spaceship
-				else if (resolveCollisionProjSpaceship(i, j, &i_projectile, &i_ship)) {
+				if (resolveCollisionProjSpaceship(i, j, &i_projectile, &i_ship)) {
 					// Particle explosion on impact
 					dx = object[i_projectile].delta_x;
 					dy = object[i_projectile].delta_y;
