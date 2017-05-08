@@ -75,9 +75,16 @@
 #define ATK_TYPE_2					2		// Shotgun attack
 #define ATK_TYPE_3					3		// All direction attack
 
+// Chat
+#define MSG_DURATION				20		// Chat message duration seconds
+
 // Window
 SDL_Renderer*	renderer;					// Game Renderer
 SDL_Window*		window;						// Game Window
+
+// Time
+
+int curTime;	
 
 // Structs
 
@@ -153,6 +160,7 @@ struct Object {
 struct Player {
 	char* name;
 	int color;
+	SDL_Color sdl_color;
 	bool alive;
 	bool mobile;
 	bool connected;			
@@ -175,3 +183,5 @@ struct Player {
 
 // DEBUG Variables
 bool debug_show_collision_box;
+
+struct Player player[MAX_PLAYERS];

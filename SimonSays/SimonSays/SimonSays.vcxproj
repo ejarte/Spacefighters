@@ -23,7 +23,7 @@
     <ProjectGuid>{77F2BD86-457B-4B8A-96C8-44A58F9F52B4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SimonSays</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\SDLBIB\SDL2_ttf-2.0.14\include;C:\SDLBIB\SDL2_net-2.0.1\include;C:\SDLBIB\SDL2_mixer-2.0.1\include;C:\SDLBIB\SDL2_image-2.0.1\include;C:\SDLBIB\SDL2-2.0.5\include;$(VC_IncludePath);$(MSBuildProjectDirectory);$(WindowsSDK_IncludePath);$(MSBuildProjectDirectory)\SDL2_net-2.0.1\include;$(MSBuildProjectDirectory)\SDL2_image-2.0.1\include;$(MSBuildProjectDirectory)\SDL2-2.0.5\include;$(MSBuildProjectDirectory)\SDL2_ttf-2.0.14\include;$(MSBuildProjectDirectory)\SDL2_mixer-2.0.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDLBIB\SDL2_ttf-2.0.14\lib\x86;C:\SDLBIB\SDL2_net-2.0.1\lib\x86;C:\SDLBIB\SDL2_mixer-2.0.1\lib\x86;C:\SDLBIB\SDL2_image-2.0.1\lib\x86;C:\SDLBIB\SDL2-2.0.5\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(MSBuildProjectDirectory)\SDL2-2.0.5\lib\x86;$(MSBuildProjectDirectory)\SDL2_net-2.0.1\lib\x86;$(MSBuildProjectDirectory)\SDL2_image-2.0.1\lib\x86;$(MSBuildProjectDirectory)\SDL2_ttf-2.0.14\lib\x86;$(MSBuildProjectDirectory)\SDL2_mixer-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\SDLBIB\SDL2-2.0.5\lib\x86;C:\SDLBIB\SDL2_ttf-2.0.14\lib\x86;C:\SDLBIB\SDL2_net-2.0.1\lib\x86;C:\SDLBIB\SDL2_mixer-2.0.1\lib\x86;C:\SDLBIB\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -166,9 +166,12 @@
     <ClInclude Include="definition.h" />
     <ClInclude Include="events.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="game_menu.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="interface_lib.h" />
+    <ClInclude Include="intro_menu.h" />
     <ClInclude Include="libraries.h" />
+    <ClInclude Include="text_messages.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="sprite.h" />
@@ -184,8 +187,11 @@
     <ClCompile Include="collision.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="game_menu.c" />
     <ClCompile Include="interface_lib.c" />
+    <ClCompile Include="intro_menu.c" />
     <ClCompile Include="libraries.c" />
+    <ClCompile Include="text_messages.c" />
     <ClCompile Include="object.c" />
     <ClCompile Include="particle.c" />
     <ClCompile Include="sprite.c" />

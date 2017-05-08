@@ -16,6 +16,8 @@
 
 SDL_Color createColor(int r, int g, int b, int a);
 
+SDL_Rect createRect(int x, int y, int w, int h);
+
 double distanceBetweenPointsCoordinates(int x1, int x2, int y1, int y2);
 
 double distanceBetweenPoints(SDL_Point p1, SDL_Point p2);

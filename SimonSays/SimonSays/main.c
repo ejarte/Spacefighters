@@ -1,10 +1,10 @@
-#include "events.h";
+#include "events.h"
 #include "graphics.h"
 #include "state_handler.h"
 #include "audio.h"
-#include "world.h"
 #include "game.h"
-#include "text_commands.h"
+#include "definition.h"
+#include "intro_menu.h"
 
 int main(int argc, char* args[])
 {
@@ -28,36 +28,47 @@ int main(int argc, char* args[])
 		printf("NET Initialized...\n");
 	}
 
-
 	initWindow();
 	initEventHandler();
-	game_init();
+	init_introMenu();
 	//initCommands();
 
-	// seed random - call only once!
+	// Seed random
 	srand(time(NULL));
 
 	// Audio
 	initAudio();
+	game_init();
 	SDL_Delay(50);
 	//playMusic("audio/music/SPACE.mp3", -1);
 
 	bool run = true;
-
+	//setNextState(STATE_MAIN_MENU);
 	setNextState(STATE_GAME_RUNNING);
 	
-	while (run)	// körs tills användaren trycker på X uppe i fönstret
+	int startTime;
+	const int frameRate = 30;				//Set desired frame rate per second
+	int desiredFrameMs = 1000 / frameRate;	//Calculates time for each frame
+	int waitTime;
+	int cycle = 0;							// Cycle
+
+	while (run)	
 	{
-		refreshEventHandler();		// mappar användarinput
+		cycle++;
+		curTime = SDL_GetTicks();	
+		startTime = curTime;
+		refreshEventHandler();	// maps user input
 		if (getNextState() == STATE_EXIT) {
 			run = false;
 		}
 		else {
 			executeNextState();
 		}
-		// Syncronize frame rate
-		SDL_Delay(33);
+		// Synchronize frame rate
+		waitTime = desiredFrameMs - (SDL_GetTicks() - startTime);
+		if (waitTime >= 0)
+			SDL_Delay(waitTime);
+		else printf("Warning: You are currently running slower then 30 fps. (Cycle: %d.)\n", cycle);
 	}
-
 	return 0;
 }
