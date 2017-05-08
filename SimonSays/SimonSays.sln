@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimonSays", "SimonSays\SimonSays.vcxproj", "{77F2BD86-457B-4B8A-96C8-44A58F9F52B4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestV", "Server\TestV\TestV.vcxproj", "{8E37B5FC-BC54-44AA-A7C7-AC63AF0A71ED}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestV", "..\..\..\Server_Client\TestV\TestV\TestV.vcxproj", "{8E37B5FC-BC54-44AA-A7C7-AC63AF0A71ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
