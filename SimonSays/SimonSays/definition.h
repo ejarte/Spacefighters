@@ -10,6 +10,9 @@
 #define PL_COLOR_GREEN				2
 #define PL_COLOR_ORANGE				3
 
+// Extra color
+#define COLOR_GRAY					4
+
 // Sprite limitations
 #define MAX_FRAME_COL				10
 #define MAX_FRAME_ROW				10

@@ -12,39 +12,51 @@ struct Sprite spr_powerup_speed;
 struct Sprite spr_powerup_hp;
 struct Sprite spr_powerup_atk_2;
 struct Sprite spr_powerup_atk_3;
-struct Sprite spr_green_particle;
 struct Sprite spr_explosion_1;
-struct Sprite spr_fire_red;
-struct Sprite spr_ast_exp;
-
+struct Sprite spr_fire;
+struct Sprite spr_proj_1[4];
 struct Sprite spr_mine[4];
+struct Sprite spr_particle[5];
+struct Sprite spr_respawn;
 
 struct Animation anim_explosion_1;
 struct Animation anim_asteroid_gray[8];
 struct Animation anim_spaceship[4];
 struct Animation anim_none;
 struct Animation anim_mine;
-
+struct Animation anim_respawn;
 
 void world_init()
 {
-
-	// skybusterexplosion
-
 	sprite_setup(&spr_spaceship_1[0], renderer, "images/spaceships/playerShip1_red.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_spaceship_1[1], renderer, "images/spaceships/playerShip1_blue.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_spaceship_1[2], renderer, "images/spaceships/playerShip1_green.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_spaceship_1[3], renderer, "images/spaceships/playerShip1_orange.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_asteroid_gray, renderer, "images/asteroid_01.png", 8, 8, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_fire_red, renderer, "images/projectiles/player_fire.bmp", 1, 1, createColor(0, 0, 0, 0));
 
 	sprite_setup(&spr_powerup_speed, renderer, "images/power-ups/powerupRed_bolt.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_hp, renderer, "images/power-ups/pill_green.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_atk_2, renderer, "images/power-ups/things_silver.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_atk_3, renderer, "images/power-ups/things_gold.png", 1, 1, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_green_particle, renderer, "images/projectiles/fpath.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_explosion_1, renderer, "images/skybusterexplosion.png", 4, 5, createColor(0, 0, 0, 0));
-	sprite_setup(&spr_mine[0], renderer, "images/projectiles/red_mine.bmp", 2, 1, createColor(0, 0, 0, 0));
+
+	sprite_setup(&spr_mine[0], renderer, "images/projectiles/mine_red.bmp", 2, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_mine[1], renderer, "images/projectiles/mine_blue.bmp", 2, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_mine[2], renderer, "images/projectiles/mine_green.bmp", 2, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_mine[3], renderer, "images/projectiles/mine_orange.bmp", 2, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_proj_1[0], renderer, "images/projectiles/proj_red.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_proj_1[1], renderer, "images/projectiles/proj_blue.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_proj_1[2], renderer, "images/projectiles/proj_green.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_proj_1[3], renderer, "images/projectiles/proj_yellow.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_fire, renderer, "images/projectiles/fire_ship.bmp", 1, 1, createColor(0, 0, 0, 0));
+	//sprite_setup(&spr_respawn, renderer, "images/respawn.png", 5, 2, createColor(0, 0, 0, 0));
+	
+
+	sprite_setup(&spr_particle[0], renderer, "images/particles/red.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_particle[1], renderer, "images/particles/blue.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_particle[2], renderer, "images/particles/green.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_particle[3], renderer, "images/particles/orange.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_particle[4], renderer, "images/particles/gray.bmp", 1, 1, createColor(0, 0, 0, 0));
 
 	// Explosion animation
 	animation_setup(&anim_explosion_1, 4, 5, 2);
@@ -53,6 +65,17 @@ void world_init()
 			animation_addFrameColRow(&anim_explosion_1, c, r);
 		}
 	}
+
+	// Respawn animation
+	/*
+	animation_setup(&anim_respawn, 5, 2, 2);
+	for (int r = 0; r < 2; r++) {
+		for (int c = 0; c < 5; c++) {
+			animation_addFrameColRow(&anim_explosion_1, c, r);
+		}
+	}
+	*/
+
 	// Blinking mine animation
 	animation_setup(&anim_mine, 2, 1, 10);
 	for (int r = 0; r < 1; r++) {
@@ -60,8 +83,7 @@ void world_init()
 			animation_addFrameColRow(&anim_explosion_1, c, r);
 		}
 	}
-	animation_addFrameColRow(&anim_mine, 0, 0);
-	animation_addFrameColRow(&anim_mine, 1, 0);
+
 
 
 	// Asteroid animation
@@ -88,12 +110,12 @@ void world_spawnAsteroidExplosion(int x, int y)
 	int life, size, newX, newY;
 	for (int i = 0; i < 300; i++) {
 		angle = rand() % 360;
-		speed = rand() % 2 + 1;
-		life = rand() % 30 + 8;
+		speed = rand() % 3 + 1;
+		life = rand() % 30 + 30;
 		size = rand() % 2 + 2;
 		newX = rand() % 6 - 4 + x;
 		newY = rand() % 6 - 4 + y;
-		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_particle[4]));	
 	}
 }
 
@@ -119,8 +141,11 @@ void world_spawnSpaceship(struct Player* p, int x, int y, double facingAng)
 	object_setCollisionBox(&object[i], 25, 25);
 }
 
-void world_createParticleExplosionAngled(int x, int y, double angleCenter)
+void world_createParticleExplosionAngled(int x, int y, double angleCenter, int color)
 {
+	if (color > 4 || color < 0)
+		color = 4;	// gray on invalid input
+
 	double angle, speed;
 	int life, size, newX, newY;
 	for (int i = 0; i < 20; i++) {
@@ -130,7 +155,7 @@ void world_createParticleExplosionAngled(int x, int y, double angleCenter)
 		size = rand() % 2 + 2;
 		newX = rand() % 6 - 4 + x;
 		newY = rand() % 6 - 4 + y;
-		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_particle[color]));
 	}
 	for (int i = 0; i < 30; i++) {
 		angle = rand() % 45 + angleCenter + 180;
@@ -139,7 +164,7 @@ void world_createParticleExplosionAngled(int x, int y, double angleCenter)
 		size = rand() % 2 + 2;
 		newX = rand() % 6 - 4 + x;
 		newY = rand() % 6 - 4 + y;
-		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_particle[color]));
 	}
 }
 
@@ -156,7 +181,7 @@ void world_createParticleFlightPath(int color, int x, int y, int dx, int dy)
 		size = rand() % 2 + 2;
 		newX = rand() % 6 - 4 + x;
 		newY = rand() % 6 - 4 + y;
-		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_green_particle));
+		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_fire));
 	}
 }
 
@@ -164,16 +189,16 @@ void spawnProjectile(struct Object* source, int color, int x, int y, int w, int 
 {
 	int i = object_index();
 	if (color == PL_COLOR_RED) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_proj_1[0], &anim_none);
 	}
 	else if (color == PL_COLOR_BLUE) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_proj_1[1], &anim_none);
 	}
-	else if (color == PL_COLOR_ORANGE) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
+	else if (color == PL_COLOR_GREEN) {
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_proj_1[2], &anim_none);
 	}
 	else {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, x, y, w, h, 0.0, 0.0, &spr_proj_1[3], &anim_none);
 	}
 	object[i].source_id = source->id_index;
 	object[i].delta_x = dx;
@@ -187,8 +212,8 @@ void spawnNormalProjectile(struct Object* source, int color)
 	SDL_Point p = { source->center_x, source->center_y };
 	double angle;
 	int dx, dy, w, h, projSpeed, i;
-	w = spr_fire_red.frame_w / 3;
-	h = spr_fire_red.frame_h / 3;
+	w = spr_proj_1[0].frame_w / 2;
+	h = spr_proj_1[0].frame_h / 2;
 	projSpeed = 15;
 	angle = angleBetweenPointsRad(p, getMousePos());
 	dx = (double)projSpeed * cos(angle);
@@ -202,8 +227,8 @@ void spawnShotgunProjectiles(struct Object* source, int color)
 	double angle;
 	int dx, dy, w, h, projSpeed, i;
 	projSpeed = 15;
-	w = spr_fire_red.frame_w / 3;
-	h = spr_fire_red.frame_h / 3;
+	w = spr_proj_1[0].frame_w / 2;
+	h = spr_proj_1[0].frame_h / 2;
 	angle = angleBetweenPointsRad(p, getMousePos()) - 15 * M_PI / 180;
 	for (int i = 0; i < 3; i++) {
 		dx = (double)projSpeed * cos(angle);
@@ -225,7 +250,18 @@ void spawnMineProjectiles(struct Object* source, int color)
 	dx = (double)projSpeed * cos(angle);
 	dy = (double)projSpeed * sin(angle);
 	i = object_index();
-	object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_mine[0], &anim_mine);
+	if (color == PL_COLOR_RED) {
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_mine[0], &anim_mine);
+	}
+	else if (color == PL_COLOR_BLUE) {
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_mine[1], &anim_mine);
+	}
+	else if (color == PL_COLOR_GREEN) {
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_mine[2], &anim_mine);
+	}
+	else {
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_mine[3], &anim_mine);
+	}
 	object[i].source_id = source->id_index;
 	object[i].delta_x = dx;
 	object[i].delta_y = dy;

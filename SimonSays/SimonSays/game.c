@@ -122,7 +122,6 @@ void game_init()
 	//printf("lol? %d %d\n", *object[4].ptr_center_x, *object[4].ptr_center_y);
 
 	t = IMG_LoadTexture(renderer, "images/greensquare.bmp");
-
 	interface_setup_textbox(&chat_box, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(200, 200, 200, 25), 10, 0);
 	chat_box.selected = true;
 
@@ -479,7 +478,7 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 
 void game_update()
 {
-	int ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy, killer, victim;
+	int p, ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy, killer, victim;
 	double angle;
 
 	free_obj_size = 0; // clears the array of removed objects
@@ -547,8 +546,9 @@ void game_update()
 					dx = object[i_projectile].delta_x;
 					dy = object[i_projectile].delta_y;
 					angle = radiansToDegrees(pointToAngle(dx, dy));
-					world_createParticleExplosionAngled(object[i_ship].center_x, object[i_ship].center_y, angle);
-					// Remove projectile
+					p = getPlayer(object[i_projectile].source_id);
+					world_createParticleExplosionAngled(object[i_ship].center_x, object[i_ship].center_y, angle, player[p].color);
+					// Remove projectiledddddd
 					markForRemoval(i_projectile);
 					// Damage ship
 					object[i_ship].hp -= object[i_projectile].dmg_on_impact;
@@ -567,7 +567,7 @@ void game_update()
 					angle = radiansToDegrees(pointToAngle(dx, dy));
 					markForRemoval(i_projectile);
 					object[i_asteroid].hp -= object[i_projectile].dmg_on_impact;
-					world_createParticleExplosionAngled(object[i_asteroid].center_x, object[i_asteroid].center_y, angle);		// Particle explosion on impact
+					world_createParticleExplosionAngled(object[i_asteroid].center_x, object[i_asteroid].center_y, angle, COLOR_GRAY);		// Particle explosion on impact
 																																// On asteroid death
 					if (object[i_asteroid].hp <= 0) {
 						markForRemoval(i_asteroid);
@@ -675,4 +675,13 @@ void game_render()
 	interface_renderPlayerHP((double) player[client_player_num].spaceship->hp / LIFE_SPACESHIP);
 
 	SDL_RenderPresent(renderer);
+
+
+
+
+
+
+
+
+
 }
