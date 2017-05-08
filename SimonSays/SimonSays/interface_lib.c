@@ -66,30 +66,6 @@ void interface_render_label(struct Label* l, SDL_Renderer* r)
 	}
 }
 
-/*
-struct TextBox {
-	SDL_Texture* texture;
-	SDL_Rect rect_text;
-	SDL_Rect rect_box;
-	char message[100];
-	int max_ch;
-	bool show;
-	bool selected;
-};
-*/
-
-/*
-SDL_Surface* surface = TTF_RenderText_Solid(f, text, color);
-l->texture = SDL_CreateTextureFromSurface(renderer, surface);
-l->rect.x = x;
-l->rect.y = y;
-l->rect.w = surface->w;
-l->rect.h = surface->h;
-l->show = show;
-SDL_FreeSurface(surface);
-l->attached = false;
-*/
-
 void interface_setup_textbox(struct TextBox* tb, SDL_Texture* background_text, SDL_Renderer* rend, TTF_Font *f, SDL_Color c, SDL_Rect box)
 {
 	SDL_Surface* surface;

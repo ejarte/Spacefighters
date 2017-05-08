@@ -4,6 +4,7 @@
 #include "audio.h"
 #include "game.h"
 #include "definition.h"
+#include "intro_menu.h"
 
 int main(int argc, char* args[])
 {
@@ -19,9 +20,17 @@ int main(int argc, char* args[])
 	}
 	else printf("TTF Initialized...\n");
 
+	if (SDLNet_Init() == -1) {
+		printf("NET_Init: %s\n", SDLNet_GetError());
+	}
+	else
+	{
+		printf("NET Initialized...\n");
+	}
 
 	initWindow();
 	initEventHandler();
+	init_introMenu();
 	//initCommands();
 
 	// Seed random
@@ -34,6 +43,7 @@ int main(int argc, char* args[])
 	//playMusic("audio/music/SPACE.mp3", -1);
 
 	bool run = true;
+	//setNextState(STATE_MAIN_MENU);
 	setNextState(STATE_GAME_RUNNING);
 	
 	int startTime;
@@ -58,8 +68,7 @@ int main(int argc, char* args[])
 		waitTime = desiredFrameMs - (SDL_GetTicks() - startTime);
 		if (waitTime >= 0)
 			SDL_Delay(waitTime);
-		else
-			printf("Warning: You are currently running slower then 30 fps. (Cycle: %d.)\n", cycle);
+		else printf("Warning: You are currently running slower then 30 fps. (Cycle: %d.)\n", cycle);
 	}
 	return 0;
 }

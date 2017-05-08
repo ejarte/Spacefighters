@@ -1,5 +1,6 @@
 #include "state_handler.h"
 #include "game.h"
+#include "intro_menu.h"
 
 
 int state_next;
@@ -8,6 +9,7 @@ void executeNextState()
 {
 	switch (state_next) {
 		case STATE_GAME_RUNNING: game_execute(); break;
+		case STATE_MAIN_MENU: execute_introMenu(); break;
 		default: break;
 	}
 }

@@ -170,6 +170,7 @@ void refreshEventHandler() {
 		switch (event.type) {
 			case SDL_WINDOWEVENT: 
 				if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+					resize();
 					SDL_GetWindowSize(window, &ev_window_w, &ev_window_h);
 				} break;
 			case SDL_MOUSEMOTION: mouse_motion_event = true;  break;

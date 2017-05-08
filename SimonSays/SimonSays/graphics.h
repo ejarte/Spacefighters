@@ -6,7 +6,11 @@
 int screenW;				
 int screenH;
 
+int targetW;
+int targetH;
+int scaleW;
+int scaleH;
+
 SDL_DisplayMode DM;
 
 void initWindow();
-void loadFont(TTF_Font *font, const char* filepath, int fontsize);
