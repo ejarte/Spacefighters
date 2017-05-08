@@ -6,10 +6,13 @@
 #include "state_handler.h"
 
 
+
+
 int interfaceState = 0;
 
-#define INT_STATE_OPTION_OPEN = 0
-#define INT_STATE_ABOUT = 1
+#define MAXLIV 10
+#define hpBarLength 17
+#define hpBarWidth 27
 
 
 bool button_option_pressed = false;
@@ -52,6 +55,9 @@ SDL_Texture *soundOFFImage;
 SDL_Texture *infoHotkeysImage;
 SDL_Rect infoHotkeys_rect;
 
+SDL_Texture *hpBarImage;
+SDL_Rect hpBar_rect;
+
 
 
 void initInterface()
@@ -67,6 +73,7 @@ void initInterface()
 	soundONImage = IMG_LoadTexture(renderer, "images/Interface/SoundOn.bmp");
 	soundOFFImage = IMG_LoadTexture(renderer, "images/Interface/SoundOff.bmp");
 	infoHotkeysImage = IMG_LoadTexture(renderer, "images/Interface/hotkeys-info.png");
+	hpBarImage = IMG_LoadTexture(renderer, "images/Interface/damageSym.bmp");
 	// Done
 	//printf("Interface Initialized...\n");
 }
@@ -84,6 +91,12 @@ void all_button_positions_Interface() {
 	chat_rect.h = 47;
 	chat_rect.x = 800;
 	chat_rect.y = 500;
+
+	//SDL_Rect button_hpBar;    // chat hpBar
+	hpBar_rect.w = hpBarLength;
+	hpBar_rect.h = hpBarWidth;
+	hpBar_rect.x = 20;
+	hpBar_rect.y = 600;
 
 	//SDL_Rect button_Back;    //  Back button
 	backButton_rect.w = 122;
@@ -148,26 +161,48 @@ void mouse_on_sound()
 	}
 }
 
-/*void rendererInterface()
-{
-SDL_RenderClear(rend);
-SDL_RenderCopy(rend, texBakgrund, NULL, &bakgrund);
-
-for (int i = 0; i < 5; ++i) {
-SDL_Rect rect;
-rect.x = dest.x + i*rect.w;
-rect.y = dest.y;
-rect.w = dest.w;
-rect.h = dest.h;
-SDL_RenderCopy(rend, tex, NULL, &rect);
-}
-SDL_RenderCopy(rend, tex, NULL, &dest);
-}
-*/
 
 int gameState0() {
+
+	chat_rect.w = 122;
+	chat_rect.h = 47;
+	chat_rect.x = getWindowWidth() - 122-6;
+	chat_rect.y = getWindowHeight()-47-6;
+
+	
 	SDL_RenderCopy(renderer, optionImage, NULL, &option_rect);
 	SDL_RenderCopy(renderer, chatImage, NULL, &chat_rect);
+
+	hpBar_rect.w = hpBarWidth;
+	hpBar_rect.h = hpBarLength;
+	hpBar_rect.x = 20;
+	hpBar_rect.y = getWindowHeight() - hpBarLength-6;
+
+	double damage_amount = 0.6;      //  Damage amount
+	if (0 <= damage_amount ||damage_amount <= 1)
+	{
+		int lifeLength= (double)damage_amount * 10.0;
+		printf("%d\n", lifeLength);
+
+		for (int i = 0; i <lifeLength; ++i) {                        // Hpbar 
+			SDL_Rect rect;
+			rect.x = hpBar_rect.x + i*rect.w;
+			rect.y = hpBar_rect.y;
+			rect.w = hpBar_rect.w;
+			rect.h = hpBar_rect.h;
+			SDL_RenderCopy(renderer, hpBarImage, NULL, &rect);
+		}
+		//SDL_RenderCopy(renderer, hpBarImage, NULL, &hpBar_rect);
+	}
+	
+
+	/*int hpBarMaxlength = 10;
+	if (hpBarMaxlength >MAXLIV)
+	{
+		hpBarMaxlength = MAXLIV;
+	}*/
+
+	
 }
 
 int gameState1()
@@ -269,6 +304,12 @@ void runInterface() {
 
 			printf("CHAT BUTTON CLICKED.\n");
 		}
+
+		if (SDL_PointInRect(&point, &hpBar_rect) && mouseEventPressed(SDL_BUTTON_LEFT)) {
+
+			printf("HPBAR BUTTON CLICKED.\n");
+		}
+
 		if (SDL_PointInRect(&point, &soundON_rect) && mouseEventPressed(SDL_BUTTON_LEFT)) {
 			mouse_on_sound();
 			interfaceState = 4;
