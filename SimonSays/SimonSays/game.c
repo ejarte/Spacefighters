@@ -536,12 +536,28 @@ void game_update()
 		while (j != UNDEFINED) {
 			if (object_instersection(&object[i], &object[j])) {
 
+				// Projectile hits projectile
+				if (object[i].id_type == OBJ_TYPE_PROJECTILE && object[j].id_type == OBJ_TYPE_PROJECTILE) {
+					p = getPlayer(object[i].source_id);	// gets the player from the source 
+					dx = object[i].delta_x;
+					dy = object[i].delta_y;
+					angle = radiansToDegrees(pointToAngle(dx, dy));
+					world_createParticleExplosionAngled(object[i].center_x, object[i].center_y, angle, player[p].color);
+					p = getPlayer(object[j].source_id);	// gets the player from the source 
+					dx = object[i].delta_x;
+					dy = object[i].delta_y;
+					angle = radiansToDegrees(pointToAngle(dx, dy));
+					world_createParticleExplosionAngled(object[i].center_x, object[i].center_y, angle, player[p].color);
+					markForRemoval(i);
+					markForRemoval(j);
+				}
+
 				// Bouncing things
-				if (object[i].id_type != OBJ_TYPE_PROJECTILE && object[j].id_type != OBJ_TYPE_PROJECTILE && resolveCollisionSpaceshipPowerup(i, j, &i_item, &i_item) == false) {
+				else if (object[i].id_type != OBJ_TYPE_PROJECTILE && object[j].id_type != OBJ_TYPE_PROJECTILE && resolveCollisionSpaceshipPowerup(i, j, &i_item, &i_item) == false) {
 					object_calculateCollisionSpeed(&object[i], &object[j]);
 				}
 				// Projectile hits spaceship
-				if (resolveCollisionProjSpaceship(i, j, &i_projectile, &i_ship)) {
+				else if (resolveCollisionProjSpaceship(i, j, &i_projectile, &i_ship)) {
 					// Particle explosion on impact
 					dx = object[i_projectile].delta_x;
 					dy = object[i_projectile].delta_y;
@@ -580,7 +596,7 @@ void game_update()
 					markForRemoval(j);
 				}
 				// Spaceship picksup powerup
-				if (resolveCollisionSpaceshipPowerup(i, j, &i_ship, &i_power)) {
+				else if (resolveCollisionSpaceshipPowerup(i, j, &i_ship, &i_power)) {
 					markForRemoval(i_power);
 					if (object[i_power].power_id == POWER_SPEED) {
 						handleSpeedBoost(i_ship);
