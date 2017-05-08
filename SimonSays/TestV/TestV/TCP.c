@@ -35,14 +35,13 @@ int TCP()
 		if (client)
 		{
 			printf("%d\n", client);
-			scanf("%s", text);
+			printf("test\n");
+			//scanf("%s", text);
 			//here you can communitcate with the client
 			SDLNet_TCP_Send(client, text, strlen(text) + 1);
-			//SDLNet_TCP_Close(client);
-
-			//break;
-			
-		}
+			SDLNet_TCP_Close(client);
+			break;
+		}	
 		
 	}
 	SDLNet_TCP_Close(server);
