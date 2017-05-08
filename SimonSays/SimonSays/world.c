@@ -17,6 +17,10 @@ struct Animation anim_asteroid_gray[8];
 struct Animation anim_spaceship[4];
 struct Animation anim_none;
 struct Sprite spr_fire_red;
+struct Sprite spr_fire_blue;
+struct Sprite spr_fire_green;
+struct Sprite spr_fire_orange;
+
 void world_init()
 {
 	sprite_setup(&spr_spaceship_1[0], renderer, "images/spaceships/playerShip1_red.png", 1, 1, createColor(0, 0, 0, 0));
@@ -25,6 +29,9 @@ void world_init()
 	sprite_setup(&spr_spaceship_1[3], renderer, "images/spaceships/playerShip1_orange.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_asteroid_gray, renderer, "images/asteroid_01.png", 8, 8, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_fire_red, renderer, "images/projectiles/player_fire.bmp", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_fire_blue, renderer, "images/projectiles/player_fire_blue.png", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_fire_green, renderer, "images/projectiles/player_fire_green.png", 1, 1, createColor(0, 0, 0, 0));
+	sprite_setup(&spr_fire_orange, renderer, "images/projectiles/player_fire_orange.png", 1, 1, createColor(0, 0, 0, 0));
 
 	sprite_setup(&spr_powerup_speed, renderer, "images/power-ups/powerupRed_bolt.png", 1, 1, createColor(0, 0, 0, 0));
 	sprite_setup(&spr_powerup_hp, renderer, "images/power-ups/pill_green.png", 1, 1, createColor(0, 0, 0, 0));
@@ -123,13 +130,13 @@ void spawnNormalProjectile(struct Object* source, int color)
 		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
 	}
 	else if (color == PL_COLOR_BLUE) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_blue, &anim_none);
 	}
 	else if (color == PL_COLOR_ORANGE) {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_orange, &anim_none);
 	}
 	else {
-		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_red, &anim_none);
+		object_setup(&object[i], i, OBJ_TYPE_PROJECTILE, p.x, p.y, w, h, 0.0, 0.0, &spr_fire_green, &anim_none);
 	}
 	object[i].source_id = source->id_index;
 	object[i].delta_x = dx;
