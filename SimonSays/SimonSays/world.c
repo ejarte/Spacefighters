@@ -54,7 +54,12 @@ void world_init()
 		}
 	}
 	// Blinking mine animation
-	animation_setup(&anim_mine, 2, 1, 40);
+	animation_setup(&anim_mine, 2, 1, 10);
+	for (int r = 0; r < 1; r++) {
+		for (int c = 0; c < 2; c++) {
+			animation_addFrameColRow(&anim_explosion_1, c, r);
+		}
+	}
 	animation_addFrameColRow(&anim_mine, 0, 0);
 	animation_addFrameColRow(&anim_mine, 1, 0);
 
