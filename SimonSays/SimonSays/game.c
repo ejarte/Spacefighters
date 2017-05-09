@@ -353,6 +353,7 @@ void handleSpeedBoost(int ship) {
 	player[p].speed_active = true;
 	player[p].rune_speed_timestamp = time;
 	printf("player %d got a speed boost! @time: %d\n", getPlayer(ship), time);
+	sound_powerup_speed();			//speed pickup sound
 }
 
 void disableSpeedBoost(int p) 
@@ -370,6 +371,7 @@ void handleLifePickup(int ship)
 	if (object[ship].hp > LIFE_SPACESHIP)
 		object[ship].hp = LIFE_SPACESHIP;
 	printf("player %d recieved %d life back (%d) @time: %d\n", p, POWER_LIFE_ADDED, object[ship].hp, SDL_GetTicks());
+	sound_powerup_hp();				//hp pickup sound
 }
 
 void handleAttack_2_Pickup(int ship) 
@@ -379,6 +381,7 @@ void handleAttack_2_Pickup(int ship)
 	player[p].current_attack_type = ATK_TYPE_2;
 	player[p].rune_atk_timestamp = time;
 	printf("player %d aquired attack type (%d) @time: %d\n", p, 2, time);
+	sound_powerup_atk2();			//atk2 pickup sound
 }
 
 void handleAttack_3_Pickup(int ship)
@@ -388,6 +391,7 @@ void handleAttack_3_Pickup(int ship)
 	player[p].current_attack_type = ATK_TYPE_3;
 	player[p].rune_atk_timestamp = time;
 	printf("player %d aquired attack type (%d) @time: %d\n", p, 3, time);
+	sound_powerup_atk3();			//atk3 pickup sound
 }
 
 void handleAttackReset(int p)
@@ -423,15 +427,27 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 		printf("%s took his own life.\n", player[victim]);
 		sound_quake_suicide();									
 	}
-	//play sound effects here maybe, killstreak, doublekill, and so on.
 	if (player[killer].killstreak_tot == 2)					//doublekill sound
-	{
 		sound_quake_doublekill();
-	}
-	if (player[killer].kills == 3)					//flawless victory = kill all three oponents
-	{
+	if (player[killer].killstreak_tot == 3)					//multi kill, kom på att det inte är nödvändigt här? med bara 4 players
+		sound_quake_multikill();																		
+	if (player[killer].killstreak_tot == 3)					//flawless victory = kill all three oponents
 		sound_quake_flawlessVictory();
+
+	if (player[killer].killstreak_tot == 1)	//first blood, ful kod... 
+	{
+		if(player[killer].killstreak_tot == 1 && player[1].killstreak_tot == 0 && player[2].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+			sound_quake_firstblood();
+		else if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[2].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+			sound_quake_firstblood();
+		else if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[1].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+			sound_quake_firstblood();
+		else if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[1].killstreak_tot == 0 && player[2].killstreak_tot == 0)
+			sound_quake_firstblood();
 	}
+																				
+
+
 }
 
 
@@ -533,14 +549,14 @@ void game_update()
 					markForRemoval(i);
 					markForRemoval(j);
 				}
-				// Spaceship picksup powerup
+				// Spaceship pickup powerup
 				if (resolveCollisionSpaceshipPowerup(i, j, &i_ship, &i_power)) {
 					markForRemoval(i_power);
 					if (object[i_power].power_id == POWER_SPEED) {
-						handleSpeedBoost(i_ship);
+						handleSpeedBoost(i_ship);					
 					}
 					else if (object[i_power].power_id == POWER_HP) {
-						handleLifePickup(i_ship);
+						handleLifePickup(i_ship);						
 					}
 					else if (object[i_power].power_id == POWER_ATK_2) {
 						handleAttack_2_Pickup(i_ship);
@@ -548,6 +564,8 @@ void game_update()
 					else if (object[i_power].power_id == POWER_ATK_3) {
 						handleAttack_2_Pickup(i_ship);
 					}
+
+
 				}
 
 				// Spaceship and asteroid collide
