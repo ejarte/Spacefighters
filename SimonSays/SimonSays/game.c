@@ -222,14 +222,18 @@ void game_events()
 
 
 		if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
+			int projType;
 			if (player[client_player_num].current_attack_type == ATK_TYPE_2) {
 				spawnShotgunProjectiles(player[client_player_num].spaceship, player[client_player_num].color);
+				sound_projectile(projType = 1);			//shotgun sound
 			}
 			else if (player[client_player_num].current_attack_type == ATK_TYPE_3) {
 				spawnMineProjectiles(player[client_player_num].spaceship, player[client_player_num].color);
+				sound_projectile(projType = 2);			//mine placement sound
 			}
 			else {
 				spawnNormalProjectile(player[client_player_num].spaceship, player[client_player_num].color);
+				sound_projectile(projType = 0);			//normal laser
 			}
 			player[client_player_num].attack_timestamp = time;
 		}
@@ -417,6 +421,7 @@ void handleSpeedBoost(int ship) {
 	player[p].speed_active = true;
 	player[p].rune_speed_timestamp = time;
 	printf("player %d got a speed boost! @time: %d\n", getPlayer(ship), time);
+	sound_powerup_speed();			//speed pickup sound
 }
 
 void disableSpeedBoost(int p)
@@ -434,6 +439,7 @@ void handleLifePickup(int ship)
 	if (object[ship].hp > LIFE_SPACESHIP)
 		object[ship].hp = LIFE_SPACESHIP;
 	printf("player %d recieved %d life back (%d) @time: %d\n", p, POWER_LIFE_ADDED, object[ship].hp, SDL_GetTicks());
+	sound_powerup_hp();				//hp pickup sound
 }
 
 void handleAttack_2_Pickup(int ship)
@@ -443,6 +449,7 @@ void handleAttack_2_Pickup(int ship)
 	player[p].current_attack_type = ATK_TYPE_2;
 	player[p].rune_atk_timestamp = time;
 	printf("player %d aquired attack type (%d) @time: %d\n", p, 2, time);
+	sound_powerup_atk2();			//atk2 pickup sound
 }
 
 void handleAttack_3_Pickup(int ship)
@@ -452,6 +459,7 @@ void handleAttack_3_Pickup(int ship)
 	player[p].current_attack_type = ATK_TYPE_3;
 	player[p].rune_atk_timestamp = time;
 	printf("player %d aquired attack type (%d) @time: %d\n", p, 3, time);
+	sound_powerup_atk3();			//atk3 pickup sound
 }
 
 void handleAttackReset(int p)
@@ -484,6 +492,35 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 		printf("%s killed %s\n", player[killer].name, player[victim].name);
 	if (killer == victim) {
 		printf("%s took his own life.\n", player[victim]);
+		sound_quake_suicide();
+	}
+	if (player[killer].killstreak_tot == 2)					//doublekill sound
+		sound_quake_doublekill();
+	if (player[killer].killstreak_tot == 3)					//multi kill, kom på att det inte är nödvändigt här? med bara 4 players
+		sound_quake_multikill();
+	if (player[killer].killstreak_tot == 3)					//flawless victory = kill all three oponents
+		sound_quake_flawlessVictory();
+
+	//first blood
+	if (killer == 0)
+	{
+		if (player[killer].killstreak_tot == 1 && player[1].killstreak_tot == 0 && player[2].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+			sound_quake_firstblood();
+	}
+	else if (killer == 1)
+	{
+		if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[2].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+		sound_quake_firstblood();
+	}
+	else if (killer == 2)
+	{
+		if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[1].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+			sound_quake_firstblood();
+	}
+	else if (killer == 3)
+	{
+		if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[1].killstreak_tot == 0 && player[2].killstreak_tot == 0)
+			sound_quake_firstblood();
 	}
 }
 
