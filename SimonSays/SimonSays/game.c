@@ -504,22 +504,22 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 	//first blood
 	if (killer == 0)
 	{
-		if (player[killer].killstreak_tot == 1 && player[1].killstreak_tot == 0 && player[2].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+		if (player[killer].kills == 1 && player[1].kills == 0 && player[2].kills == 0 && player[3].kills == 0)
 			sound_quake_firstblood();
 	}
 	else if (killer == 1)
 	{
-		if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[2].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+		if (player[killer].kills == 1 && player[0].kills == 0 && player[2].kills == 0 && player[3].kills == 0)
 		sound_quake_firstblood();
 	}
 	else if (killer == 2)
 	{
-		if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[1].killstreak_tot == 0 && player[3].killstreak_tot == 0)
+		if (player[killer].kills == 1 && player[0].kills == 0 && player[1].kills == 0 && player[3].kills == 0)
 			sound_quake_firstblood();
 	}
 	else if (killer == 3)
 	{
-		if (player[killer].killstreak_tot == 1 && player[0].killstreak_tot == 0 && player[1].killstreak_tot == 0 && player[2].killstreak_tot == 0)
+		if (player[killer].kills == 1 && player[0].kills == 0 && player[1].kills == 0 && player[2].kills == 0)
 			sound_quake_firstblood();
 	}
 }
