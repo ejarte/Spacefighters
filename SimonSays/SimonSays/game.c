@@ -38,6 +38,8 @@ void game_init()
 	stars_rect.x = stars_rect.y = 0;
 	stars_rect.w = stars_rect.h = 800;
 
+	sound_game_music();						//game music
+
 	world_init();
 	object_init();
 	init_text_messages();
