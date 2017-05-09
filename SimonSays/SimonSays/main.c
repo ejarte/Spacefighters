@@ -43,8 +43,8 @@ int main(int argc, char* args[])
 	//playMusic("audio/music/SPACE.mp3", -1);
 
 	bool run = true;
-	//setNextState(STATE_MAIN_MENU);
-	setNextState(STATE_GAME_RUNNING);
+	setNextState(STATE_MAIN_MENU);
+	//setNextState(STATE_GAME_RUNNING);
 	
 	int startTime;
 	const int frameRate = 30;				//Set desired frame rate per second
