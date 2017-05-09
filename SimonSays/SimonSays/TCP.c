@@ -8,7 +8,12 @@
 #include "game.h"
 #include "definition.h"
 
-int connect()
+void sendMessage()
+{
+
+}
+
+int connect(int currentID)
 {
 	return; // Brandvägg
 

@@ -30,6 +30,22 @@ const char * intToString(int number)
 	return inputString;
 }
 
+void createDemon()
+{
+	SDL_Thread *TCPThread = NULL;
+	const char *TCPThreadReturnValue;
+	TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
+
+	if (NULL == TCPThread) {
+		printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+	}
+	else {
+		
+		printf("\nYouve created a demon");
+	}
+}
+
+
 
 int TCP()
 {
@@ -54,12 +70,10 @@ int TCP()
 		if (client)
 		{
 			printf("player id: %d\n", player_id);
-			printf("%d\n", client);
-			printf("test\n");
+			printf("client id: %d\n", client);
 			SDLNet_TCP_Send(client, &player_id, sizeof(player_id));
 			player_id++;
 			SDLNet_TCP_Close(client);
-			//SDLNet_TCP_Close(server);
 		}	
 		
 	}
