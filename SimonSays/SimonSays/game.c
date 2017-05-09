@@ -105,6 +105,7 @@ void game_init()
 	addPlayerEmoteMessageToDisplay(renderer, client_player_num, "connected.", MSG_DURATION);
 	addPlayerEmoteMessageToDisplay(renderer, client_player_num, "disconnected.", MSG_DURATION);
 
+
 	//interface_setup_label(&label_chat_msg, renderer, "|c00FF00AAHello!|r", font_roboto_black, createColor(255, 0, 0, 0), 200, 200, true);
 
 	interface_setup_label(&playerNameColored[0], renderer, player[0].name, font_roboto_black, createColor(0xFF, 0, 0, 0), 100, 100, true);
@@ -249,9 +250,14 @@ void game_events()
 			object_accelerateSpeedX(player[client_player_num].spaceship);
 		}
 		if (keyEventPressed(SDL_SCANCODE_C)) {
-			client_player_num++;
-			if (client_player_num == MAX_PLAYERS) {
-				client_player_num = 0;
+			int i = 0;
+			for (int i = 0; i < MAX_PLAYERS; i++) {
+				client_player_num++;
+				if (client_player_num == MAX_PLAYERS) {
+					client_player_num = 0;
+				}
+				if (player[client_player_num].alive)
+					break;
 			}
 		}
 		object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
@@ -480,7 +486,6 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 		printf("%s took his own life.\n", player[victim]);
 	}
 }
-
 
 void resolveProjectileCollision(int i, int j)
 {

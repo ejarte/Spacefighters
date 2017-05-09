@@ -77,7 +77,7 @@ void world_init()
 	*/
 
 	// Blinking mine animation
-	animation_setup(&anim_mine, 2, 1, 10);
+	animation_setup(&anim_mine, 2, 1, 6);
 	for (int r = 0; r < 1; r++) {
 		for (int c = 0; c < 2; c++) {
 			animation_addFrameColRow(&anim_explosion_1, c, r);
@@ -106,16 +106,28 @@ void world_spawnExplosionEffect(int x, int y, int w, int h)
 
 void world_spawnAsteroidExplosion(int x, int y)
 {
+	SDL_Thread* thread;
 	double angle, speed;
-	int life, size, newX, newY;
+	int life, size, newX, newY, dx, dy, i;
 	for (int i = 0; i < 300; i++) {
 		angle = rand() % 360;
 		speed = rand() % 3 + 1;
 		life = rand() % 30 + 30;
 		size = rand() % 2 + 2;
-		newX = rand() % 6 - 4 + x;
-		newY = rand() % 6 - 4 + y;
+		newX = rand() % 6 - 7 + x;
+		newY = rand() % 6 - 7 + y;
 		createParticle(newX, newY, size, size, life, angle, speed, sprite_getTexture(&spr_particle[4]));	
+	}
+
+	for (int j = 0; j < rand() % 20 + 10; j++) {
+		speed = rand() % 5 + 10;
+		angle = (double)(rand() % 360)*M_PI / 180;
+		dx = (double)speed * cos(angle);						// velocity vector
+		dy = (double)speed * sin(angle);
+		i = object_index();
+		object_setup(&object[i], i, OBJ_TYPE_EFFECT, x, y, spr_asteroid_gray.frame_w / 15, spr_asteroid_gray.frame_h / 15, rand() % 360, 0, &spr_asteroid_gray, &anim_asteroid_gray[rand() % 8]);
+		object[i].delta_x = dx;
+		object[i].delta_y = dy;
 	}
 }
 
