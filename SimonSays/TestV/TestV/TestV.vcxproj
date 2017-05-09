@@ -147,6 +147,7 @@
     <ClCompile Include="UDP.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="definitions.h" />
     <ClInclude Include="TCP.h" />
     <ClInclude Include="UDP.h" />
   </ItemGroup>

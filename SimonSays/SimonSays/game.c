@@ -16,8 +16,6 @@ SDL_Texture *starsImage;
 int free_obj_index[500];
 int free_obj_size;
 
-int client_player_num;
-
 // Temp
 SDL_Texture* texture_chat_box;
 TTF_Font* font_roboto_black;
@@ -79,6 +77,9 @@ void game_init()
 	player[3].sdl_color = createColor(0xFF, 0x78, 0x1C, 0);
 
 	// The recieved player id of this client
+	int testVar;
+	testVar = connect();
+	printf("mottaget spelarid: %d\n", testVar);
 	client_player_num = 0;
 
 	// Player 1
@@ -214,14 +215,14 @@ void game_events()
 
 			SDL_Thread *TCPThread = NULL;
 			const char *TCPThreadReturnValue;
-			//TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
+			TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
 
 			if (NULL == TCPThread) {
 				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
 			}
 			else {
-				//SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
-				//printf("\nThread returned value: %d", TCPThreadReturnValue);
+				SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
+				printf("\nThread returned value: %s", &TCPThreadReturnValue);
 			}
 			/*
 			char* text = malloc(sizeof(100));
