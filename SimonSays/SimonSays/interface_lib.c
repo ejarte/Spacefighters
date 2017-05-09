@@ -155,7 +155,7 @@ void appendInTextBox(struct TextBox* tb, char* msg, SDL_Renderer* rend)
 	surface = TTF_RenderText_Solid(tb->font, str, tb->color);
 	t = SDL_CreateTextureFromSurface(rend, surface);
 	SDL_QueryTexture(t, NULL, NULL, &w, &h);
-	if (tb->rect_box.w < w && tb->rect_box.h < h) {
+	if (tb->rect_box.w < w || tb->rect_box.h < h) {
 		printf("Error: Text did not fit inside the box\n");
 		SDL_DestroyTexture(t);
 	}
@@ -230,15 +230,19 @@ void interface_render_textbox(struct TextBox* tb, SDL_Renderer* r)
 {
 	if (tb->show == true) {
 		SDL_RenderCopy(r, tb->background, NULL, &tb->rect_box);
-		if (tb->selected && SDL_GetTicks() % 1200 < 600) {
-			SDL_RenderCopy(r, tb->texture_wo_cursor, NULL, &tb->rect_text_wo);
+		if (tb->selected) {
+			if (SDL_GetTicks() % 1200 < 600) {	// Interval of blinking cursor
+				SDL_RenderCopy(r, tb->texture_wo_cursor, NULL, &tb->rect_text_wo);
+			}
+			else {
+				SDL_RenderCopy(r, tb->texture_w_cursor, NULL, &tb->rect_text_w);
+			}
 		}
 		else {
-			SDL_RenderCopy(r, tb->texture_w_cursor, NULL, &tb->rect_text_w);
+			SDL_RenderCopy(r, tb->texture_wo_cursor, NULL, &tb->rect_text_w);
 		}
 	}
 }
-
 
 // void interface_setup_textbox(struct TextBox* tb, SDL_Texture* background_text, SDL_Renderer* rend, TTF_Font *f, SDL_Color c, SDL_Rect box)
 
@@ -254,7 +258,6 @@ void interface_setup_button(struct Button* btn, SDL_Renderer* rend, int x, int y
 	SDL_QueryTexture(btn->texture_unselected, NULL, NULL, &w, &h);
 	btn->rect_box.w = w;
 	btn->rect_box.h = h;
-	printf("%d %d\n", btn->rect_box.w, btn->rect_box.h);
 
 	SDL_Surface* surface = TTF_RenderText_Solid(font, text, text_color);
 	btn->texture_text = SDL_CreateTextureFromSurface(rend, surface);

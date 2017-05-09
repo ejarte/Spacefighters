@@ -120,6 +120,8 @@ void scoreBoard_renderer()
 		SDL_RenderCopy(renderer, digit[dig0], NULL, &scorePlayer_rect[0][1]);
 	}
 
+	dig1 = player[1].kills / 10;
+	dig0 = player[1].kills % 10;
 	if (player[1].kills > 9) {
 		SDL_RenderCopy(renderer, digit[dig1], NULL, &scorePlayer_rect[1][0]);
 		SDL_RenderCopy(renderer, digit[dig0], NULL, &scorePlayer_rect[1][1]);
@@ -128,6 +130,8 @@ void scoreBoard_renderer()
 		SDL_RenderCopy(renderer, digit[dig0], NULL, &scorePlayer_rect[1][1]);
 	}
 
+	dig1 = player[2].kills / 10;
+	dig0 = player[2].kills % 10;
 	if (player[2].kills > 9) {
 		SDL_RenderCopy(renderer, digit[dig1], NULL, &scorePlayer_rect[2][0]);
 		SDL_RenderCopy(renderer, digit[dig0], NULL, &scorePlayer_rect[2][1]);
@@ -136,6 +140,8 @@ void scoreBoard_renderer()
 		SDL_RenderCopy(renderer, digit[dig0], NULL, &scorePlayer_rect[2][1]);
 	}
 
+	dig1 = player[3].kills / 10;
+	dig0 = player[3].kills % 10;
 	if (player[3].kills > 9) {
 		SDL_RenderCopy(renderer, digit[dig1], NULL, &scorePlayer_rect[3][0]);
 		SDL_RenderCopy(renderer, digit[dig0], NULL, &scorePlayer_rect[3][1]);

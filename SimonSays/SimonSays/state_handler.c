@@ -10,6 +10,7 @@ void executeNextState()
 	switch (state_next) {
 		case STATE_GAME_RUNNING: game_execute(); break;
 		case STATE_MAIN_MENU: execute_introMenu(); break;
+		case STATE_NETWORK_MENU: execute_networkMenu();  break;
 		default: break;
 	}
 }

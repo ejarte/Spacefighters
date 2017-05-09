@@ -10,6 +10,8 @@
 
 int connect()
 {
+	return; // Brandvägg
+
 	IPaddress ip;
 	TCPsocket client;
 
