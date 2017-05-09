@@ -165,15 +165,12 @@ void mouse_on_sound()
 	}
 }
 
-
 int gameState0() {
 
 	chat_rect.w = 122;
 	chat_rect.h = 47;
 	chat_rect.x = getWindowWidth() - 122-6;
-	chat_rect.y = getWindowHeight()-47-6;
-
-	
+	chat_rect.y = getWindowHeight()-47-6;	
 	SDL_RenderCopy(renderer, optionImage, NULL, &option_rect);
 	SDL_RenderCopy(renderer, chatImage, NULL, &chat_rect);
 }

@@ -3,6 +3,8 @@
 #include "UDP.h"
 #include "interface_lib.h"
 #include "text_messages.h"
+#include "scoreBoard.h"
+
 
 // Background
 SDL_Rect background_rect;
@@ -134,6 +136,11 @@ void game_init()
 	// game menu
 	initInterface();
 	all_button_positions_Interface();
+
+	//scoreboard
+	init_scoreboard();
+	
+
 	// Debug variables
 	debug_show_collision_box = false;
 }
@@ -743,6 +750,7 @@ void game_render()
 	interface_render_label(&playerNameColored[2], renderer);
 	interface_render_label(&playerNameColored[3], renderer);
 	rendererInterface();
+	scoreBoard_renderer();
 
 	//
 	interface_renderPlayerHP((double) player[client_player_num].spaceship->hp / LIFE_SPACESHIP);
