@@ -5,14 +5,31 @@
 #include <string.h>
 
 #include "TCP.h"
+#include "game.h"
+#include "definition.h"
 
-
-const char * TCP(int ipNr)
+int connect()
 {
-	//SDLNet_Init();
-	printf("P was pressed ");
-	printf("Client\n");
-	char text[100];
+	IPaddress ip;
+	TCPsocket client;
+
+	//write the ip of the host
+
+	SDLNet_ResolveHost(&ip, "127.0.0.1", 1234);
+	client = SDLNet_TCP_Open(&ip);
+
+	int player_id;
+	
+	SDLNet_TCP_Recv(client, &player_id, 100);
+
+	SDLNet_TCP_Close(client);
+	printf("player id: %d\n", player_id);
+
+	return player_id;
+}
+
+const char * TCP(int ipNr) //demon
+{
 	IPaddress ip;
 	TCPsocket client;
 
@@ -21,14 +38,19 @@ const char * TCP(int ipNr)
 	SDLNet_ResolveHost(&ip, ipNr, 1234);
 	client = SDLNet_TCP_Open(&ip);
 
+	char text[100];
 
-	SDLNet_TCP_Recv(client, text, 100);
-	printf("Text : %s\n", text);
-
-
+	while (1)
+	{
+		SDLNet_TCP_Recv(client, &text, 100);
+		printf(" heer");
+		if (text != NULL)
+		{
+			//addPlayerMessageToDisplay(renderer, client_player_num, text, MSG_DURATION);
+		}
+	}
 
 	SDLNet_TCP_Close(client);
-
 
 	return text;
 }

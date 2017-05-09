@@ -6,6 +6,12 @@
 #include "definition.h"
 #include "intro_menu.h"
 
+struct PlayerInfo
+{
+	int number;
+
+}; typedef Spelare;
+
 int main(int argc, char* args[])
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {

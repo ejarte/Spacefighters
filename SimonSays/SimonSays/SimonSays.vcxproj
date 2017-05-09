@@ -185,6 +185,7 @@
     <ClCompile Include="animation.c" />
     <ClCompile Include="audio.c" />
     <ClCompile Include="collision.c" />
+    <ClCompile Include="connect.c" />
     <ClCompile Include="events.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="game_interface.c" />

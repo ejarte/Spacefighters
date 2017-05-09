@@ -11,9 +11,9 @@ int main()
 	SDLNet_Init();	
 
 	//UDP();
+	player_id = 0;
+//	messageRec = False;
 	TCP();
-
-
 
 	SDLNet_Quit();
 	SDL_Quit();
