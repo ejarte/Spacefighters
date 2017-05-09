@@ -11,9 +11,7 @@ void initWindow()
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);	// Audio!!!
 	SDL_Surface* screen, *image;
 
-	//Skapar ett fönster i fullskärmläge
-	window = SDL_CreateWindow("SimonSays", 100, 100, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-	//window_col
+	window = SDL_CreateWindow("SimonSays", 100, 100, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
 
 	if (window == NULL) {
 		printf("Error, Window can't be desplayed\n");
