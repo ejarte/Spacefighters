@@ -11,7 +11,7 @@ int main()
 	SDLNet_Init();	
 
 	//UDP();
-	TCP();
+	UDP();
 
 
 

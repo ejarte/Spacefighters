@@ -1,11 +1,18 @@
 #include <SDL.h>
 #include <SDL_net.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <definition.h>
 #include <object.h>
+#include <math.h>
 
 #include "UDP.h"
+
+double my_round(double x, unsigned int digits) {
+	double fac = pow(10, 12);
+	return round(x*fac) / fac;
+}
 
 int UDP(int ipNr)
 {
@@ -36,7 +43,9 @@ int UDP(int ipNr)
 	//packet->address = ip;
 	
 	//packets->data = "%f",object[0].speed_x;
-	packets->data = 0;
+	
+	snprintf(hold,10,"%f", object[0].speed_x);
+	packets->data = hold;
 	while (1)
 	{
 		SDL_Delay(2000);
@@ -62,7 +71,7 @@ int UDP(int ipNr)
 		}
 	}
 
-
+		
 
 
 	SDLNet_UDP_Close(server);
