@@ -78,6 +78,9 @@
     <ClInclude Include="game_interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scoreBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -137,7 +140,7 @@
     <ClCompile Include="game_interface.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="connect.c">
+    <ClCompile Include="scoreBoard.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 
 #define UNDEFINED					9999
 #define OBJ_INDEX_HEAD				8888

@@ -1,12 +1,18 @@
+/*	Author(s):	Tiago Redaelli, Jacob Ekedahl
+	
+	File contains API to check if a object is inside world bounds, and creation of various objects and effects into the world.
+*/
+
 #include "world.h"
 #include "events.h"
+#include "graphics.h"
 
-#define AST_MAX_SCALE		5
-#define AST_MIN_SCALE		1
-#define AST_TOP_SPEED_XY	6
-#define AST_MIN_SPEED_XY	2
+#define AST_MAX_SCALE		5		// Asteroid max scale
+#define AST_MIN_SCALE		1		// Asteroid min scale
+#define AST_TOP_SPEED_XY	6		// Asteroid max projection speed
+#define AST_MIN_SPEED_XY	2		// Asteroid min projection speed
 
-struct Sprite spr_asteroid_gray;
+struct Sprite spr_asteroid_gray;			
 struct Sprite spr_spaceship_1[4];
 struct Sprite spr_powerup_speed;
 struct Sprite spr_powerup_hp;
@@ -77,10 +83,10 @@ void world_init()
 	*/
 
 	// Blinking mine animation
-	animation_setup(&anim_mine, 2, 1, 6);
+	animation_setup(&anim_mine, 2, 1, 14);
 	for (int r = 0; r < 1; r++) {
 		for (int c = 0; c < 2; c++) {
-			animation_addFrameColRow(&anim_explosion_1, c, r);
+			animation_addFrameColRow(&anim_mine, c, r);
 		}
 	}
 

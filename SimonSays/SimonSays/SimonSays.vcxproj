@@ -23,7 +23,7 @@
     <ProjectGuid>{77F2BD86-457B-4B8A-96C8-44A58F9F52B4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SimonSays</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -171,6 +171,7 @@
     <ClInclude Include="interface_lib.h" />
     <ClInclude Include="intro_menu.h" />
     <ClInclude Include="libraries.h" />
+    <ClInclude Include="scoreBoard.h" />
     <ClInclude Include="text_messages.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="particle.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="interface_lib.c" />
     <ClCompile Include="intro_menu.c" />
     <ClCompile Include="libraries.c" />
+    <ClCompile Include="scoreBoard.c" />
     <ClCompile Include="text_messages.c" />
     <ClCompile Include="object.c" />
     <ClCompile Include="particle.c" />

@@ -2,12 +2,15 @@
 #include <SDL_net.h>
 #include <stdio.h>
 #include <string.h>
+#include <definition.h>
+#include <object.h>
 
 #include "UDP.h"
 
 int UDP(int ipNr)
 {
 	printf("UDP\n");
+
 
 
 	IPaddress ip;
@@ -25,20 +28,27 @@ int UDP(int ipNr)
 	packets = SDLNet_AllocPacket(1024);
 	packetr = SDLNet_AllocPacket(1024);
 
+	char hold[100];
+	object[0].speed_x;
+
+	//printf("\n\n%d\n\n", hold[0]);
 
 	//packet->address = ip;
-	packets->data = "hej";
+	
+	//packets->data = "%f",object[0].speed_x;
+	packets->data = 0;
 	while (1)
 	{
-
+		SDL_Delay(2000);
 		//printf("%c", packets->data);
 		//detta skickar
 		packets->address.host = ip.host;	/* Set the destination host */
 		packets->address.port = ip.port;	/* And destination port */
 
-		packets->len = strlen((char *)packets->data) + 1;
+		//packets->len = strlen((char *)packets->data) + 1;
+		packets->len = sizeof(int) + 1;
 
-		SDLNet_UDP_Send(server, -1, packets); /* This sets the p->channel */
+		SDLNet_UDP_Send(server, -1, packets); 
 											  //detta är altså den som tar emot
 		if (SDLNet_UDP_Recv(server, packetr))
 		{

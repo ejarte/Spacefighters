@@ -1,6 +1,8 @@
 /*	Author(s):	Tiago Redaelli
 *	Modified:	14-04-2017
 *	Version:	0.02
+
+	Includes API for checking if a event occoured in the program
 */
 
 #include "events.h"
@@ -14,8 +16,8 @@
 #define TRIGGER_EVENT_MOUSE_RELEASED	4
 
 // Window dimensions
-int ev_window_w;
-int ev_window_h;
+//int ev_window_w;
+//int ev_window_h;
 
 // Event data encapsulation
 struct EventData {	
@@ -40,12 +42,12 @@ SDL_Point mouse_point;
 
 int getWindowWidth()
 {
-	return ev_window_w;
+	return screenW;
 }
 
 int getWindowHeight()
 {
-	return ev_window_h;
+	return screenH;
 }
 
 SDL_Point getMousePos()
@@ -95,6 +97,8 @@ void enableTextInput()
 	SDL_StartTextInput();
 }
 
+
+//	Returns a time stamp of when a button was pressed or released
 int getTimeStamp(int flag, SDL_Scancode sc)
 {
 	if (flag == STATE_RELEASED)
@@ -104,6 +108,7 @@ int getTimeStamp(int flag, SDL_Scancode sc)
 	else
 		printf("ERROR: Invalid time stamp flag in EventHandler.");
 }
+
 
 bool mouseEventHeld(SDL_Scancode sc) 
 {
@@ -171,7 +176,6 @@ void refreshEventHandler() {
 			case SDL_WINDOWEVENT: 
 				if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
 					resize();
-					SDL_GetWindowSize(window, &ev_window_w, &ev_window_h);
 				} break;
 			case SDL_MOUSEMOTION: mouse_motion_event = true;  break;
 				// Not yet implemented 
@@ -241,9 +245,6 @@ void refreshEventHandler() {
 
 void initEventHandler() 
 {
-	// Preset window width and height
-	SDL_GetWindowSize(window, &ev_window_w, &ev_window_h);
-
 
 	for (int i = 0; i < EV_MAX_SCANCODES; i++)
 	{
