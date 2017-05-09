@@ -11,7 +11,7 @@ int main()
 	SDLNet_Init();	
 
 	//UDP();
-	player_id = 0;
+	player_id = 1;
 //	messageRec = False;
 	TCP();
 
