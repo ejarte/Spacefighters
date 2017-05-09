@@ -32,6 +32,8 @@ Mix_Chunk *laser[4];	//för många??
 
 
 
+Mix_Music *gameMusic;				//game music?? 
+
 void initAudio()
 {
 	SDL_Init(SDL_INIT_AUDIO);
@@ -63,6 +65,8 @@ void initAudio()
 	laser[0] = Mix_LoadWAV("audio/sounds/projectiles/laserNormal.wav");				//normal laser pew
 	laser[1] = Mix_LoadWAV("audio/sounds/projectiles/laserShotgun1.wav");			//shotgun laser, maybe change sound
 	laser[2] = Mix_LoadWAV("audio/sounds/projectiles/minePlacement.wav");			//mine placement sound, maybe change sound?
+
+	gameMusic = Mix_LoadMUS("audio/music/SPACE.mp3");
 }
 
 void playMusic(char *filepath, int repeats)
@@ -141,5 +145,8 @@ void sound_projectile(int type)			//flerval??
 {
 		Mix_PlayChannel(-1, laser[type], 0);
 }
-
+void sound_game_music()
+{
+	Mix_PlayMusic(gameMusic, -1);
+}
 
