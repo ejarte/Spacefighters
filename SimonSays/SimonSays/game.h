@@ -14,3 +14,5 @@ void game_execute(); //den exekverar allt annat som skall göras, i vilken ordnin
 void game_events();
 void game_update();
 void game_render();
+
+int client_player_num;

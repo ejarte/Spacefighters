@@ -15,6 +15,14 @@ struct Plane plane;
 
 bool quit_intro_menu = false;
 
+/*
+//SDL_Texture* t2 = IMG_LoadTexture(renderer, "images/greensquare_light.bmp");
+//SDL_Texture* t3 = IMG_LoadTexture(renderer, "images/bluesquare_light.bmp");
+
+//interface_setup_button(&button, renderer, 400, 400, t, t2, t3, "Play", font_roboto_black, black);
+//button.state = BTN_STATE_SELECTED;
+*/
+
 //void interface_setup_plane(struct Plane* p, SDL_Texture* texture, int x, int y, int w, int h, bool show)
 void init_introMenu()
 {

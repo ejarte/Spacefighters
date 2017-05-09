@@ -11,9 +11,26 @@
 #include "SDL_net.h"
 
 #include "TCP.h"
+#include "definitions.h"
 
 
 //----------------------------------------------------------------------
+
+int stringToInt(const char * pString)
+{
+	int number;
+	number = atoi(pString);
+	return number;
+}
+
+const char * intToString(int number)
+{
+	char inputString[100];
+	itoa(inputString, number, 1);
+	return inputString;
+}
+
+
 int TCP()
 {
 	printf("TCP\n");
@@ -26,24 +43,28 @@ int TCP()
 	TCPsocket server = SDLNet_TCP_Open(&ip);
 	TCPsocket client;
 
-	char text[100] = "Hampus!\n";
-	
+	int number = 0;
+	player_id ++;
+
+	char text[100] = "";
 	
 	while (1)
 	{
 		client = SDLNet_TCP_Accept(server);
 		if (client)
 		{
+			printf("player id: %d\n", player_id);
 			printf("%d\n", client);
 			printf("test\n");
-			//scanf("%s", text);
-			//here you can communitcate with the client
-			SDLNet_TCP_Send(client, text, strlen(text) + 1);
+			SDLNet_TCP_Send(client, &player_id, sizeof(player_id));
 			SDLNet_TCP_Close(client);
-			break;
+			//SDLNet_TCP_Close(server);
 		}	
 		
 	}
+
+	//stänger ned kommunikationen när servern stängs ned
+	SDLNet_TCP_Close(client);
 	SDLNet_TCP_Close(server);
 	return 0;
 }
