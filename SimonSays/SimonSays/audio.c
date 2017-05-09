@@ -28,7 +28,9 @@ Mix_Chunk *powerupSpeed;
 Mix_Chunk *powerupHP;
 Mix_Chunk *powerupAtk2;
 Mix_Chunk *powerupAtk3;
-Mix_Chunk *laser[4];				//för många??
+Mix_Chunk *laser[4];	//för många??
+
+
 
 void initAudio()
 {
