@@ -44,7 +44,7 @@ int TCP()
 	TCPsocket client;
 
 	int number = 0;
-	player_id ++;
+
 
 	char text[100] = "";
 	
@@ -57,6 +57,7 @@ int TCP()
 			printf("%d\n", client);
 			printf("test\n");
 			SDLNet_TCP_Send(client, &player_id, sizeof(player_id));
+			player_id++;
 			SDLNet_TCP_Close(client);
 			//SDLNet_TCP_Close(server);
 		}	
