@@ -30,6 +30,9 @@ struct TextBox chat_box;
 
 SDL_Texture* t;
 
+struct Button button;
+
+
 
 void game_init()
 {
@@ -126,10 +129,23 @@ void game_init()
 
 	//printf("lol? %d %d\n", *object[4].ptr_center_x, *object[4].ptr_center_y);
 
-	t = IMG_LoadTexture(renderer, "images/greensquare.bmp");
-	interface_setup_textbox(&chat_box, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(200, 200, 200, 25), 10, 0);
+	t = IMG_LoadTexture(renderer, "images/textbox_square.bmp");
+	interface_setup_textbox(&chat_box, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(screenW/2 - 50, screenH - 40, 200, 25), 10, 0);
 	chat_box.selected = true;
 
+	//SDL_Color black = { 0, 255, 255, 0 };
+	// Button Test
+
+	//void interface_setup_button(struct Button* btn, SDL_Renderer* rend, int x, int y, SDL_Texture* txt_mouse_over, SDL_Texture* txt_selected, SDL_Texture* txt_unselected, char* text, TTF_Font* font, SDL_Color text_color)
+	//btn_test
+
+	//SDL_Texture* t2 = IMG_LoadTexture(renderer, "images/greensquare_light.bmp");
+	//SDL_Texture* t3 = IMG_LoadTexture(renderer, "images/bluesquare_light.bmp");
+
+	//interface_setup_button(&button, renderer, 400, 400, t, t2, t3, "Play", font_roboto_black, black);
+	//button.state = BTN_STATE_SELECTED;
+
+	addMessageToDisplay(renderer, "Ghost: Hello noobs!", MSG_DURATION);
 
 	//appendInTextBox(&tb, "hello!", renderer);
 	//appendInTextBox(&tb, "there!", renderer);
@@ -751,6 +767,10 @@ void game_render()
 	interface_render_label(&playerNameColored[3], renderer);
 	rendererInterface();
 	scoreBoard_renderer();
+
+	// Button test
+
+	interface_render_button(&button, renderer);
 
 	//
 	interface_renderPlayerHP((double) player[client_player_num].spaceship->hp / LIFE_SPACESHIP);

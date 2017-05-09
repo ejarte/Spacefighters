@@ -29,7 +29,6 @@ void init_text_messages()
 
 void addPlayerEmoteMessageToDisplay(SDL_Renderer* rend, int p_id, char* msg, int time_seconds)
 {
-	printf("game msg\n");
 	for (int i = current_lines; i > 0; i--) {
 		line[i] = line[i - 1];
 		for (int j = 0; j < line[i].size; j++) {
@@ -40,6 +39,24 @@ void addPlayerEmoteMessageToDisplay(SDL_Renderer* rend, int p_id, char* msg, int
 	interface_setup_label(&line[0].label[1], rend, msg, font_roboto_black, white, 50 + line[0].label[0].rect.w + dist_k, getWindowHeight() - 100, true);
 	line[0].end_time = SDL_GetTicks() + time_seconds * 1000;
 	line[0].size = 2;
+	current_lines++;
+}
+
+void addMessageToDisplay(SDL_Renderer* rend, char* msg, int time_seconds)
+{
+	if (strlen(msg) > MSG_MAX_CHARS) {
+		msg[MSG_MAX_CHARS] = '\0';
+	}
+	for (int i = current_lines; i > 0; i--) {
+		line[i] = line[i - 1];
+		for (int j = 0; j < line[i].size; j++) {
+			line[i].label[j].rect.y -= h;
+		}
+	}
+	SDL_Color white = { 255, 255, 255, 0 };
+	interface_setup_label(&line[0].label[0], rend, msg, font_roboto_black, white, 50, getWindowHeight() - 100, true);
+	line[0].end_time = SDL_GetTicks() + time_seconds * 1000;
+	line[0].size = 1;
 	current_lines++;
 }
 

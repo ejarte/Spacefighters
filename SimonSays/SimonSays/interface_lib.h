@@ -1,7 +1,7 @@
 #pragma once
 #include "libraries.h"
 
-#define MAX_CH_TEXT_BOX 50
+#define MAX_CH_TEXT_BOX 50		// maximum number of characters in a text box
 
 struct Plane {
 	SDL_Texture* texture;
@@ -35,6 +35,21 @@ struct TextBox {
 	int size;
 };
 
+#define BTN_STATE_MOUSE_OVER			0
+#define BTN_STATE_SELECTED				1
+#define BTN_STATE_UNSELECTED			2
+
+struct Button {
+	SDL_Texture* texture_mouse_over;
+	SDL_Texture* texture_selected;
+	SDL_Texture* texture_unselected;
+	SDL_Texture* texture_text;
+	SDL_Rect rect_box;
+	SDL_Rect rect_text;
+	int state;
+	bool show;
+};
+
 // Plane
 void interface_setup_plane(struct Plane* p, SDL_Texture* texture, int x, int y, int w, int h, bool show);
 void interface_render_plane(struct Plane* p, SDL_Renderer* r);
@@ -50,3 +65,6 @@ void appendInTextBox(struct TextBox* tb, char* msg, SDL_Renderer* rend);
 void interface_render_textbox(struct TextBox* tb, SDL_Renderer* r);
 void clearTextBox(struct TextBox* tb, SDL_Renderer* rend);
 void removeLastFromTextBox(struct TextBox* tb, SDL_Renderer* r);
+
+void interface_setup_button(struct Button* btn, SDL_Renderer* rend, int x, int y, SDL_Texture* txt_mouse_over, SDL_Texture* txt_selected, SDL_Texture* txt_unselected, char* text, TTF_Font* font, SDL_Color text_color);
+void interface_render_button(struct Button* btn, SDL_Renderer* rend);
