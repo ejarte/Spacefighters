@@ -15,6 +15,7 @@
 #include "graphics.h"
 #include "interface_lib.h"
 #include "events.h"
+#include "game.h"
 
 TTF_Font* kenvector_future;
 TTF_Font* kenvector_future_thin;
@@ -253,6 +254,14 @@ int event_networkMenu()
 		btn_connect.state = BTN_STATE_MOUSE_OVER;
 		if (left_click) {
 			// Testa att connecta här
+
+			// The recieved player id of this client
+			client_player_num = 0; //nollställer clientnum så att klienten får en färsk vid connection
+			client_player_num = connect(client_player_num);
+			printf("mottaget spelarid: %d\n", client_player_num);
+			if (client_player_num > 3 || client_player_num < 0) //om fler än 4 spelare försöker connecta, stäng ned programmet för den som connectar
+				exit(1);
+
 			SDL_Delay(500);
 			printf("try to connect here... IP %s and PORT: %s.\n", tb_ip.text, tb_port.text);
 			
