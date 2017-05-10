@@ -1,9 +1,7 @@
-
 //----------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 
 //----------------------------------------------------------------------
 #define SDL_MAIN_HANDLED
@@ -41,8 +39,6 @@ void createDemon()
 		printf("\nYouve created a demon");
 	}
 }
-
-
 
 int TCP()
 {

@@ -1,3 +1,11 @@
+
+/*	Author(s):	Farhad Salehi 
+*	Modified:	09-05-2017
+*	Version:	0.
+
+*/
+
+
 #include "libraries.h"
 #include "graphics.h"
 #include "events.h"
@@ -27,9 +35,9 @@ void init_scoreboard(){
 	font_roboto_black = TTF_OpenFont("fonts/roboto/Roboto-Black.ttf", 12);
 
 	interface_setup_label(&playerNameColored[0], renderer, player[0].name, font_roboto_black, createColor(0xFF, 0, 0, 0), getWindowWidth()-150, 0, true);
-   interface_setup_label(&playerNameColored[1], renderer, player[1].name, font_roboto_black, createColor(0, 0, 0xFF, 0), getWindowWidth()-150, getWindowHeight()-675, true);
-   interface_setup_label(&playerNameColored[2], renderer, player[2].name, font_roboto_black, createColor(0, 0xFF, 0, 0), getWindowWidth()-150, getWindowHeight()-650, true);
-   interface_setup_label(&playerNameColored[3], renderer, player[3].name, font_roboto_black, createColor(0xFF, 0x78, 0x1C, 0), getWindowWidth()-150, getWindowHeight()-625, true);
+   interface_setup_label(&playerNameColored[1], renderer, player[1].name, font_roboto_black, createColor(0, 0, 0xFF, 0), getWindowWidth()-150, getWindowHeight()-700, true);
+   interface_setup_label(&playerNameColored[2], renderer, player[2].name, font_roboto_black, createColor(0, 0xFF, 0, 0), getWindowWidth()-150, getWindowHeight()-677, true);
+   interface_setup_label(&playerNameColored[3], renderer, player[3].name, font_roboto_black, createColor(0xFF, 0x78, 0x1C, 0), getWindowWidth()-150, getWindowHeight()-654, true);
 
    SDL_Surface* surface;
    SDL_Color color = { 255,255,255,0 };

@@ -77,16 +77,16 @@ void init_introMenu()
 	mainmenu_hud.rect.y = screenH / 2 - h / 2;
 
 	// Play Button
-	t_btn_green_active = IMG_LoadTexture(renderer, "images/Interface/uipaint/btn_green_active.bmp");
-	t_btn_green_highlighted = IMG_LoadTexture(renderer, "images/Interface/uipaint/btn_green_highlighted.bmp");
+	t_btn_green_active = IMG_LoadTexture(renderer, "images/Interface/button_introMeny.png");
+	t_btn_green_highlighted = IMG_LoadTexture(renderer, "images/Interface/button_introMeny.png");
 	x = mainmenu_hud.rect.x + 9;
 	y = mainmenu_hud.rect.y + 21;
 	interface_setup_button(&btn_play, renderer, x, y, t_btn_green_highlighted, t_btn_green_highlighted, t_btn_green_active, "Play", kenvector_future, white);
 	btn_play.state = BTN_STATE_UNSELECTED;
 
 	// Exit Button
-	t_btn_red_active = IMG_LoadTexture(renderer, "images/Interface/uipaint/btn_red_active.bmp");
-	t_btn_red_highlighted = IMG_LoadTexture(renderer, "images/Interface/uipaint/btn_red_highlighted.bmp");
+	t_btn_red_active = IMG_LoadTexture(renderer, "images/Interface/button_introMeny.png");
+	t_btn_red_highlighted = IMG_LoadTexture(renderer, "images/Interface/button_introMeny.png");
 	x = mainmenu_hud.rect.x + 9;
 	y = mainmenu_hud.rect.y + 93;
 	interface_setup_button(&btn_exit, renderer, x, y, t_btn_red_highlighted, t_btn_red_highlighted, t_btn_red_active, "Exit", kenvector_future, white);
