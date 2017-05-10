@@ -1,11 +1,18 @@
 #include <SDL.h>
 #include <SDL_net.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <definition.h>
 #include <object.h>
+#include <math.h>
 
 #include "UDP.h"
+
+double my_round(double x, unsigned int digits) {
+	double fac = pow(10, 12);
+	return round(x*fac) / fac;
+}
 
 int UDP(int ipNr)
 {
@@ -28,15 +35,21 @@ int UDP(int ipNr)
 	packets = SDLNet_AllocPacket(1024);
 	packetr = SDLNet_AllocPacket(1024);
 
-	char hold[100];
-	object[0].speed_x;
+	char hold[1000];
 
 	//printf("\n\n%d\n\n", hold[0]);
 
 	//packet->address = ip;
 	
 	//packets->data = "%f",object[0].speed_x;
-	packets->data = 0;
+
+	
+	sprintf(hold,"%d %d %d",(int)object[1].speed_x , (int)object[1].speed_y, (int)object[1].facing);
+	printf(hold);
+	packets->data = hold;
+
+
+	//printf("\n%f\n", object[0].speed_x);
 	while (1)
 	{
 		SDL_Delay(2000);
@@ -59,10 +72,13 @@ int UDP(int ipNr)
 			printf("\tMaxlen:  %d\n", packetr->maxlen);
 			printf("\tStatus:  %d\n", packetr->status);
 			printf("\tAddress: %x %x\n", packetr->address.host, packetr->address.port);
+
+			sscanf(packetr->data, "%f %f %f", &object[1].speed_x, &object[1].speed_y, &object[1].facing);
+			printf("\n%f \n%f \n%f\n", object[1].speed_x, object[1].speed_y, object[1].facing);
 		}
 	}
 
-
+		
 
 
 	SDLNet_UDP_Close(server);
