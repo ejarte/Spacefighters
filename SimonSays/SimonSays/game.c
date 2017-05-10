@@ -32,7 +32,24 @@ struct Button button;
 
 bool roundActive;
 
+struct SpawnOdds {
+	int timestamp;		// timestamp for when it should generate next roll
+	int minAmount;		// Min generated amount per roll 
+	int maxAmount;		// Max generated amount per roll
+	int minInterval;	// Min time until next roll in seconds
+	int maxInterval;	// Max time until next roll in seconds
+};
 
+struct SpawnOdds spawnOdds_powerup[NUM_OF_POWERS];
+struct SpawnOdds spawnOdds_asteroid;
+
+void setup_spawnOdds(struct SpawnOdds* so, int minAmount, int maxAmount, int minInterval, int maxInterval)
+{
+	so->minAmount = minAmount;
+	so->maxAmount = maxAmount;
+	so->minInterval = minInterval;
+	so->maxInterval = maxInterval;
+}
 
 void game_init()
 {
@@ -122,6 +139,13 @@ void game_init()
 	roundActive = false;
 
 
+	
+	setup_spawnOdds(&spawnOdds_powerup[POWER_SPEED], 1, 3, 7, 20);
+	setup_spawnOdds(&spawnOdds_powerup[POWER_ATK_2], 1, 3, 7, 20);
+	setup_spawnOdds(&spawnOdds_powerup[POWER_ATK_3], 1, 3, 7, 20);
+	setup_spawnOdds(&spawnOdds_powerup[POWER_HP], 2, 6, 7, 20);
+	setup_spawnOdds(&spawnOdds_asteroid, 1, 5, 3, 12);
+
 	// Debug variables
 	debug_show_collision_box = false;
 }
@@ -178,11 +202,7 @@ void game_events()
 
 	if (isTextEventEnabled() == false) {
 
-
 		runInterface();
-
-
-
 
 		if (keyEventPressed(SDL_SCANCODE_P)) {
 
@@ -260,13 +280,6 @@ void game_events()
 			}
 		}
 		object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
-		// Testing 
-		if (keyEventPressed(SDL_SCANCODE_Z)) {
-			world_spawnEnteringAsteroid();
-		}
-		if (keyEventPressed(SDL_SCANCODE_X)) {
-			spawnPowerUpType(rand() % NUM_OF_POWERS);
-		}
 	}
 }
 
@@ -478,8 +491,14 @@ void handleShipDeath(int ship)
 	playerNameColored[p].show = false;
 }
 
+void set_spawnOddsNextRollTime(struct SpawnOdds* so)
+{
+	so->timestamp = SDL_GetTicks() + (rand() % (so->maxInterval - so->minInterval) + so->minInterval) * 1000;	// When the next roll will occour
+}
+
 void startRound()
 {
+	printf("Round started...\n");
 	bool used[MAX_PLAYERS] = { false, false, false, false };
 	bool foundSpawn;
 	int rdm;
@@ -513,6 +532,11 @@ void startRound()
 		}
 	}
 	roundActive = true;
+	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_SPEED]);
+	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_2]);
+	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_3]);
+	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_HP]);
+	set_spawnOddsNextRollTime(&spawnOdds_asteroid);
 }
 
 bool endRoundCondition()
@@ -528,20 +552,67 @@ bool endRoundCondition()
 void endRound()
 {	
 	int i;
-	printf("round ended...\n");
+	printf("Round ended...\n");
 	for (int p = 0; p < MAX_PLAYERS; p++) {
+		if (player[p].alive) {
+			printf("%s won the round...\n", player[p].name);
+		}
 		player[p].alive = false;
 		player[p].mobile = false;
 		player[p].spaceship->show = false;
 	}
 	roundActive = false;
 	i = objHead;
-	while (i != UNDEFINED) {
-		if (object[i].id_type != OBJ_TYPE_SPACESHIP) {
+	while (i != UNDEFINED) {										
+		if (object[i].id_type != OBJ_TYPE_SPACESHIP) {		// Remove all none spaceship objects from the world
 			markForRemoval(i);
-			printf("%d marked for removal\n");
 		}
 		i = object[i].next;
+	}
+}
+
+int odds_getNum(struct SpawnOdds* so)
+{
+	return rand() % (so->maxAmount - so->minAmount) + so->minAmount;
+}
+
+void generateNeutralObjects()
+{
+	int max;
+	if (spawnOdds_powerup[POWER_SPEED].timestamp <= curTime) {
+		set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_SPEED]);
+		max = odds_getNum(&spawnOdds_powerup[POWER_SPEED]);
+		for (int i = 0; i < max; i++) {
+			spawnPowerUpType(POWER_SPEED);
+		}
+	}
+	if (spawnOdds_powerup[POWER_ATK_2].timestamp <= curTime) {
+		set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_2]);
+		max = odds_getNum(&spawnOdds_powerup[POWER_ATK_2]);
+		for (int i = 0; i < max; i++) {
+			spawnPowerUpType(POWER_ATK_2);
+		}
+	}
+	if (spawnOdds_powerup[POWER_ATK_3].timestamp <= curTime) {
+		set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_3]);
+		max = odds_getNum(&spawnOdds_powerup[POWER_ATK_3]);
+		for (int i = 0; i < max; i++) {
+			spawnPowerUpType(POWER_ATK_3);
+		}
+	}
+	if (spawnOdds_powerup[POWER_HP].timestamp <= curTime) {
+		set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_HP]);
+		max = odds_getNum(&spawnOdds_powerup[POWER_HP]);
+		for (int i = 0; i < max; i++) {
+			spawnPowerUpType(POWER_HP);
+		}
+	}
+	if (spawnOdds_asteroid.timestamp <= curTime) {
+		set_spawnOddsNextRollTime(&spawnOdds_asteroid);
+		max = odds_getNum(&spawnOdds_asteroid);
+		for (int i = 0; i < max; i++) {
+			world_spawnEnteringAsteroid();
+		}
 	}
 }
 
@@ -612,12 +683,15 @@ void game_update()
 	int p, ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy, killer, victim;
 	double angle;
 
-
 	free_obj_size = 0; // clears the array of removed objects
+
 
 	if (roundActive == false) {
 		startRound();
 	}
+
+	generateNeutralObjects();
+
 	if (endRoundCondition()) {
 		endRound();
 	}
@@ -821,13 +895,5 @@ void game_render()
 	interface_renderPlayerHP((double) player[client_player_num].spaceship->hp / LIFE_SPACESHIP);
 
 	SDL_RenderPresent(renderer);
-
-
-
-
-
-
-
-
 
 }
