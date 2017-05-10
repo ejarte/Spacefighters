@@ -1,4 +1,10 @@
 
+
+/*	Author(s):	Farhad Salehi
+*	Modified:	09-05-2017
+*	Version:	0.
+
+*/
 #include "libraries.h"
 #include "graphics.h"
 #include "events.h"

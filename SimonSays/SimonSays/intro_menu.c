@@ -15,6 +15,7 @@
 #include "graphics.h"
 #include "interface_lib.h"
 #include "events.h"
+#include "game.h"
 
 TTF_Font* kenvector_future;
 TTF_Font* kenvector_future_thin;
@@ -76,16 +77,16 @@ void init_introMenu()
 	mainmenu_hud.rect.y = screenH / 2 - h / 2;
 
 	// Play Button
-	t_btn_green_active = IMG_LoadTexture(renderer, "images/Interface/uipaint/btn_green_active.bmp");
-	t_btn_green_highlighted = IMG_LoadTexture(renderer, "images/Interface/uipaint/btn_green_highlighted.bmp");
+	t_btn_green_active = IMG_LoadTexture(renderer, "images/Interface/button_introMeny.png");
+	t_btn_green_highlighted = IMG_LoadTexture(renderer, "images/Interface/button_introMeny.png");
 	x = mainmenu_hud.rect.x + 9;
 	y = mainmenu_hud.rect.y + 21;
 	interface_setup_button(&btn_play, renderer, x, y, t_btn_green_highlighted, t_btn_green_highlighted, t_btn_green_active, "Play", kenvector_future, white);
 	btn_play.state = BTN_STATE_UNSELECTED;
 
 	// Exit Button
-	t_btn_red_active = IMG_LoadTexture(renderer, "images/Interface/uipaint/btn_red_active.bmp");
-	t_btn_red_highlighted = IMG_LoadTexture(renderer, "images/Interface/uipaint/btn_red_highlighted.bmp");
+	t_btn_red_active = IMG_LoadTexture(renderer, "images/Interface/button_introMeny.png");
+	t_btn_red_highlighted = IMG_LoadTexture(renderer, "images/Interface/button_introMeny.png");
 	x = mainmenu_hud.rect.x + 9;
 	y = mainmenu_hud.rect.y + 93;
 	interface_setup_button(&btn_exit, renderer, x, y, t_btn_red_highlighted, t_btn_red_highlighted, t_btn_red_active, "Exit", kenvector_future, white);
@@ -256,6 +257,14 @@ int event_networkMenu()
 			
 
 			// Testa att connecta här
+
+			// The recieved player id of this client
+			client_player_num = 0; //nollställer clientnum så att klienten får en färsk vid connection
+			client_player_num = connect(client_player_num);
+			printf("mottaget spelarid: %d\n", client_player_num);
+			if (client_player_num > 3 || client_player_num < 0) //om fler än 4 spelare försöker connecta, stäng ned programmet för den som connectar
+				exit(1);
+
 			SDL_Delay(500);
 			printf("try to connect here... IP %s and PORT: %s.\n", tb_ip.text, tb_port.text);
 			

@@ -13,7 +13,7 @@ int main()
 	//UDP();
 	player_id = 1;
 //	messageRec = False;
-	TCP();
+		TCP();
 
 	SDLNet_Quit();
 	SDL_Quit();
