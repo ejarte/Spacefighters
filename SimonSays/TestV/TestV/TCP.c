@@ -2,13 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "libaries.h"
 
 //----------------------------------------------------------------------
 #define SDL_MAIN_HANDLED
-#include "SDL.h"
-#include "SDL_net.h"
-#include "TCP.h"
-
 //----------------------------------------------------------------------
 
 int stringToInt(const char * pString)
