@@ -44,7 +44,8 @@ int UDP(int ipNr)
 	//packets->data = "%f",object[0].speed_x;
 
 	
-	sprintf(hold,"%d %d %d",(int)object[1].speed_x, (int)object[1].speed_y, (int)object[1].facing);
+	sprintf(hold,"%d %d %d",(int)object[1].speed_x , (int)object[1].speed_y, (int)object[1].facing);
+	printf(hold);
 	packets->data = hold;
 
 
@@ -71,6 +72,9 @@ int UDP(int ipNr)
 			printf("\tMaxlen:  %d\n", packetr->maxlen);
 			printf("\tStatus:  %d\n", packetr->status);
 			printf("\tAddress: %x %x\n", packetr->address.host, packetr->address.port);
+
+			sscanf(packetr->data, "%f %f %f", &object[1].speed_x, &object[1].speed_y, &object[1].facing);
+			printf("\n%f \n%f \n%f\n", object[1].speed_x, object[1].speed_y, object[1].facing);
 		}
 	}
 
