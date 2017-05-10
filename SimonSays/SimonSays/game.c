@@ -30,6 +30,8 @@ SDL_Texture* t;
 
 struct Button button;
 
+bool roundActive;
+
 
 
 void game_init()
@@ -51,6 +53,7 @@ void game_init()
 	//SDL_ShowCursor(SDL_DISABLE);
 
 	// On Server
+	int length;
 	for (int i = 0; i < MAX_PLAYERS; i++) {
 		player[i].name = malloc(sizeof(30));
 		player[i].name[0] = '\0';
@@ -62,12 +65,22 @@ void game_init()
 		player[i].rune_atk_timestamp = 0;
 		player[i].acceleration_timestamp = 0;
 		player[i].current_attack_type = ATK_TYPE_1;
-
 		player[i].deaths = 0;
 		player[i].kills = 0;
 		player[i].killstreak_tot = 0;
 		player[i].killstreak_round = 0;
 		player[i].won_rounds = 0;
+		player[i].name = malloc(sizeof(10));
+		player[i].name[0] = '\0';
+		strcat(player[i].name, "Player ");
+		length = strlen(player[i].name);;
+		player[i].name[length] = i + 48;	// ASCII
+		player[i].name[length + 1] = '\0';
+		printf("player: %s\n", player[i].name);
+		world_spawnSpaceship(&player[i], 400, 400, 0);
+		player[i].spaceship->show = false;
+		player[i].alive = false;
+		player[i].mobile = false;
 	}
 
 	// Setup Player color
@@ -76,69 +89,24 @@ void game_init()
 	player[2].sdl_color = createColor(0, 0xFF, 0, 0);
 	player[3].sdl_color = createColor(0xFF, 0x78, 0x1C, 0);
 
-	// Player 1
-	player[0].name = "Player 1";
-	player[0].connected = true;
-	world_spawnSpaceship(&player[0], 200, 200, 0);
-
-	// Player 2
-	player[1].name = "Player 2";
-	player[1].connected = true;
-	world_spawnSpaceship(&player[1], 400, 200, 0);
-
-	// Player 3
-	player[2].name = "Player 3";
-	player[2].connected = true;
-	world_spawnSpaceship(&player[2], 400, 400, 0);
-
-	// Player 2
-	player[3].name = "Player 4";
-	player[3].connected = true;
-	world_spawnSpaceship(&player[3], 299, 400, 0);
 
 	texture_chat_box = IMG_LoadTexture(renderer, "images/greensquare.bmp");
-
-
 	interface_setup_plane(&plane_chat_box, texture_chat_box, 200, 200, 100, 100, true);
-
 	font_roboto_black = TTF_OpenFont("fonts/roboto/Roboto-Black.ttf", 12);
 
 	// Exempel på connect/disconnect meddelande
 	addPlayerEmoteMessageToDisplay(renderer, client_player_num, "connected.", MSG_DURATION);
 	addPlayerEmoteMessageToDisplay(renderer, client_player_num, "disconnected.", MSG_DURATION);
 
-
-	//interface_setup_label(&label_chat_msg, renderer, "|c00FF00AAHello!|r", font_roboto_black, createColor(255, 0, 0, 0), 200, 200, true);
-
 	interface_setup_label(&playerNameColored[0], renderer, player[0].name, font_roboto_black, createColor(0xFF, 0, 0, 0), 100, 100, true);
 	interface_setup_label(&playerNameColored[1], renderer, player[1].name, font_roboto_black, createColor(0, 0, 0xFF, 0), 800, 100, true);
 	interface_setup_label(&playerNameColored[2], renderer, player[2].name, font_roboto_black, createColor(0, 0xFF, 0, 0), 100, 800, true);
 	interface_setup_label(&playerNameColored[3], renderer, player[3].name, font_roboto_black, createColor(0xFF, 0x78, 0x1C, 0), 800, 600, true);
 
-	//	printf("%d %d\n", *object[0].ptr_center_x, 0);
-
-	interface_attach_label(&playerNameColored[0], player[0].spaceship->ptr_center_x, player[0].spaceship->ptr_center_y, -50, -50);
-	interface_attach_label(&playerNameColored[1], player[1].spaceship->ptr_center_x, player[1].spaceship->ptr_center_y, -50, -50);
-	interface_attach_label(&playerNameColored[2], player[2].spaceship->ptr_center_x, player[2].spaceship->ptr_center_y, -50, -50);
-	interface_attach_label(&playerNameColored[3], player[3].spaceship->ptr_center_x, player[3].spaceship->ptr_center_y, -50, -50);
-
-	//printf("lol? %d %d\n", *object[4].ptr_center_x, *object[4].ptr_center_y);
 
 	t = IMG_LoadTexture(renderer, "images/redsquare.bmp");
 	interface_setup_textbox(&chat_box, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(screenW/2 - 50, screenH - 40, 200, 25), 10, 0);
 	chat_box.selected = true;
-
-	//SDL_Color black = { 0, 255, 255, 0 };
-	// Button Test
-
-	//void interface_setup_button(struct Button* btn, SDL_Renderer* rend, int x, int y, SDL_Texture* txt_mouse_over, SDL_Texture* txt_selected, SDL_Texture* txt_unselected, char* text, TTF_Font* font, SDL_Color text_color)
-	//btn_test
-
-	//SDL_Texture* t2 = IMG_LoadTexture(renderer, "images/greensquare_light.bmp");
-	//SDL_Texture* t3 = IMG_LoadTexture(renderer, "images/bluesquare_light.bmp");
-
-	//interface_setup_button(&button, renderer, 400, 400, t, t2, t3, "Play", font_roboto_black, black);
-	//button.state = BTN_STATE_SELECTED;
 
 	addMessageToDisplay(renderer, "Ghost: Hello noobs!", MSG_DURATION);
 
@@ -151,10 +119,17 @@ void game_init()
 	//scoreboard
 	init_scoreboard();
 	
+	roundActive = false;
+
 
 	// Debug variables
 	debug_show_collision_box = false;
 }
+
+
+//=========================================================================================================================
+//	Game Execute
+//=========================================================================================================================
 
 void game_execute()
 {
@@ -162,6 +137,10 @@ void game_execute()
 	game_update();
 	game_render();
 }
+
+//=========================================================================================================================
+//	Game Events
+//=========================================================================================================================
 
 void game_events()
 {
@@ -387,7 +366,6 @@ bool resolveCollisionSpaceshipAsteroid(int i, int j, int* ptr_asteroid, int* ptr
 	return false;
 }
 
-
 void markForRemoval(int index) {
 	bool add = true;
 	// Prevents duplications
@@ -414,19 +392,6 @@ int getPlayerFromSource(int objIndex)
 {
 	int ship_index = object[objIndex].source_id;
 	return getPlayer(ship_index);
-}
-
-void handleShipDeath(int ship)
-{
-	int time = SDL_GetTicks();
-	int p = getPlayer(ship);
-	object[ship].show = false;
-	playerNameColored[p].show = false;
-	printf("Player %d's ship was destroyed (%d) @time: %d\n", p, ship, time);
-	player[p].mobile = false;
-	player[p].alive = false;
-	player[p].death_timestamp = time;
-	world_spawnExplosionEffect(object[ship].center_x, object[ship].center_y, object[ship].w * 3, object[ship].h * 3);
 }
 
 void handleSpeedBoost(int ship) {
@@ -484,6 +449,7 @@ void handleAttackReset(int p)
 	printf("player %d now has a normal attack again (%d) @time: %d\n", p, 1, SDL_GetTicks());
 }
 
+/*
 void handleShipResurrection(int p)
 {
 	int time = SDL_GetTicks();
@@ -492,8 +458,91 @@ void handleShipResurrection(int p)
 	object[i].hp = LIFE_SPACESHIP;
 	player[p].mobile = true;
 	player[p].alive = true;
-	playerNameColored[p].show = true;
 	printf("Player %d's ship was resurrected (%d) @time: %d\n", p, i, time);
+	interface_attach_label(&playerNameColored[p], player[p].spaceship->ptr_center_x, player[p].spaceship->ptr_center_y, -50, -50);
+	playerNameColored[p].show = true;
+}
+*/
+
+void handleShipDeath(int ship)
+{
+	int time = SDL_GetTicks();
+	int p = getPlayer(ship);
+	object[ship].show = false;
+	playerNameColored[p].show = false;
+	printf("Player %d's ship was destroyed (%d) @time: %d\n", p, ship, time);
+	player[p].mobile = false;
+	player[p].alive = false;
+	player[p].death_timestamp = time;
+	world_spawnExplosionEffect(object[ship].center_x, object[ship].center_y, object[ship].w * 3, object[ship].h * 3);
+	playerNameColored[p].show = false;
+}
+
+void startRound()
+{
+	bool used[MAX_PLAYERS] = { false, false, false, false };
+	bool foundSpawn;
+	int rdm;
+	SDL_Point spawn[MAX_PLAYERS];
+	spawn[0].x = 100;
+	spawn[0].y = 100;
+	spawn[1].x = screenW - 100;
+	spawn[1].y = 100;
+	spawn[2].x = 100;
+	spawn[2].y = screenH - 100;
+	spawn[3].x = screenW - 100;
+	spawn[3].y = screenH - 100;
+
+	for (int p = 0; p < MAX_PLAYERS; p++) {
+		if (player[p].connected) {
+			foundSpawn = false; 
+			while (!foundSpawn) {
+				rdm = rand() % 4;
+				if (!used[rdm]) {
+					used[rdm] = true;
+					foundSpawn = true;
+					player[p].spaceship->show = true;
+					player[p].spaceship->center_x = spawn[rdm].x;
+					player[p].spaceship->center_y = spawn[rdm].y;
+					player[p].alive = true;
+					player[p].mobile = true;
+					interface_attach_label(&playerNameColored[p], player[p].spaceship->ptr_center_x, player[p].spaceship->ptr_center_y, -50, -50);
+					playerNameColored[p].show = true;
+				}
+			}
+		}
+	}
+	roundActive = true;
+}
+
+bool endRoundCondition()
+{
+	int countAliveShips = 0;
+	for (int p = 0; p < MAX_PLAYERS; p++) {
+		if (player[p].alive)
+			countAliveShips++;
+	}
+	return countAliveShips <= 1;
+}
+
+void endRound()
+{	
+	int i;
+	printf("round ended...\n");
+	for (int p = 0; p < MAX_PLAYERS; p++) {
+		player[p].alive = false;
+		player[p].mobile = false;
+		player[p].spaceship->show = false;
+	}
+	roundActive = false;
+	i = objHead;
+	while (i != UNDEFINED) {
+		if (object[i].id_type != OBJ_TYPE_SPACESHIP) {
+			markForRemoval(i);
+			printf("%d marked for removal\n");
+		}
+		i = object[i].next;
+	}
 }
 
 void handlePlayerKillsAndDeaths(int killer, int victim)
@@ -563,15 +612,19 @@ void game_update()
 	int p, ptr_side, i, i_projectile, i_ship, i_asteroid, i_item, i_power, time, x, y, dx, dy, killer, victim;
 	double angle;
 
+
 	free_obj_size = 0; // clears the array of removed objects
+
+	if (roundActive == false) {
+		startRound();
+	}
+	if (endRoundCondition()) {
+		endRound();
+	}
 
 					   // Update player activities
 	time = SDL_GetTicks();
 	for (int i = 0; i < MAX_PLAYERS; i++) {
-		// Resurrection triggered
-		if (player[i].connected && player[i].alive == false && player[i].death_timestamp + TIME_DEATH < time) {
-			handleShipResurrection(i);
-		}
 		// Spped boost expired
 		if (player[i].speed_active && player[i].rune_speed_timestamp + TIME_SPEED < time) {
 			disableSpeedBoost(i);
@@ -752,10 +805,11 @@ void game_render()
 
 	//interface_render_plane(&plane_chat_box, renderer);
 	//interface_render_label(&label_chat_msg, renderer);
-	interface_render_label(&playerNameColored[0], renderer);
-	interface_render_label(&playerNameColored[1], renderer);
-	interface_render_label(&playerNameColored[2], renderer);
-	interface_render_label(&playerNameColored[3], renderer);
+
+	for (int p = 0; p < MAX_PLAYERS; p++) {
+		interface_render_label(&playerNameColored[p], renderer);
+	}
+
 	rendererInterface();
 	scoreBoard_renderer();
 

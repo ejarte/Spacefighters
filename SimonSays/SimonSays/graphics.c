@@ -9,9 +9,17 @@ void initWindow()
 	targetH = 720;
 
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);	// Audio!!!
-	SDL_Surface* screen, *image;
+	SDL_Surface* screen;
 
-	window = SDL_CreateWindow("SimonSays", 100, 100, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
+	SDL_Rect displayBounds;
+	if (SDL_GetDisplayBounds(0, &displayBounds) != 0) {
+		SDL_Log("SDL_GetDisplayBounds failed: %s", SDL_GetError());
+		return 1;
+	}
+	// temporärt:
+	targetW = displayBounds.w - 200;
+	targetH = displayBounds.h - 200;
+	window = SDL_CreateWindow("SimonSays", 100, 100, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);	// SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	if (window == NULL) {
 		printf("Error, Window can't be desplayed\n");

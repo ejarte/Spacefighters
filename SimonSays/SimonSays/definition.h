@@ -88,7 +88,7 @@ SDL_Window*		window;						// Game Window
 
 // Time
 
-int curTime;	
+int curTime;								
 
 // Structs
 

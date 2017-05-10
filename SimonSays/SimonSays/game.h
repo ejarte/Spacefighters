@@ -15,4 +15,7 @@ void game_events();
 void game_update();
 void game_render();
 
+// Support functions
+void startRound();
+
 int client_player_num;
