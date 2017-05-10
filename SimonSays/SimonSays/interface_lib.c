@@ -1,4 +1,5 @@
 #include "interface_lib.h"
+#include "game.h"
 
 /*	Author(s):	Tiago Redaelli
 *	Modified:	09-05-2017

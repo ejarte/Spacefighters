@@ -252,11 +252,15 @@ int event_networkMenu()
 	if (SDL_PointInRect(&p, &btn_connect.rect_box)) {
 		btn_connect.state = BTN_STATE_MOUSE_OVER;
 		if (left_click) {
+
+			
+
 			// Testa att connecta här
 			SDL_Delay(500);
 			printf("try to connect here... IP %s and PORT: %s.\n", tb_ip.text, tb_port.text);
 			
-		
+			// Det är stärngar så tänk på att användaren kan mata in skräp också ^^
+
 			// Om den lyckades sätt next state till game running och returna 0 annars skapa ett nytt state för felmeddelande men returna 1.
 			setNextState(STATE_GAME_RUNNING);
 			returnValue = 0;
