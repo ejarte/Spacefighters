@@ -76,12 +76,6 @@ void game_init()
 	player[2].sdl_color = createColor(0, 0xFF, 0, 0);
 	player[3].sdl_color = createColor(0xFF, 0x78, 0x1C, 0);
 
-	// The recieved player id of this client
-	int testVar;
-	testVar = connect();
-	printf("mottaget spelarid: %d\n", testVar);
-	client_player_num = 0;
-
 	// Player 1
 	player[0].name = "Player 1";
 	player[0].connected = true;
@@ -130,7 +124,7 @@ void game_init()
 
 	//printf("lol? %d %d\n", *object[4].ptr_center_x, *object[4].ptr_center_y);
 
-	t = IMG_LoadTexture(renderer, "images/textbox_square.bmp");
+	t = IMG_LoadTexture(renderer, "images/redsquare.bmp");
 	interface_setup_textbox(&chat_box, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(screenW/2 - 50, screenH - 40, 200, 25), 10, 0);
 	chat_box.selected = true;
 
@@ -242,10 +236,6 @@ void game_events()
 				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
 			}
 		}
-
-
-
-
 
 		if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
 			int projType;

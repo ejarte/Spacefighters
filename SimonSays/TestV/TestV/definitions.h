@@ -1,6 +1,8 @@
 #pragma once
 #include <stdbool.h>
 
+#define MAXPLAYERS 3
+
 struct Player {
 	char* name;
 	int color;

@@ -36,7 +36,6 @@ int main(int argc, char* args[])
 
 	initWindow();
 	initEventHandler();
-	init_introMenu();
 	//initCommands();
 
 	// Seed random

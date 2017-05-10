@@ -24,6 +24,7 @@ struct TextBox {
 	SDL_Texture* texture_wo_cursor;
 	SDL_Texture* texture_w_cursor;
 	SDL_Texture* background;
+	//SDL_Texture* background_highlighted;		// Not implemented
 	SDL_Rect rect_box;
 	SDL_Rect rect_text_w;
 	SDL_Rect rect_text_wo;

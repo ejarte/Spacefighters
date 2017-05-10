@@ -143,5 +143,8 @@
     <ClCompile Include="scoreBoard.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="connect.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

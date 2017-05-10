@@ -35,17 +35,20 @@ int UDP(int ipNr)
 	packets = SDLNet_AllocPacket(1024);
 	packetr = SDLNet_AllocPacket(1024);
 
-	char hold[100];
-	object[0].speed_x;
+	char hold[1000];
 
 	//printf("\n\n%d\n\n", hold[0]);
 
 	//packet->address = ip;
 	
 	//packets->data = "%f",object[0].speed_x;
+
 	
-	snprintf(hold,10,"%f", object[0].speed_x);
+	sprintf(hold,"%d %d %d",(int)object[1].speed_x, (int)object[1].speed_y, (int)object[1].facing);
 	packets->data = hold;
+
+
+	//printf("\n%f\n", object[0].speed_x);
 	while (1)
 	{
 		SDL_Delay(2000);

@@ -8,7 +8,12 @@
 #include "game.h"
 #include "definition.h"
 
-int connect()
+void sendMessage()
+{
+
+}
+
+int connect(int currentID)
 {
 	IPaddress ip;
 	TCPsocket client;
@@ -19,7 +24,7 @@ int connect()
 	client = SDLNet_TCP_Open(&ip);
 
 	int player_id;
-	
+
 	SDLNet_TCP_Recv(client, &player_id, 100);
 
 	SDLNet_TCP_Close(client);

@@ -11,7 +11,7 @@ void initWindow()
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);	// Audio!!!
 	SDL_Surface* screen, *image;
 
-	window = SDL_CreateWindow("SimonSays", 100, 100, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+	window = SDL_CreateWindow("SimonSays", 100, 100, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
 	if (window == NULL) {
 		printf("Error, Window can't be desplayed\n");
@@ -19,6 +19,7 @@ void initWindow()
 	}
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
+	// Vad gör detta här? D
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		printf("Error, Sound cannot be loaded");
 
