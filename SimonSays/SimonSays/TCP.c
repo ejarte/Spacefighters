@@ -15,8 +15,6 @@ void sendMessage()
 
 int connect(int currentID)
 {
-	return; // Brandvägg
-
 	IPaddress ip;
 	TCPsocket client;
 
@@ -26,7 +24,7 @@ int connect(int currentID)
 	client = SDLNet_TCP_Open(&ip);
 
 	int player_id;
-	
+
 	SDLNet_TCP_Recv(client, &player_id, 100);
 
 	SDLNet_TCP_Close(client);

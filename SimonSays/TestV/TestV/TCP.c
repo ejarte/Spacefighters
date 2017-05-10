@@ -40,7 +40,7 @@ void createDemon()
 		printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
 	}
 	else {
-		
+
 		printf("\nYouve created a demon");
 	}
 }
@@ -53,7 +53,7 @@ int TCP()
 
 
 	IPaddress ip;
-	
+
 	SDLNet_ResolveHost(&ip, NULL, 1234);
 
 	TCPsocket server = SDLNet_TCP_Open(&ip);
@@ -63,7 +63,7 @@ int TCP()
 
 
 	char text[100] = "";
-	
+
 	while (1)
 	{
 		client = SDLNet_TCP_Accept(server);
@@ -74,8 +74,8 @@ int TCP()
 			SDLNet_TCP_Send(client, &player_id, sizeof(player_id));
 			player_id++;
 			SDLNet_TCP_Close(client);
-		}	
-		
+		}
+
 	}
 
 	//stänger ned kommunikationen när servern stängs ned
