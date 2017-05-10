@@ -117,8 +117,8 @@ void world_spawnAsteroidExplosion(int x, int y)
 	int life, size, newX, newY, dx, dy, i;
 	for (int i = 0; i < 300; i++) {
 		angle = rand() % 360;
-		speed = rand() % 3 + 1;
-		life = rand() % 30 + 30;
+		speed = rand() % 6 + 1;
+		life = rand() % 60 + 60;
 		size = rand() % 2 + 2;
 		newX = rand() % 6 - 7 + x;
 		newY = rand() % 6 - 7 + y;
