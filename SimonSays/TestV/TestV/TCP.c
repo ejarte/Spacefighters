@@ -22,6 +22,7 @@ int TCP()
 		client = SDLNet_TCP_Accept(server); //ligger och lyssnar på kontakt med klient
 		if (client)
 		{
+			isConnected[player_id] = 1;
 			players[player_id] = client;
 			printf("player id: %d\n", player_id);
 			printf("client id: %d\n", client);

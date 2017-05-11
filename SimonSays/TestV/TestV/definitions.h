@@ -14,3 +14,4 @@ int player_id;
 
 int listen(int connectedIp);
 int send(int connectedIp);
+int isConnected[3];

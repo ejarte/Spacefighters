@@ -32,6 +32,14 @@ void createDemon(int id, const char * function, void(*f)(int)) //spelarens id, n
 	}
 }
 
+void initConnection()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		isConnected[i] = 0;
+	}
+}
+
 int main()
 {
 	//TODO snygga till koden, ta bort onödigt och namnge bättre

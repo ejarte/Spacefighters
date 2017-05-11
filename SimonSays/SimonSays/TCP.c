@@ -8,7 +8,6 @@
 #include "game.h"
 #include "definition.h"
 
-
 void sendMessage(int player_id, char incommingMsg[])
 {
 	
