@@ -51,7 +51,7 @@ void listenForMessage(int player_id)
 	while (1)
 	{
 		client = SDLNet_TCP_Open(&ip);
-		char listenMessage[1000];
+		char listenMessage[1000] = "";
 		SDLNet_TCP_Recv(client, &listenMessage, 1000); //recv on socket client, store in listenmsg, the incomming msg max length 1000
 		SDLNet_TCP_Close(client);
 		addMessageToDisplay(renderer, listenMessage, MSG_DURATION);
@@ -65,7 +65,7 @@ int connect(int currentID)
 	TCPsocket client;
 
 	//write the ip of the host
-
+	printf("testing connection\n");
 	if (SDLNet_ResolveHost(&ip, SERVERIP, INITPORT) == -1)
 	{
 		printf("Couldn't resolve host during the connection!\n");
@@ -74,8 +74,8 @@ int connect(int currentID)
 	}
 	client = SDLNet_TCP_Open(&ip);
 
-	int player_id;
-
+	int player_id = 0;
+	printf("Player id %d\n", player_id);
 	SDLNet_TCP_Recv(client, &player_id, 100);
 
 	SDLNet_TCP_Close(client);
