@@ -35,7 +35,7 @@ int UDP(int ipNr)
 	packets = SDLNet_AllocPacket(1024);
 	packetr = SDLNet_AllocPacket(1024);
 
-	char hold[1000];
+	char hold[100];
 
 	//printf("\n\n%d\n\n", hold[0]);
 
@@ -44,15 +44,19 @@ int UDP(int ipNr)
 	//packets->data = "%f",object[0].speed_x;
 
 	
-	sprintf(hold,"%d %d %d",(int)object[1].speed_x , (int)object[1].speed_y, (int)object[1].facing);
-	printf(hold);
-	packets->data = hold;
+	
 
 
-	//printf("\n%f\n", object[0].speed_x);
+	//printf("\n%d\n",sizeof(hold));
 	while (1)
 	{
-		SDL_Delay(2000);
+		sprintf(hold, "%d %d %d", (int)object[1].speed_x, (int)object[1].speed_y, (int)object[1].facing);
+		printf("\nData Sent: ");
+		printf(hold);
+		printf("\n");
+		packets->data = hold;
+
+		SDL_Delay(1000);
 		//printf("%c", packets->data);
 		//detta skickar
 		packets->address.host = ip.host;	/* Set the destination host */
@@ -65,6 +69,7 @@ int UDP(int ipNr)
 											  //detta är altså den som tar emot
 		if (SDLNet_UDP_Recv(server, packetr))
 		{
+			/*
 			printf("UDP Packet incoming\n");
 			printf("\tChan:    %d\n", packetr->channel);
 			printf("\tData:    %s\n", (char *)packetr->data);
@@ -72,9 +77,9 @@ int UDP(int ipNr)
 			printf("\tMaxlen:  %d\n", packetr->maxlen);
 			printf("\tStatus:  %d\n", packetr->status);
 			printf("\tAddress: %x %x\n", packetr->address.host, packetr->address.port);
-
+			*/
 			sscanf(packetr->data, "%f %f %f", &object[1].speed_x, &object[1].speed_y, &object[1].facing);
-			printf("\n%f \n%f \n%f\n", object[1].speed_x, object[1].speed_y, object[1].facing);
+			printf("\nData recieved: %f %f %f\n", object[1].speed_x, object[1].speed_y, object[1].facing);
 		}
 	}
 
