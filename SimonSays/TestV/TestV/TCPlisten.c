@@ -22,8 +22,7 @@ int send(int connectedIp)
 	specific_server = SDLNet_TCP_Open(&specific_ip); //öppnar server socketen med sin egna ipadres och port 1234
 	printf("portNr: %d", portId);
 
-
-	while (1)
+	while (isConnected[connectedIp - 1])
 	{
 		if (broadCast == true)
 		{
@@ -32,7 +31,7 @@ int send(int connectedIp)
 			{
 				SDLNet_TCP_Send(specific_client, message, 1000);
 				printf("meddelande: %s\n", message);
-				SDL_Delay(500);
+				SDL_Delay(500); //så att meddelandet hinner skickas ut till samtliga
 				broadCast = false;
 			}
 			//SDLNet_TCP_Close(client);
@@ -42,6 +41,45 @@ int send(int connectedIp)
 	SDLNet_TCP_Close(client);
 	SDLNet_TCP_Close(server);
 	return 0;
+}
+
+int checkConnection(int connectedIp)
+{
+	IPaddress specific_ip;
+	TCPsocket specific_server;
+	TCPsocket specific_client;
+
+	int portId = CONNECTPORT; //specport = 5000
+	int lastConnection = SDL_GetTicks();
+	portId += connectedIp;
+	SDLNet_ResolveHost(&specific_ip, NULL, portId); //NULL betyder är detta är servern
+
+	specific_server = SDLNet_TCP_Open(&specific_ip); //öppnar server socketen med sin egna ipadres och port 1234
+	printf("portNr: %d", portId);
+	while (isConnected[connectedIp-1])
+	{
+		specific_client = SDLNet_TCP_Accept(specific_server); //ligger och lyssnar på kontakt med klient
+
+		if (specific_client) //nu öppnas kontakten mellan klienten och servern på den här porten
+		{
+			lastConnection = SDL_GetTicks();
+			SDLNet_TCP_Recv(specific_client, &isConnected[connectedIp - 1], 20);
+			printf("CONNECTION!%d\n", connectedIp);
+			SDLNet_TCP_Close(client);
+		}
+
+		if (SDL_GetTicks() > (lastConnection + 2000)) //om det har gått 2 sek sen senaste connection då har spelaren disc
+		{
+			isConnected[connectedIp - 1] = 0;
+			printf("NO CONNECTION");
+		}
+	}
+
+	//stänger ned kommunikationen när servern stängs ned
+	SDLNet_TCP_Close(client);
+	SDLNet_TCP_Close(server);
+	return 0;
+
 }
 
 int listen(int connectedIp)
@@ -58,9 +96,10 @@ int listen(int connectedIp)
 	specific_server = SDLNet_TCP_Open(&specific_ip); //öppnar server socketen med sin egna ipadres och port 1234
 	printf("portNr: %d", portId);
 
-	while (1)
+	while (isConnected[connectedIp - 1])
 	{
 		specific_client = SDLNet_TCP_Accept(specific_server); //ligger och lyssnar på kontakt med klient
+		
 		if (specific_client) //nu öppnas kontakten mellan klienten och servern på den här porten
 		{
 			SDLNet_TCP_Recv(specific_client, &message, 1000);

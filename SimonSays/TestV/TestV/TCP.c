@@ -8,6 +8,11 @@
 #define SDL_MAIN_HANDLED
 //----------------------------------------------------------------------
 
+void freeClient(int clientId)
+{
+
+}
+
 int TCP()
 {
 	//printf("TCP\n");
@@ -22,7 +27,15 @@ int TCP()
 		client = SDLNet_TCP_Accept(server); //ligger och lyssnar på kontakt med klient
 		if (client)
 		{
-			isConnected[player_id] = 1;
+			for (int i = 0; i < 3; i++)
+			{
+				if (isConnected[i] == 0)
+				{
+					isConnected[i] = 1;
+					player_id = i + 1;
+					break;
+				}
+			}
 			players[player_id] = client;
 			printf("player id: %d\n", player_id);
 			printf("client id: %d\n", client);
@@ -40,6 +53,7 @@ int TCP()
 			
 			createDemon(player_id, "listen", listen);
 			createDemon(player_id, "send", send);
+			createDemon(player_id, "checkConnection", checkConnection);
 
 			player_id++;
 			SDLNet_TCP_Close(client); //stänger ned anslutningen mot klienten

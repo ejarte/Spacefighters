@@ -86,6 +86,7 @@
 #define SENDPORT 5000
 #define RECVPORT 6000
 #define INITPORT 1234
+#define CONNECTPORT 7000
 #define SERVERIP "127.0.0.1"
 
 // Window

@@ -32,6 +32,19 @@ void createDemon(int id, const char * function, void(*f)(int)) //spelarens id, n
 	}
 }
 
+void createThread(const char * function, void(*f)(int)) //namnet på funktionen, själva funktionen
+{
+	SDL_Thread *TCPThread = NULL;
+	TCPThread = SDL_CreateThread(f, function, NULL);
+
+	if (NULL == TCPThread) {
+		printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+	}
+	else {
+		printf("\nYou've created a demon, you monster!\n");
+	}
+}
+
 void initConnection()
 {
 	for (int i = 0; i < 3; i++)

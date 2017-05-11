@@ -25,6 +25,26 @@ void sendMessage(int player_id, char incommingMsg[])
 	SDLNet_TCP_Close(client);
 }
 
+void imConnected(int player_id)
+{
+
+	IPaddress ip;
+	TCPsocket client;
+	int portNr = CONNECTPORT + player_id; //varje spelare skickar via sin egna Port
+																	//write the ip of the host 
+	SDLNet_ResolveHost(&ip, SERVERIP, portNr);
+
+	while(1)
+	{
+		client = SDLNet_TCP_Open(&ip);
+
+		SDL_Delay(1000);
+
+		SDLNet_TCP_Send(client, 1, 20);
+		SDLNet_TCP_Close(client);
+	}
+}
+
 void createDemonCL(int id, const char * function, void(*f)(int)) //spelarens id, namnet på funktionen, själva funktionen
 {
 	SDL_Thread *TCPThread = NULL;
@@ -81,6 +101,7 @@ int connect(int currentID)
 	printf("player id: %d\n", player_id);
 
 	createDemonCL(player_id, "listenForMessage", listenForMessage);
+	createDemonCL(player_id, "imConnected", imConnected);
 
 	return player_id;
 }

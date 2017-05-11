@@ -5,6 +5,7 @@
 #define INITPORT 1234
 #define SPECPORT 5000
 #define BROADCASTPORT 6000
+#define CONNECTPORT 7000
 #define MAXPLAYERS 3
 
 bool messageRec;
@@ -14,4 +15,9 @@ int player_id;
 
 int listen(int connectedIp);
 int send(int connectedIp);
-int isConnected[3];
+void freeClient(int clientId);
+int checkConnection(int connectedIp);
+
+bool isConnected[3];
+
+int threadId;
