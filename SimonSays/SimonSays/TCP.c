@@ -66,7 +66,12 @@ int connect(int currentID)
 
 	//write the ip of the host
 
-	SDLNet_ResolveHost(&ip, SERVERIP, INITPORT);
+	if (SDLNet_ResolveHost(&ip, SERVERIP, INITPORT) == -1)
+	{
+		printf("Couldn't resolve host during the connection!\n");
+		SDL_Delay(4000);
+		exit(1);
+	}
 	client = SDLNet_TCP_Open(&ip);
 
 	int player_id;
