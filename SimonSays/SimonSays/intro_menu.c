@@ -261,7 +261,8 @@ int event_networkMenu()
 			// The recieved player id of this client
 			client_player_num = 0; //nollställer clientnum så att klienten får en färsk vid connection
 			client_player_num = connect(client_player_num);
-			printf("mottaget spelarid: %d\n", client_player_num);
+			sendMessage(client_player_num, "has connected");
+
 			if (client_player_num > 3 || client_player_num < 0) //om fler än 4 spelare försöker connecta, stäng ned programmet för den som connectar
 				exit(1);
 

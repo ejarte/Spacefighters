@@ -180,7 +180,7 @@ void game_events()
 		if (isTextEventEnabled()) {
 			disableTextInput();
 			if (chat_box.size > 0) {
-				addPlayerMessageToDisplay(renderer, client_player_num, chat_box.text, MSG_DURATION);
+				sendMessage(client_player_num, chat_box.text);
 			}
 
 			chat_box.show = false;
@@ -206,24 +206,6 @@ void game_events()
 
 		if (keyEventPressed(SDL_SCANCODE_P)) {
 
-			SDL_Thread *TCPThread = NULL;
-			const char *TCPThreadReturnValue;
-			TCPThread = SDL_CreateThread(TCP, "TestThread", "127.0.0.1");
-
-			if (NULL == TCPThread) {
-				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
-			}
-			else {
-				SDL_WaitThread(TCPThread, &TCPThreadReturnValue);
-				printf("\nThread returned value: %s", &TCPThreadReturnValue);
-			}
-			/*
-			char* text = malloc(sizeof(100));
-			text[0] = '\0';
-			strcat(text, TCP("127.0.0.1"));
-			printf("%s\n", text);
-			free(text);
-			*/
 		}
 
 		if (keyEventPressed(SDL_SCANCODE_O)) {

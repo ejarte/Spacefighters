@@ -12,8 +12,6 @@
 #include "state_handler.h"
 
 
-
-
 int interfaceState = 0;
 
 #define MAXLIV 10
