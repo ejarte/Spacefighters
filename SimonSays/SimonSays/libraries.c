@@ -1,5 +1,6 @@
 #include "libraries.h"
 
+
 SDL_Rect createRect(int x, int y, int w, int h)
 {
 	SDL_Rect r = { x, y, w, h };

@@ -14,28 +14,16 @@ void sendMessage(int player_id, char incommingMsg[])
 	
 	IPaddress ip;
 	TCPsocket client;
+	char completeMsg[100] = "HELLO";
+	int portNr = SENDPORT + player_id; //varje spelare skickar via sin egna Port
+	sprintf(completeMsg, "Player %d: %s", player_id, incommingMsg); //lägger ihop meddelandet med spelares Alias
 
-	char test[100] = "HELLO";
-	sprintf(test, "Player %d: %s", player_id, incommingMsg);
-	
-	const char* text = test; //test för vara ingående värdet från klienten
-
-	char message[] = "test\n"; //texten som skickas till servern
-	int portNr = 5000;
-	portNr += player_id;
-
-	printf("portNr: %d", portNr);
-
-	//write the ip of the host
-
-	SDLNet_ResolveHost(&ip, "127.0.0.1", portNr);
+	//write the ip of the host 
+	SDLNet_ResolveHost(&ip, SERVERIP, portNr);
 	client = SDLNet_TCP_Open(&ip);
 
-	SDLNet_TCP_Send(client, text, strlen(text) + 1);
+	SDLNet_TCP_Send(client, completeMsg, strlen(completeMsg) + 1);
 	SDLNet_TCP_Close(client);
-	//	printf("player id: %d\n", randomNr);
-
-	//	return randomNr;
 }
 
 void createDemonCL(int id, const char * function, void(*f)(int)) //spelarens id, namnet på funktionen, själva funktionen
@@ -59,15 +47,12 @@ void listenForMessage(int player_id)
 
 	//write the ip of the host
 
-	SDLNet_ResolveHost(&ip, "127.0.0.1", 6000 + player_id);
+	SDLNet_ResolveHost(&ip, SERVERIP, RECVPORT + player_id);
 	while (1)
 	{
 		client = SDLNet_TCP_Open(&ip);
-
 		char listenMessage[1000];
-
-		SDLNet_TCP_Recv(client, &listenMessage, 1000);
-
+		SDLNet_TCP_Recv(client, &listenMessage, 1000); //recv on socket client, store in listenmsg, the incomming msg max length 1000
 		SDLNet_TCP_Close(client);
 		addMessageToDisplay(renderer, listenMessage, MSG_DURATION);
 	}
@@ -81,7 +66,7 @@ int connect(int currentID)
 
 	//write the ip of the host
 
-	SDLNet_ResolveHost(&ip, "127.0.0.1", 1234);
+	SDLNet_ResolveHost(&ip, SERVERIP, INITPORT);
 	client = SDLNet_TCP_Open(&ip);
 
 	int player_id;
@@ -94,31 +79,4 @@ int connect(int currentID)
 	createDemonCL(player_id, "listenForMessage", listenForMessage);
 
 	return player_id;
-}
-
-const char * TCP(int ipNr) //demon
-{
-	IPaddress ip;
-	TCPsocket client;
-
-	//write the ip of the host
-
-	SDLNet_ResolveHost(&ip, ipNr, 1234);
-	client = SDLNet_TCP_Open(&ip);
-
-	char text[100];
-
-	while (1)
-	{
-		SDLNet_TCP_Recv(client, &text, 100);
-		printf(" heer");
-		if (text != NULL)
-		{
-			//addPlayerMessageToDisplay(renderer, client_player_num, text, MSG_DURATION);
-		}
-	}
-
-	SDLNet_TCP_Close(client);
-
-	return text;
 }

@@ -204,10 +204,6 @@ void game_events()
 
 		runInterface();
 
-		if (keyEventPressed(SDL_SCANCODE_P)) {
-
-		}
-
 		if (keyEventPressed(SDL_SCANCODE_O)) {
 			SDL_Thread *TCPThread;
 			const char *TCPThreadReturnValue;

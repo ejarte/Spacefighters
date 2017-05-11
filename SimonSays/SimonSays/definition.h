@@ -82,6 +82,12 @@
 // Chat
 #define MSG_DURATION				20		// Chat message duration seconds
 
+// TCP information
+#define SENDPORT 5000
+#define RECVPORT 6000
+#define INITPORT 1234
+#define SERVERIP "192.168.1.68"
+
 // Window
 SDL_Renderer*	renderer;					// Game Renderer
 SDL_Window*		window;						// Game Window
