@@ -212,6 +212,8 @@ void game_events()
 			if (NULL == TCPThread) {
 				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
 			}
+			
+			//printf("o presssed but nothing should happen");
 		}
 
 		if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {

@@ -51,21 +51,22 @@ int UDP(int ipNr)
 	while (1)
 	{
 		sprintf(hold, "%d %d %d", (int)object[1].speed_x, (int)object[1].speed_y, (int)object[1].facing);
-		printf("\nData Sent: ");
-		printf(hold);
-		printf("\n");
 		packets->data = hold;
 
-		SDL_Delay(1000);
+		SDL_Delay(100);
 		//printf("%c", packets->data);
 		//detta skickar
 		packets->address.host = ip.host;	/* Set the destination host */
 		packets->address.port = ip.port;	/* And destination port */
 
 		//packets->len = strlen((char *)packets->data) + 1;
-		packets->len = sizeof(int) + 1;
+		packets->len = sizeof(hold) + 1;
 
-		SDLNet_UDP_Send(server, -1, packets); 
+
+		SDLNet_UDP_Send(server, -1, packets);
+		printf("\nData Sent: ");
+		printf(hold);
+		printf("\n");
 											  //detta är altså den som tar emot
 		if (SDLNet_UDP_Recv(server, packetr))
 		{

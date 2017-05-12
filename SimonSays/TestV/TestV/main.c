@@ -62,7 +62,20 @@ int main()
 	//UDP();
 	player_id = 1;
 	broadCast = false;
+
+	//UDP tråd
+	SDL_Thread *UDPThread;
+	const char *UDPThreadReturnValue;
+	UDPThread = SDL_CreateThread(UDP, "UDP", "127.0.0.1");
+
+	if (NULL == UDPThread) {
+		printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
+	}
+	//UDP Tråd
+
+
 		TCP();
+		SDL_WaitThread(UDP, UDPThreadReturnValue);
 
 	SDLNet_Quit();
 	SDL_Quit();
