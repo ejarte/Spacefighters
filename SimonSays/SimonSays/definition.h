@@ -185,6 +185,8 @@ struct Player {
 	int current_attack_type;
 	int shipIndex;
 
+	int	shot_fired; // sends flag if shot was fired to server
+
 	int killstreak_tot;
 	int killstreak_round;		
 	int kills;

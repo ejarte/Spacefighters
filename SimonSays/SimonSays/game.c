@@ -98,6 +98,7 @@ void game_init()
 		player[i].spaceship->show = false;
 		player[i].alive = false;
 		player[i].mobile = false;
+		player[i].shot_fired = false;
 	}
 
 	// Setup Player color
@@ -215,8 +216,13 @@ void game_events()
 			
 			//printf("o presssed but nothing should happen");
 		}
+		
+		for (int i = 0; i < MAX_PLAYERS; i++) {
+			player[client_player_num].shot_fired = false;
+		}
 
 		if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
+			player[client_player_num].shot_fired = true;
 			int projType;
 			if (player[client_player_num].current_attack_type == ATK_TYPE_2) {
 				spawnShotgunProjectiles(player[client_player_num].spaceship, player[client_player_num].color);
