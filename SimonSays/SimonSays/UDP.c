@@ -45,7 +45,7 @@ int UDP(int ipNr)
 	
 	//packets->data = "%f",object[0].speed_x;
 
-	int test[3];
+	int test[7];
 	
 
 
@@ -55,7 +55,7 @@ int UDP(int ipNr)
 		sprintf(hold, "%d %d %d %d", (int)object[1].speed_x, (int)object[1].speed_y, (int)object[1].facing, player[1].shot_fired);
 		packets->data = hold;
 
-		SDL_Delay(100);
+		SDL_Delay(1000);
 		//printf("%c", packets->data);
 		//detta skickar
 		packets->address.host = ip.host;	/* Set the destination host */
@@ -86,8 +86,8 @@ int UDP(int ipNr)
 			printf("\nData recieved: %f %f %f\n", object[1].speed_x, object[1].speed_y, object[1].facing);
 			*/
 			
-			sscanf(packetr->data, "%d %d %d", &test[0], &test[1], &test[2]);
-			printf("\nData recieved: %d %d %d\n", test[0], test[1], test[2]);
+			sscanf(packetr->data, "%d %d %d %d %d %d %d", &test[0], &test[1], &test[2], &test[3], &test[4], &test[5], &test[6]);
+			printf("\nData recieved: %d %d %d %d %d %d %d\n", test[0], test[1], test[2], test[3], test[4], test[5], test[6]);
 			
 			//här kommer data in i form av ints. det värkar inte fuka med doubbles.
 
