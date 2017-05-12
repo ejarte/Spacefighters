@@ -53,6 +53,7 @@ void setup_spawnOdds(struct SpawnOdds* so, int minAmount, int maxAmount, int min
 
 void game_init()
 {
+
 	// Background
 	backgroundImage = IMG_LoadTexture(renderer, "images/skyBackground.png");
 	background_rect.x = background_rect.y = 0;

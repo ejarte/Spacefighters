@@ -14,6 +14,8 @@
 #include <string.h>
 #include <tchar.h>
 
+bool isDigit(char ch);
+
 SDL_Color createColor(int r, int g, int b, int a);
 
 SDL_Rect createRect(int x, int y, int w, int h);

@@ -52,7 +52,7 @@ int object_index()
 	}
 	object[index].next = UNDEFINED;		// define next node
 
-	printf("%d indexed.\n", index);
+	//printf("%d indexed.\n", index);
 
 	return index;
 }
@@ -66,7 +66,7 @@ void  object_deindex(int index)
 	// Recycles the number
 	obj_recycled[obj_recycle_size++] = index;
 
-	printf("Object deindexed: %d\n", index);
+	//printf("Object deindexed: %d\n", index);
 
 	// Removes the index from the linked list chain
 

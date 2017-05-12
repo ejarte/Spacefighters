@@ -1,5 +1,23 @@
 #include "libraries.h"
 
+char* lib_tempStr;
+bool lib_tempStrInit = false;
+
+char* substring(char* str, int min, int max)
+{
+	if (lib_tempStrInit == false) {
+		lib_tempStr = malloc(sizeof(200));
+		lib_tempStrInit = true;
+	}
+	lib_tempStr[0] = '\0';
+	strcpy(lib_tempStr, str + min, max - min);
+	lib_tempStr[max - min] = '\0';
+	return lib_tempStr;
+}
+
+bool isDigit(char ch) {
+	return ch - 48 >= 0 && ch - 48 <= 9;
+}
 
 SDL_Rect createRect(int x, int y, int w, int h)
 {

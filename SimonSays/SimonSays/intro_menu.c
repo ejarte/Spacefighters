@@ -6,7 +6,10 @@
 *
 *	Pre-game intro/connection menu
 *
-*	To-Do: try to connect and display error messages/alert on failure.
+*	Change-log
+*	Jacob:	Connection to TCP
+*	Tiago:	Validation of user input (IP & Port)
+*			
 */
 
 #include "intro_menu.h"
@@ -16,6 +19,7 @@
 #include "interface_lib.h"
 #include "events.h"
 #include "game.h"
+#include "network.h"
 
 TTF_Font* kenvector_future;
 TTF_Font* kenvector_future_thin;
@@ -253,27 +257,25 @@ int event_networkMenu()
 	if (SDL_PointInRect(&p, &btn_connect.rect_box)) {
 		btn_connect.state = BTN_STATE_MOUSE_OVER;
 		if (left_click) {
+			Uint16 introPort;
+			if (validateIPv4Entry(tb_ip.text) && validatePort(tb_port.text, &introPort)) {
+				
+				client_player_num = connect(client_player_num);
 
-			
-
-			// Testa att connecta här
-
-			// The recieved player id of this client
-			client_player_num = 0; //nollställer clientnum så att klienten får en färsk vid connection
-			client_player_num = connect(client_player_num);
-			sendMessage(client_player_num, "has connected");
-
-			if (client_player_num > 3 || client_player_num < 0) //om fler än 4 spelare försöker connecta, stäng ned programmet för den som connectar
-				exit(1);
-
-			SDL_Delay(500);
-			printf("try to connect here... IP %s and PORT: %s.\n", tb_ip.text, tb_port.text);
-			
-			// Det är stärngar så tänk på att användaren kan mata in skräp också ^^
-
-			// Om den lyckades sätt next state till game running och returna 0 annars skapa ett nytt state för felmeddelande men returna 1.
-			setNextState(STATE_GAME_RUNNING);
-			returnValue = 0;
+				if (client_player_num <= 3 && client_player_num  >= 0) {
+					sendMessage(client_player_num, "has connected");
+					setNextState(STATE_GAME_RUNNING);
+					returnValue = 0;
+				}
+				else {
+					printf("Error: Server is full.\n");
+					returnValue = 1;
+				}
+			}
+			else {
+				printf("ERROR: Invalid Port or IP address\n");
+				returnValue = 1;
+			}
 		}
 	}
 	else {

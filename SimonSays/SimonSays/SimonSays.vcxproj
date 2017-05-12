@@ -171,6 +171,7 @@
     <ClInclude Include="interface_lib.h" />
     <ClInclude Include="intro_menu.h" />
     <ClInclude Include="libraries.h" />
+    <ClInclude Include="network.h" />
     <ClInclude Include="scoreBoard.h" />
     <ClInclude Include="text_messages.h" />
     <ClInclude Include="object.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="interface_lib.c" />
     <ClCompile Include="intro_menu.c" />
     <ClCompile Include="libraries.c" />
+    <ClCompile Include="network.c" />
     <ClCompile Include="scoreBoard.c" />
     <ClCompile Include="text_messages.c" />
     <ClCompile Include="object.c" />
