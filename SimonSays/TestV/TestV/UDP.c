@@ -72,6 +72,8 @@ int UDP()
 				printf("Saved port: %x to %d\n", adrs[i].port, i);
 				i++;
 			}
+
+
 			if (i == 0) {
 				printf("nothing has connected yet");
 			}
@@ -98,25 +100,30 @@ int UDP()
 			/*
 
 			Här kan man ändra på data som ska skickas tillbaka
+			
 
 			*/
+
+			spaceship[0].center_x = 0;
+			spaceship[0].center_y = 0;
+			spaceship[0].source_id = 0;
 			//tex 
 			//objOne[0] = objOne[0] + 1;
 			if (i == 1) {//One
-				sprintf(hold, "%d %d %d", spaceship[0].speed_x, spaceship[0].speed_y, spaceship[0].speed_max);
+				sprintf(hold, "%d %d %d %d %d %d %d",i,spaceship[0].center_x, spaceship[0].center_y, spaceship[0].speed_x, spaceship[0].speed_y, spaceship[0].speed_max, spaceship[0].source_id);
 				packets->data = hold;
-				printf(hold);
+				
 			}
 			if (i == 2) {//Two
-				sprintf(hold, "%d %d %d", spaceship[1].speed_x, spaceship[1].speed_y, spaceship[1].speed_max);
+				sprintf(hold, "%d %d %d %d %d %d %d", i, spaceship[1].center_x, spaceship[1].center_y, spaceship[1].speed_x, spaceship[1].speed_y, spaceship[1].speed_max, spaceship[1].source_id);
 				packets->data = hold;
 			}
 			if (i == 3) {//Three
-				sprintf(hold, "%d %d %d", spaceship[2].speed_x, spaceship[2].speed_y, spaceship[2].speed_max);
+				sprintf(hold, "%d %d %d %d %d %d %d", i, spaceship[2].center_x, spaceship[2].center_y, spaceship[2].speed_x, spaceship[2].speed_y, spaceship[2].speed_max, spaceship[2].source_id);
 				packets->data = hold;
 			}
 			if (i == 4) {//Four
-				sprintf(hold, "%d %d %d", spaceship[3].speed_x, spaceship[3].speed_y, spaceship[0].speed_max);
+				sprintf(hold, "%d %d %d %d %d %d %d", i, spaceship[3].center_x, spaceship[3].center_y, spaceship[3].speed_x, spaceship[3].speed_y, spaceship[3].speed_max, spaceship[3].source_id);
 				packets->data = hold;
 			}
 			//detta skickar med ipadressen som kom
@@ -127,8 +134,8 @@ int UDP()
 
 			packets->len = strlen((char *)packets->data) + 1;
 
-			SDLNet_UDP_Send(client, -1, packets); /* This sets the p->channel */
-												  /* not necesarry since we never use more than 5 players
+		/* This sets the p->channel */
+		SDLNet_UDP_Send(client, -1, packets);	  /* not necesarry since we never use more than 5 players
 												  if (i == 4) {
 												  i = 0;
 												  }*/
