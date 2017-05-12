@@ -187,6 +187,8 @@ struct Player {
 	int won_rounds;
 };
 
+bool run_program;
+
 // DEBUG Variables
 bool debug_show_collision_box;
 
