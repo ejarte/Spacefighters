@@ -37,13 +37,15 @@ int UDP(int ipNr)
 
 	char hold[100];
 
+	int player; //denna måste altså sättas till vilken spelare det är
+
 	//printf("\n\n%d\n\n", hold[0]);
 
 	//packet->address = ip;
 	
 	//packets->data = "%f",object[0].speed_x;
 
-	
+	int test[3];
 	
 
 
@@ -79,8 +81,16 @@ int UDP(int ipNr)
 			printf("\tStatus:  %d\n", packetr->status);
 			printf("\tAddress: %x %x\n", packetr->address.host, packetr->address.port);
 			*/
+			/*
 			sscanf(packetr->data, "%f %f %f", &object[1].speed_x, &object[1].speed_y, &object[1].facing);
 			printf("\nData recieved: %f %f %f\n", object[1].speed_x, object[1].speed_y, object[1].facing);
+			*/
+			
+			sscanf(packetr->data, "%d %d %d", &test[0], &test[1], &test[2]);
+			printf("\nData recieved: %d %d %d\n", test[0], test[1], test[2]);
+			
+			//här kommer data in i form av ints. det värkar inte fuka med doubbles.
+
 		}
 	}
 

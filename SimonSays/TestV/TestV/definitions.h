@@ -38,11 +38,13 @@ struct Object {
 	int source_id;		// used by projectiles
 	int power_id;		// used to distinguish different powerups
 
+
+	//viktig notic. jag ändrade några här till int
 	double delta_x;
 	double delta_y;
-	double speed_x;
-	double speed_y;
-	double speed_max;
+	int speed_x;
+	int speed_y;
+	int speed_max;
 	double drag;
 	double acc;
 

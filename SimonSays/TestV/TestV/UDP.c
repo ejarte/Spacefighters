@@ -7,8 +7,8 @@
 #define SDL_MAIN_HANDLED
 #include "SDL.h"
 #include "SDL_net.h"
-
 #include "UDP.h"
+#include "definitions.h"
 
 //----------------------------------------------------------------------
 int UDP()
@@ -23,6 +23,11 @@ int UDP()
 	int objTwo[3];
 	int objThree[3];
 	int objFour[3];
+
+	struct Object spaceship[4];
+
+	
+
 	adrs[0].port = 0;
 	adrs[1].port = 0;
 	adrs[2].port = 0;
@@ -71,22 +76,22 @@ int UDP()
 				printf("nothing has connected yet");
 			}
 			if (i == 1) {//One
-				sscanf(packet->data, "%d %d %d", &objOne[0], &objOne[1], &objOne[2]);
-				printf("\nData Recieved: %d %d %d\n", objOne[0], objOne[1], objOne[2]);
+				sscanf(packet->data, "%d %d %d", &spaceship[0].speed_x, &spaceship[0].speed_y, &spaceship[0].speed_max);
+				printf("\nData Recieved: %d %d %d\n", spaceship[0].speed_x, spaceship[0].speed_y, spaceship[0].speed_max);
 			}
 			if (i == 2) {//Two
-				sscanf(packet->data, "%d %d %d", &objTwo[0], &objTwo[1], &objTwo[2]);
-				printf("\nData Recieved: %d %d %d\n", objTwo[0], objTwo[1], objTwo[2]);
+				sscanf(packet->data, "%d %d %d", &spaceship[1].speed_x, &spaceship[1].speed_y, &spaceship[1].speed_max);
+				printf("\nData Recieved: %d %d %d\n", spaceship[1].speed_x, spaceship[1].speed_y, spaceship[1].speed_max);
 			}
 
 			if (i == 3) {//Three
-				sscanf(packet->data, "%d %d %d", &objThree[0], &objThree[1], &objThree[2]);
-				printf("\nData Recieved: %d %d %d\n", objThree[0], objThree[1], objThree[2]);
+				sscanf(packet->data, "%d %d %d", &spaceship[2].speed_x, &spaceship[2].speed_y, &spaceship[2].speed_max);
+				printf("\nData Recieved: %d %d %d\n", spaceship[2].speed_x, spaceship[2].speed_y, spaceship[2].speed_max);
 			}
 
 			if (i == 4) {//Four
-				sscanf(packet->data, "%d %d %d", &objFour[0], &objFour[1], &objFour[2]);
-				printf("\nData Recieved: %d %d %d\n", objFour[0], objFour[1], objFour[2]);
+				sscanf(packet->data, "%d %d %d", &spaceship[3].speed_x, &spaceship[3].speed_y, &spaceship[3].speed_max);
+				printf("\nData Recieved: %d %d %d\n", spaceship[3].speed_x, spaceship[3].speed_y, spaceship[3].speed_max);
 			}
 
 
@@ -98,19 +103,20 @@ int UDP()
 			//tex 
 			//objOne[0] = objOne[0] + 1;
 			if (i == 1) {//One
-				sprintf(hold, "%d %d %d", (double)objOne[0], (double)objOne[1], (double)objOne[2]);
+				sprintf(hold, "%d %d %d", spaceship[0].speed_x, spaceship[0].speed_y, spaceship[0].speed_max);
 				packets->data = hold;
+				printf(hold);
 			}
 			if (i == 2) {//Two
-				sprintf(hold, "%d %d %d", (double)objTwo[0], (double)objTwo[1], (double)objTwo[2]);
+				sprintf(hold, "%d %d %d", spaceship[1].speed_x, spaceship[1].speed_y, spaceship[1].speed_max);
 				packets->data = hold;
 			}
 			if (i == 3) {//Three
-				sprintf(hold, "%d %d %d", (double)objThree[0], (double)objThree[1], (double)objThree[2]);
+				sprintf(hold, "%d %d %d", spaceship[2].speed_x, spaceship[2].speed_y, spaceship[2].speed_max);
 				packets->data = hold;
 			}
 			if (i == 4) {//Four
-				sprintf(hold, "%d %d %d", (double)objFour[0], (double)objFour[1], (double)objFour[2]);
+				sprintf(hold, "%d %d %d", spaceship[3].speed_x, spaceship[3].speed_y, spaceship[0].speed_max);
 				packets->data = hold;
 			}
 			//detta skickar med ipadressen som kom
