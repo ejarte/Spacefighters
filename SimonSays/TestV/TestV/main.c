@@ -59,6 +59,8 @@ int main()
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDLNet_Init();	
 
+	init_logic();
+
 	//UDP();
 	player_id = 1;
 	broadCast = false;
@@ -74,8 +76,8 @@ int main()
 	//UDP Tråd
 
 
-		TCP();
-		SDL_WaitThread(UDP, UDPThreadReturnValue);
+	TCP();
+	SDL_WaitThread(UDP, UDPThreadReturnValue);
 
 	SDLNet_Quit();
 	SDL_Quit();

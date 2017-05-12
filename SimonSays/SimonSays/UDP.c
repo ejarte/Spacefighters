@@ -37,7 +37,7 @@ int UDP(int ipNr)
 
 	char hold[100];
 
-	int player; //denna måste altså sättas till vilken spelare det är
+	int player_id; //denna måste altså sättas till vilken spelare det är
 
 	//printf("\n\n%d\n\n", hold[0]);
 
@@ -52,7 +52,7 @@ int UDP(int ipNr)
 	//printf("\n%d\n",sizeof(hold));
 	while (1)
 	{
-		sprintf(hold, "%d %d %d", (int)object[1].speed_x, (int)object[1].speed_y, (int)object[1].facing);
+		sprintf(hold, "%d %d %d %d", (int)object[1].speed_x, (int)object[1].speed_y, (int)object[1].facing, player[1].shot_fired);
 		packets->data = hold;
 
 		SDL_Delay(1000);
