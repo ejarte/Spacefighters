@@ -49,6 +49,7 @@ int UDP()
 
 	while (1)
 	{
+		//memset(hold, 0, strlen(hold));
 		/* Wait a packet. UDP_Recv returns != 0 if a packet is coming */
 		//SDL_Delay(1000);
 		if (SDLNet_UDP_Recv(server, packet))
@@ -111,8 +112,8 @@ int UDP()
 			//objOne[0] = objOne[0] + 1;
 			if (i == 1) {//One
 				sprintf(hold, "%d %d %d %d %d %d %d",i,spaceship[0].center_x, spaceship[0].center_y, spaceship[0].speed_x, spaceship[0].speed_y, spaceship[0].speed_max, spaceship[0].source_id);
-				packets->data = hold;
-				
+				printf(hold);
+				packets->data = hold;		
 			}
 			if (i == 2) {//Two
 				sprintf(hold, "%d %d %d %d %d %d %d", i, spaceship[1].center_x, spaceship[1].center_y, spaceship[1].speed_x, spaceship[1].speed_y, spaceship[1].speed_max, spaceship[1].source_id);

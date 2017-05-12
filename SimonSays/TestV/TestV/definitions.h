@@ -143,9 +143,9 @@ struct Object {
 
 	double delta_x;
 	double delta_y;
-	double speed_x;
-	double speed_y;
-	double speed_max;
+	int speed_x; // int nu
+	int speed_y;
+	int speed_max;
 	double drag;
 	double acc;
 

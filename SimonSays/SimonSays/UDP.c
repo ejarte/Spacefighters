@@ -87,7 +87,7 @@ int UDP(int ipNr)
 			*/
 			
 			sscanf(packetr->data, "%d %d %d %d %d %d %d", &test[0], &test[1], &test[2], &test[3], &test[4], &test[5], &test[6]);
-			printf("\nData recieved: %d %d %d\n", test[0], test[1], test[2], test[3], test[4], test[5], test[6]);
+			printf("\nData recieved: %d %d %d %d %d %d %d\n", test[0], test[1], test[2], test[3], test[4], test[5], test[6]);
 			
 			//här kommer data in i form av ints. det värkar inte fuka med doubbles.
 
