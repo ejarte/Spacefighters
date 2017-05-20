@@ -37,3 +37,6 @@ void set_spawnOddsNextRollTime(struct SpawnOdds* so);
 void set_worldDimensions(int w, int h);
 
 void generateNeutralObjects();
+
+void TCP_broadcastCreatedNeutralObject(int obj_type, SDL_Point spawn, SDL_Point velocity, int facing);
+void TCP_broadcastPlayerDisconected(int connecting_id);

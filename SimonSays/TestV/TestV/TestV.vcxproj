@@ -144,16 +144,11 @@
   <ItemGroup>
     <ClCompile Include="logic.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="TCP.c" />
-    <ClCompile Include="TCPlisten.c" />
-    <ClCompile Include="UDP.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="definitions.h" />
     <ClInclude Include="libaries.h" />
     <ClInclude Include="logic.h" />
-    <ClInclude Include="TCP.h" />
-    <ClInclude Include="UDP.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
