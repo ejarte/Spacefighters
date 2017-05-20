@@ -3,8 +3,11 @@
 #include "sprite.h"
 
 typedef struct Particle_type Particle;
+int particle_count;;
+bool particle_debug_enabled;
+void particle_init();
+void createParticle(int x, int y, int w, int h, int life, double angleInDeg, double speed, SDL_Texture* texture);
 
-Particle* createParticle(int x, int y, int w, int h, int life, double angleInDeg, double speed, SDL_Texture* texture);
 void destroyParticle(Particle *p);
 void particle_update(Particle *p);
 bool particle_isDead(Particle *p);

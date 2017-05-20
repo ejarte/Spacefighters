@@ -1,6 +1,21 @@
 #pragma once
 #include <stdbool.h>
 
+//=================================
+// SERVER RELATED
+
+#define MSG_SERVER_NOT_FULL		"#1#"
+#define MSG_SERVER_FULL			"#2#"
+#define MSG_CLIENT_NUM			"#3#"
+#define MSG_CHAT_MSG			"#4#"
+#define MSG_PLAYER_CONNECTED	"#5#"
+#define MSG_PLAYER_DISCONNECTED	"#6#"
+#define MSG_SHUTDOWN_SERVER		"#7#"
+#define MSG_CHANGE_NAME			"#8#"
+#define MSG_NEUTRAL_OBJ			"#9#"
+#define MSG_PLAYER_ACTIONS		"#10#"
+
+// VET EJ VAD AV DETTA SOM SKA TAS BORT 
 
 #define INITPORT 1234
 #define SPECPORT 5000
@@ -21,6 +36,33 @@ int checkConnection(int connectedIp);
 bool isConnected[3];
 
 int threadId;
+
+//=================================
+// SERVER EXPLICIT
+
+#define SERVER_PORT	1234
+#define BUFFER_SIZE 1024
+#define MAX_SOCKETS	5
+#define MAX_CLIENTS 4
+
+struct Server_t {
+	IPaddress ip;
+	TCPsocket tcp_socket;
+	bool running;
+	char tcp_buffer[BUFFER_SIZE];
+	int tcp_recv_byteCount;
+	int tcp_len;
+};
+
+struct Client_t {
+	TCPsocket tcp_socket;
+	bool tcp_socket_is_free;
+};
+
+struct Server_t s;
+struct Client_t c[MAX_CLIENTS];
+
+//=================================
 
 #pragma once
 #include <stdbool.h>
@@ -67,13 +109,12 @@ int threadId;
 #define LIFE_ASTEROID				3		// Asteroid hitpoints
 #define LIFE_SPACESHIP				10		// Spaceship hitpoints
 
-// Power Up
+// Neutral Objects
 #define POWER_SPEED					0
 #define POWER_ATK_2					1
 #define POWER_ATK_3					2
 #define POWER_HP					3
-#define POWER_INVUL					4		// Not implemented
-#define POWER_OVERPOWER				5		// Not implemented
+#define ASTEROID					4
 
 #define NUM_OF_POWERS				4		// The number of currently existing power up types
 

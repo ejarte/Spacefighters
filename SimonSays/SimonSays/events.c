@@ -16,8 +16,6 @@
 #define TRIGGER_EVENT_MOUSE_RELEASED	4
 
 // Window dimensions
-//int ev_window_w;
-//int ev_window_h;
 
 // Event data encapsulation
 struct EventData {	
@@ -88,13 +86,16 @@ char* getTextInput()
 void disableTextInput() 
 {
 	txt_event_data.enabled = false;
-	SDL_StopTextInput();
+	if (SDL_IsTextInputActive() == SDL_TRUE)
+		SDL_StopTextInput();
+
 }
 
 void enableTextInput()
 {
 	txt_event_data.enabled = true;
-	SDL_StartTextInput();
+	if (SDL_IsTextInputActive() == SDL_FALSE)
+		SDL_StartTextInput();
 }
 
 

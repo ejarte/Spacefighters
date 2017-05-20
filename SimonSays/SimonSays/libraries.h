@@ -14,6 +14,10 @@
 #include <string.h>
 #include <tchar.h>
 
+char* substring(char* str, int min, int max);
+
+void substring2(char* str, int min, int max);
+
 bool isDigit(char ch);
 
 SDL_Color createColor(int r, int g, int b, int a);

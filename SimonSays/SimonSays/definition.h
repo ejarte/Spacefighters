@@ -43,13 +43,12 @@
 #define LIFE_ASTEROID				3		// Asteroid hitpoints
 #define LIFE_SPACESHIP				10		// Spaceship hitpoints
 
-// Power Up
+// Neutral Objects
 #define POWER_SPEED					0
 #define POWER_ATK_2					1
 #define POWER_ATK_3					2
 #define POWER_HP					3
-#define POWER_INVUL					4		// Not implemented
-#define POWER_OVERPOWER				5		// Not implemented
+#define ASTEROID					4
 
 #define NUM_OF_POWERS				4		// The number of currently existing power up types
 
@@ -193,6 +192,10 @@ struct Player {
 	int deaths;
 	int won_rounds;
 };
+
+// Variables 
+int client_player_num;
+bool run_program;
 
 // DEBUG Variables
 bool debug_show_collision_box;

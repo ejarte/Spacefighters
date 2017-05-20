@@ -5,6 +5,8 @@
 #include "game.h"
 #include "definition.h"
 #include "intro_menu.h"
+#include "text_commands.h"
+#include "network.h"
 
 struct PlayerInfo
 {
@@ -14,20 +16,22 @@ struct PlayerInfo
 
 int main(int argc, char* args[])
 {
+	startTheGame = false;
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
 		printf("SDL_Init: %s\n", SDL_GetError());
-		exit(-1);
+		return -1;
 	}
 	else printf("SDL Initialized...\n");
 
 	if (TTF_Init() == -1) {
 		printf("TTF_Init: %s\n", TTF_GetError());
-		exit(2);
+		return -1;
 	}
 	else printf("TTF Initialized...\n");
 
 	if (SDLNet_Init() == -1) {
 		printf("NET_Init: %s\n", SDLNet_GetError());
+		return -1;
 	}
 	else
 	{
@@ -36,18 +40,16 @@ int main(int argc, char* args[])
 
 	initWindow();
 	initEventHandler();
-	//initCommands();
+	initCommands();
 
 	// Seed random
 	srand(time(NULL));
 
 	// Audio
 	initAudio();
-	game_init();
 	SDL_Delay(50);
 	//playMusic("audio/music/SPACE.mp3", -1);
 
-	bool run = true;
 	setNextState(STATE_MAIN_MENU);
 	//setNextState(STATE_GAME_RUNNING);
 	
@@ -57,14 +59,16 @@ int main(int argc, char* args[])
 	int waitTime;
 	int cycle = 0;							// Cycle
 
-	while (run)	
+	run_program = true;
+
+	while (run_program)
 	{
 		cycle++;
 		curTime = SDL_GetTicks();	
 		startTime = curTime;
 		refreshEventHandler();	// maps user input
 		if (getNextState() == STATE_EXIT) {
-			run = false;
+			run_program = false;
 		}
 		else {
 			executeNextState();

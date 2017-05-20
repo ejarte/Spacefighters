@@ -1,23 +1,37 @@
 #include "text_commands.h"
 #include "object.h"
+#include "network.h"
 
-/*
-#define COMMAND_1 "event horizon"
+#define COMMAND_0 "-setname"
 
-char* command[100];
+struct Command_t {
+	int length;
+	char* s;
+	char* help;
+};
+
+struct Command_t command[10];
 int num_commands;
+
+void setupCommand(struct Command_t* cmd, char* str, char* help_msg)
+{
+	cmd->s = str;
+	cmd->length = strlen(str);
+	cmd->help = help_msg;
+	printf("command: %s %d\n", cmd->s, cmd->length);
+}
 
 void initCommands()
 {
-	command[0] = "-tot created obj";
-	command[1] = "-object index";
-	num_commands = 2;
+	setupCommand(&command[0], "-setname", "-setname 'Kaiser Soze'");
+	num_commands = 1;
 }
 
-void cmd_0() {
-	printf("Total number of created objects: %d.\n", tot_created_obj);
+void cmd_0(char* cmd) 
+{
+	char* name = substring(cmd, command[0].length + 1, strlen(cmd));
+	TCP_sendNameChange(name);
 }
-
 
 bool runCommands(char* str)
 {
@@ -27,18 +41,19 @@ bool runCommands(char* str)
 	if (strcmp(str, "-help") == 0) {
 		printf("Commands: \n");
 		for (int i = 0; i < num_commands; i++) {
-			printf("%s\n", command[i]);
+			printf("%s\n", command[i].help);
 		}
 		return true;
 	}
-
-	if (strcmp(str, command[0]) == 0) {
-		cmd_0();
+	
+	if (strcmp(str, "-start") == 0) {
+		printf("Commands: \n");
+		startTheGame = true;
+	}
+	if (strncmp(command[0].s, str, command[0].length) == 0) {
+		cmd_0(str);
 		return true;
 	}
-
 	printf("Invalid command\n");
 	return false;
 }
-
-*/

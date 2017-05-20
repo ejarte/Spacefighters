@@ -74,6 +74,7 @@ void listenForMessage(int player_id)
 		SDLNet_TCP_Recv(client, &listenMessage, 1000); //recv on socket client, store in listenmsg, the incomming msg max length 1000
 		SDLNet_TCP_Close(client);
 		addMessageToDisplay(renderer, listenMessage, MSG_DURATION);
+
 	}
 	return 0;
 }

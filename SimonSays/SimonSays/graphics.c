@@ -16,9 +16,7 @@ void initWindow()
 		SDL_Log("SDL_GetDisplayBounds failed: %s", SDL_GetError());
 		return 1;
 	}
-	// temporärt:
-	targetW = displayBounds.w - 200;
-	targetH = displayBounds.h - 200;
+
 	window = SDL_CreateWindow("SimonSays", 100, 100, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);	// SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	if (window == NULL) {

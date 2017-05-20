@@ -51,12 +51,6 @@ bool intro_menu_initialized = false;
 
 SDL_Color white = { 255, 255, 255, 0 };
 
-/*
-t = IMG_LoadTexture(renderer, "images/textbox_square.bmp");
-interface_setup_textbox(&chat_box, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(screenW/2 - 50, screenH - 40, 200, 25), 10, 0);
-chat_box.selected = true;
-*/
-
 void init_introMenu()
 {
 	int w, h, x, y;
@@ -145,7 +139,7 @@ void init_introMenu()
 
 void cleanup_introMenu()
 {
-
+	/*
 	SDL_DestroyTexture(t_background);
 	SDL_DestroyTexture(t_mainmenu_hud);
 	SDL_DestroyTexture(t_networkmenu_hud);
@@ -156,6 +150,7 @@ void cleanup_introMenu()
 	SDL_DestroyTexture(t_textbox_active);
 	SDL_DestroyTexture(t_textbox_highlighted);
 	intro_menu_initialized = false;
+	*/
 }
 
 int event_introMenu()
@@ -257,10 +252,25 @@ int event_networkMenu()
 	if (SDL_PointInRect(&p, &btn_connect.rect_box)) {
 		btn_connect.state = BTN_STATE_MOUSE_OVER;
 		if (left_click) {
-			Uint16 introPort;
+	
+			if (connectToServer(tb_ip.text, tb_port.text)) {
+				printf("connected succesfully!\n");
+				SDL_Thread* t = SDL_CreateThread(TCP_listen, "TCP_listen", (void*)NULL);
+				t = NULL;
+				setNextState(STATE_GAME_RUNNING);
+				returnValue = 0;		
+			}
+			else {
+				returnValue = 1;
+			}
+
+			/*
 			if (validateIPv4Entry(tb_ip.text) && validatePort(tb_port.text, &introPort)) {
 				
-				client_player_num = connect(client_player_num);
+				client_player_num = -1;
+				//client_player_num = connect(client_player_num);
+
+				connectToServer(tb_ip.text, tb_port.text);
 
 				if (client_player_num <= 3 && client_player_num  >= 0) {
 					sendMessage(client_player_num, "has connected");
@@ -276,6 +286,7 @@ int event_networkMenu()
 				printf("ERROR: Invalid Port or IP address\n");
 				returnValue = 1;
 			}
+			*/
 		}
 	}
 	else {
@@ -326,7 +337,6 @@ int event_networkMenu()
 			appendInTextBox(&tb_ip, getTextInput(), renderer);
 		}
 	}
-
 
 	if (!changed_tb && left_click) {
 		tb_ip.selected = false;

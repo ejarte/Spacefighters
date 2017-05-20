@@ -103,6 +103,47 @@ void world_init()
 	animation_addFrameColRow(&anim_none, 0, 0);
 }
 
+void world_spawnNeutralObject(int type, SDL_Point spawn, int dx, int dy, int facing)
+{
+	int i = object_index();
+	if (type == POWER_SPEED) {
+		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawn.x, spawn.y, spr_powerup_speed.frame_w / 2, spr_powerup_speed.frame_h / 2, facing, 0, &spr_powerup_speed, &anim_none);
+		object[i].power_id = POWER_SPEED;
+	}
+	else if (type == POWER_ATK_2) {
+		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawn.x, spawn.y, spr_powerup_atk_2.frame_w / 2, spr_powerup_atk_2.frame_h / 2, facing, 0, &spr_powerup_atk_2, &anim_none);
+		object[i].power_id = POWER_ATK_2;
+	}
+	else if (type == POWER_ATK_3) {
+		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawn.x, spawn.y, spr_powerup_atk_3.frame_w / 2, spr_powerup_atk_3.frame_h / 2, facing, 0, &spr_powerup_atk_3, &anim_none);
+		object[i].power_id = POWER_ATK_3;
+	}
+	else if (type == POWER_HP) {
+		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawn.x, spawn.y, spr_powerup_hp.frame_w / 2, spr_powerup_hp.frame_h / 2, facing, 0, &spr_powerup_hp, &anim_none);
+		object[i].power_id = POWER_HP;
+	}
+	else if (type == ASTEROID) {
+		object_setup(&object[i], i, OBJ_TYPE_ASTEROID, spawn.x, spawn.y, spr_asteroid_gray.frame_w / 4, spr_asteroid_gray.frame_h / 4, rand() % 360, 0, &spr_asteroid_gray, &anim_asteroid_gray[rand() % 8]);
+	}
+	else {
+		printf("Failed to spawn object type: %d", type);
+		object_deindex(i);
+		return;
+	}
+	object[i].delta_x = dx;
+	object[i].delta_y = dy;
+	if (object[i].id_type == OBJ_TYPE_POWERUP) {
+		object[i].hp = LIFE_POWERUP;
+		object[i].dmg_on_impact = 0;
+		object_setCollisionBox(&object[i], 15, 15);
+	}
+	else if (object[i].id_type == OBJ_TYPE_ASTEROID) {
+		object[i].hp = LIFE_ASTEROID;
+		object[i].dmg_on_impact = 1;
+		object_setCollisionCircle(&object[i], 20, 20);
+	}
+}
+
 void world_spawnExplosionEffect(int x, int y, int w, int h)
 {
 	double facing = rand() % 360;
@@ -225,7 +266,7 @@ void spawnProjectile(struct Object* source, int color, int x, int y, int w, int 
 	object_setCollisionCircle(&object[i], 5);
 }
 
-void spawnNormalProjectile(struct Object* source, int color)
+void spawnNormalProjectile(struct Object* source, int color, SDL_Point mousePos)
 {
 	SDL_Point p = { source->center_x, source->center_y };
 	double angle;
@@ -233,13 +274,13 @@ void spawnNormalProjectile(struct Object* source, int color)
 	w = spr_proj_1[0].frame_w / 2;
 	h = spr_proj_1[0].frame_h / 2;
 	projSpeed = 15;
-	angle = angleBetweenPointsRad(p, getMousePos());
+	angle = angleBetweenPointsRad(p, mousePos);
 	dx = (double)projSpeed * cos(angle);
 	dy = (double)projSpeed * sin(angle);
 	spawnProjectile(source, color, p.x, p.y, w, h, dx, dy, 1);
 }
 
-void spawnShotgunProjectiles(struct Object* source, int color)
+void spawnShotgunProjectiles(struct Object* source, int color, SDL_Point mousePos)
 {
 	SDL_Point p = { source->center_x, source->center_y };
 	double angle;
@@ -247,7 +288,7 @@ void spawnShotgunProjectiles(struct Object* source, int color)
 	projSpeed = 15;
 	w = spr_proj_1[0].frame_w / 2;
 	h = spr_proj_1[0].frame_h / 2;
-	angle = angleBetweenPointsRad(p, getMousePos()) - 15 * M_PI / 180;
+	angle = angleBetweenPointsRad(p, mousePos) - 15 * M_PI / 180;
 	for (int i = 0; i < 3; i++) {
 		dx = (double)projSpeed * cos(angle);
 		dy = (double)projSpeed * sin(angle);
@@ -256,7 +297,7 @@ void spawnShotgunProjectiles(struct Object* source, int color)
 	}
 }
 
-void spawnMineProjectiles(struct Object* source, int color)
+void spawnMineProjectiles(struct Object* source, int color, SDL_Point mousePos)
 {
 	SDL_Point p = { source->center_x, source->center_y };
 	double angle;
@@ -264,7 +305,7 @@ void spawnMineProjectiles(struct Object* source, int color)
 	w = spr_mine[0].frame_h;
 	h = spr_mine[0].frame_h;
 	projSpeed = 4;
-	angle = angleBetweenPointsRad(p, getMousePos());
+	angle = angleBetweenPointsRad(p, mousePos);
 	dx = (double)projSpeed * cos(angle);
 	dy = (double)projSpeed * sin(angle);
 	i = object_index();
@@ -286,114 +327,6 @@ void spawnMineProjectiles(struct Object* source, int color)
 	object[i].dmg_on_impact = 5;
 	object_setCollisionCircle(&object[i], 5);
 
-}
-
-void spawnPowerUpType(int type)
-{
-	int side, dx, dy, screen_w, screen_h, speed, k, i;
-	double facingAngle, scale, targetAngle;
-	SDL_Point rdmPoint;
-	SDL_Point spawnPoint;
-	side = rand() % 4;
-	facingAngle = rand() % 360;
-	scale = rand() % AST_MAX_SCALE + AST_MIN_SCALE;
-	screen_w = getWindowWidth();
-	screen_h = getWindowHeight();
-
-	k = 50; // distance from/to world edge, used to spawn the asteroid outside the world
-	if (side == WORLD_LEFT) {
-		spawnPoint.x = 0 - k / 2;
-		spawnPoint.y = k + rand() % screen_h;
-	}
-	else if (side == WORLD_RIGHT) {
-		spawnPoint.x = screen_w + k / 2;
-		spawnPoint.y = k + rand() % screen_h;
-	}
-	else if (side == WORLD_TOP) {
-		spawnPoint.x = k + rand() % screen_w;
-		spawnPoint.y = 0 - k / 2;
-	}
-	else if (side == WORLD_BOT) {
-		spawnPoint.x = k + rand() % screen_w;
-		spawnPoint.y = screen_h + k / 2;
-	}
-	speed = rand() % AST_TOP_SPEED_XY + AST_MIN_SPEED_XY;
-	rdmPoint.x = rand() % (screen_w - 2 * k);						// A random point on the world
-	rdmPoint.y = rand() % (screen_h - 2 * k);
-	targetAngle = angleBetweenPointsRad(spawnPoint, rdmPoint);	// Angle between spawn point and random point
-	dx = (double)speed * cos(targetAngle);						// velocity vector
-	dy = (double)speed * sin(targetAngle);
-	i = object_index();
-	if (type == POWER_SPEED) {
-		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawnPoint.x, spawnPoint.y, spr_powerup_speed.frame_w / 2, spr_powerup_speed.frame_h / 2, rand() % 360, 0, &spr_powerup_speed, &anim_none);
-		object[i].power_id = POWER_SPEED;
-	}
-	else if (type == POWER_ATK_2) {
-		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawnPoint.x, spawnPoint.y, spr_powerup_atk_2.frame_w / 2, spr_powerup_atk_2.frame_h / 2, rand() % 360, 0, &spr_powerup_atk_2, &anim_none);
-		object[i].power_id = POWER_ATK_2;
-	}
-	else if (type == POWER_ATK_3) {
-		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawnPoint.x, spawnPoint.y, spr_powerup_atk_3.frame_w / 2, spr_powerup_atk_3.frame_h / 2, rand() % 360, 0, &spr_powerup_atk_3, &anim_none);
-		object[i].power_id = POWER_ATK_3;
-	}
-	else if (type == POWER_HP) {
-		object_setup(&object[i], i, OBJ_TYPE_POWERUP, spawnPoint.x, spawnPoint.y, spr_powerup_hp.frame_w / 2, spr_powerup_hp.frame_h / 2, rand() % 360, 0, &spr_powerup_hp, &anim_none);
-		object[i].power_id = POWER_HP;
-	}
-	object[i].delta_x = dx;
-	object[i].delta_y = dy;
-	object[i].hp = LIFE_POWERUP;
-	object[i].dmg_on_impact = 0;
-	object_setCollisionBox(&object[i], 15, 15);
-}
-
-void world_spawnEnteringAsteroid()
-{
-	int side, dx, dy, screen_w, screen_h, speed, k, i;
-	double facingAngle, scale, targetAngle;
-	SDL_Point rdmPoint;
-	SDL_Point spawnPoint;
-
-	side = rand() % 4;
-	facingAngle = rand() % 360;
-	scale = rand() % AST_MAX_SCALE + AST_MIN_SCALE;
-	screen_w = getWindowWidth();
-	screen_h = getWindowHeight();
-
-	k = 50; // distance from/to world edge, used to spawn the asteroid outside the world
-
-			// Asteroid spawn coordinates
-	if (side == WORLD_LEFT) {
-		spawnPoint.x = 0 - k / 2;
-		spawnPoint.y = k + rand() % screen_h;
-	}
-	else if (side == WORLD_RIGHT) {
-		spawnPoint.x = screen_w + k / 2;
-		spawnPoint.y = k + rand() % screen_h;
-	}
-	else if (side == WORLD_TOP) {
-		spawnPoint.x = k + rand() % screen_w;
-		spawnPoint.y = 0 - k / 2;
-	}
-	else if (side == WORLD_BOT) {
-		spawnPoint.x = k + rand() % screen_w;
-		spawnPoint.y = screen_h + k / 2;
-	}
-
-	speed = rand() % AST_TOP_SPEED_XY + AST_MIN_SPEED_XY;
-	rdmPoint.x = rand() % (screen_w - 2 * k);						// A random point on the world
-	rdmPoint.y = rand() % (screen_h - 2 * k);
-	targetAngle = angleBetweenPointsRad(spawnPoint, rdmPoint);	// Angle between spawn point and random point
-	dx = (double)speed * cos(targetAngle);						// velocity vector
-	dy = (double)speed * sin(targetAngle);
-
-	i = object_index();
-	object_setup(&object[i], i, OBJ_TYPE_ASTEROID, spawnPoint.x, spawnPoint.y, spr_asteroid_gray.frame_w / 4, spr_asteroid_gray.frame_h / 4, rand() % 360, 0, &spr_asteroid_gray, &anim_asteroid_gray[rand() % 8]);
-	object[i].delta_x = dx;
-	object[i].delta_y = dy;
-	object[i].hp = LIFE_ASTEROID;
-	object[i].dmg_on_impact = 1;
-	object_setCollisionCircle(&object[i], 20, 20);
 }
 
 // Used by misc objects to detect when they have guaranteedly left the world

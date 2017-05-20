@@ -1,3 +1,17 @@
+/*
+*	File		:	object.c
+*	Author(s)	:	Tiago Redaelli
+*	Modified	:	
+*	Version		:	0.2
+*
+*	Support functions for the struct Object and a linked index
+*
+*	Change-log
+*	Jacob:	calculate collision speed
+*	Tiago:	changed from dynamic to static memory allocation (v0.2)
+*
+*/
+
 #include "object.h"
 #include "collision.h"
 
@@ -56,7 +70,6 @@ int object_index()
 
 	return index;
 }
-
 
 void  object_deindex(int index)	
 {

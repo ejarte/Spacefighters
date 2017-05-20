@@ -2,11 +2,17 @@
 #include "game.h"
 
 /*	Author(s):	Tiago Redaelli
-*	Modified:	09-05-2017
-*	Version:	0.
+*	Modified:	15-05-2017
+*	Version:	0.2
 
 	File includes API for configuring different type of interface structs such as plane, label and button,
 	as well as some support functionality for said structs. 
+
+	CHANGELOG
+	0.2	
+	- Added& before p in all SDL_DestroyTexture, doesn't seem to crash: SDL_DestroyTexture(&tb->texture_wo_cursor);
+		Note: didn't add for other types such as plane.
+
 */
 
 
@@ -63,6 +69,9 @@ void interface_render_plane(struct Plane* p, SDL_Renderer* rend)
 
 void interface_setup_label(struct Label* l, SDL_Renderer* rend, char* text, TTF_Font* font, SDL_Color color, int x, int y, bool show)
 {
+	if (l->texture != NULL) {
+		SDL_DestroyTexture(&l->texture);
+	}
 	SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
 	l->texture = SDL_CreateTextureFromSurface(rend, surface);
 	l->rect.x = x;
@@ -163,8 +172,12 @@ void appendInTextBox(struct TextBox* tb, char* msg, SDL_Renderer* rend)
 	else {
 		// Remove previous textures
 		tb->size += strlen(msg);
-		SDL_DestroyTexture(tb->texture_wo_cursor);
-		SDL_DestroyTexture(tb->texture_w_cursor);
+		if (tb->texture_wo_cursor != NULL) {
+			SDL_DestroyTexture(&tb->texture_wo_cursor);
+		}
+		if (tb->texture_w_cursor != NULL) {
+			SDL_DestroyTexture(&tb->texture_w_cursor);
+		}
 		strcat(tb->text, msg);
 		// Set a texture with a cursor
 		tb->texture_w_cursor = t;
@@ -186,8 +199,8 @@ void removeLastFromTextBox(struct TextBox* tb, SDL_Renderer* rend)
 		SDL_Surface* surface;
 		tb->size--;
 		tb->text[tb->size] = '\0';
-		SDL_DestroyTexture(tb->texture_wo_cursor);
-		SDL_DestroyTexture(tb->texture_w_cursor);
+		SDL_DestroyTexture(&tb->texture_wo_cursor);
+		SDL_DestroyTexture(&tb->texture_w_cursor);
 		surface = TTF_RenderText_Solid(tb->font, tb->text, tb->color);
 		tb->texture_wo_cursor = SDL_CreateTextureFromSurface(rend, surface);
 		str = malloc(100);
@@ -210,8 +223,8 @@ void clearTextBox(struct TextBox* tb, SDL_Renderer* rend)
 		SDL_Surface* surface;
 		tb->size = 0;
 		tb->text[0] = '\0';
-		SDL_DestroyTexture(tb->texture_wo_cursor);
-		SDL_DestroyTexture(tb->texture_w_cursor);
+		SDL_DestroyTexture(&tb->texture_wo_cursor);
+		SDL_DestroyTexture(&tb->texture_w_cursor);
 		surface = TTF_RenderText_Solid(tb->font, tb->text, tb->color);
 		tb->texture_wo_cursor = SDL_CreateTextureFromSurface(rend, surface);
 		str = malloc(100);

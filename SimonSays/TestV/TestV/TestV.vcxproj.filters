@@ -30,12 +30,6 @@
     <ClCompile Include="logic.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="world.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="object.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TCP.h">
@@ -51,12 +45,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="logic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,13 +6,24 @@ bool lib_tempStrInit = false;
 char* substring(char* str, int min, int max)
 {
 	if (lib_tempStrInit == false) {
-		lib_tempStr = malloc(sizeof(200));
+		lib_tempStr = malloc(sizeof(300));
 		lib_tempStrInit = true;
 	}
 	lib_tempStr[0] = '\0';
 	strcpy(lib_tempStr, str + min, max - min);
 	lib_tempStr[max - min] = '\0';
 	return lib_tempStr;
+}
+
+void substring2(char* str, int min, int max)
+{
+	int j = 0;
+	lib_tempStr[0] = '\0';
+	for (int i = min; i < max; i++) {
+		lib_tempStr[j++] = str[i];
+	}
+	lib_tempStr[j] = '\0';
+	strcpy(str, lib_tempStr);
 }
 
 bool isDigit(char ch) {

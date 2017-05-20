@@ -173,6 +173,7 @@
     <ClInclude Include="libraries.h" />
     <ClInclude Include="network.h" />
     <ClInclude Include="scoreBoard.h" />
+    <ClInclude Include="text_commands.h" />
     <ClInclude Include="text_messages.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="particle.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="libraries.c" />
     <ClCompile Include="network.c" />
     <ClCompile Include="scoreBoard.c" />
+    <ClCompile Include="text_commands.c" />
     <ClCompile Include="text_messages.c" />
     <ClCompile Include="object.c" />
     <ClCompile Include="particle.c" />

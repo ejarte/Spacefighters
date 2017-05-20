@@ -8,6 +8,11 @@
 #include "world.h"
 #include "particle.h"
 #include "graphics.h"
+#include "text_commands.h"
+#include "interface_lib.h"
+
+struct Label playerNameLabel[MAX_PLAYERS];
+TTF_Font* font_roboto_black;
 
 void game_init();
 void game_execute(); //den exekverar allt annat som skall göras, i vilken ordning
@@ -17,5 +22,3 @@ void game_render();
 
 // Support functions
 void startRound();
-
-int client_player_num;

@@ -4,7 +4,7 @@
 #include "interface_lib.h"
 #include "text_messages.h"
 #include "scoreBoard.h"
-
+#include "network.h"
 
 // Background
 SDL_Rect background_rect;
@@ -18,11 +18,9 @@ int free_obj_size;
 
 // Temp
 SDL_Texture* texture_chat_box;
-TTF_Font* font_roboto_black;
 
 struct Plane plane_chat_box;
 struct Label label_chat_msg;
-struct Label playerNameColored[MAX_PLAYERS];
 
 struct TextBox chat_box;
 
@@ -30,30 +28,16 @@ SDL_Texture* t;
 
 struct Button button;
 
+bool game_initialized = false;
 bool roundActive;
-
-struct SpawnOdds {
-	int timestamp;		// timestamp for when it should generate next roll
-	int minAmount;		// Min generated amount per roll 
-	int maxAmount;		// Max generated amount per roll
-	int minInterval;	// Min time until next roll in seconds
-	int maxInterval;	// Max time until next roll in seconds
-};
-
-struct SpawnOdds spawnOdds_powerup[NUM_OF_POWERS];
-struct SpawnOdds spawnOdds_asteroid;
-
-void setup_spawnOdds(struct SpawnOdds* so, int minAmount, int maxAmount, int minInterval, int maxInterval)
-{
-	so->minAmount = minAmount;
-	so->maxAmount = maxAmount;
-	so->minInterval = minInterval;
-	so->maxInterval = maxInterval;
-}
 
 void game_init()
 {
-
+	
+	game_initialized = true;
+	printf("-------------------------------------\n");
+	printf("Initializing game session...\n");
+	printf("-------------------------------------\n");
 	// Background
 	backgroundImage = IMG_LoadTexture(renderer, "images/skyBackground.png");
 	background_rect.x = background_rect.y = 0;
@@ -62,6 +46,7 @@ void game_init()
 	stars_rect.w = stars_rect.h = 800;
 
 	sound_game_music();						//game music
+	particle_init();
 
 	world_init();
 	object_init();
@@ -88,7 +73,7 @@ void game_init()
 		player[i].killstreak_tot = 0;
 		player[i].killstreak_round = 0;
 		player[i].won_rounds = 0;
-		player[i].name = malloc(sizeof(10));
+		player[i].name = malloc(sizeof(20));
 		player[i].name[0] = '\0';
 		strcat(player[i].name, "Player ");
 		length = strlen(player[i].name);;
@@ -113,24 +98,16 @@ void game_init()
 	interface_setup_plane(&plane_chat_box, texture_chat_box, 200, 200, 100, 100, true);
 	font_roboto_black = TTF_OpenFont("fonts/roboto/Roboto-Black.ttf", 12);
 
-	// Exempel på connect/disconnect meddelande
-	addPlayerEmoteMessageToDisplay(renderer, client_player_num, "connected.", MSG_DURATION);
-	addPlayerEmoteMessageToDisplay(renderer, client_player_num, "disconnected.", MSG_DURATION);
-
-	interface_setup_label(&playerNameColored[0], renderer, player[0].name, font_roboto_black, createColor(0xFF, 0, 0, 0), 100, 100, true);
-	interface_setup_label(&playerNameColored[1], renderer, player[1].name, font_roboto_black, createColor(0, 0, 0xFF, 0), 800, 100, true);
-	interface_setup_label(&playerNameColored[2], renderer, player[2].name, font_roboto_black, createColor(0, 0xFF, 0, 0), 100, 800, true);
-	interface_setup_label(&playerNameColored[3], renderer, player[3].name, font_roboto_black, createColor(0xFF, 0x78, 0x1C, 0), 800, 600, true);
+	interface_setup_label(&playerNameLabel[0], renderer, player[0].name, font_roboto_black, createColor(0xFF, 0, 0, 0), 100, 100, true);
+	interface_setup_label(&playerNameLabel[1], renderer, player[1].name, font_roboto_black, createColor(0, 0, 0xFF, 0), 800, 100, true);
+	interface_setup_label(&playerNameLabel[2], renderer, player[2].name, font_roboto_black, createColor(0, 0xFF, 0, 0), 100, 800, true);
+	interface_setup_label(&playerNameLabel[3], renderer, player[3].name, font_roboto_black, createColor(0xFF, 0x78, 0x1C, 0), 800, 600, true);
 
 
 	t = IMG_LoadTexture(renderer, "images/redsquare.bmp");
 	interface_setup_textbox(&chat_box, t, renderer, font_roboto_black, createColor(255, 255, 255, 0), createRect(screenW/2 - 50, screenH - 40, 200, 25), 10, 0);
 	chat_box.selected = true;
 
-	addMessageToDisplay(renderer, "Ghost: Hello noobs!", MSG_DURATION);
-
-	//appendInTextBox(&tb, "hello!", renderer);
-	//appendInTextBox(&tb, "there!", renderer);
 	// game menu
 	initInterface();
 	all_button_positions_Interface();
@@ -140,16 +117,9 @@ void game_init()
 	
 	roundActive = false;
 
-
-	
-	setup_spawnOdds(&spawnOdds_powerup[POWER_SPEED], 1, 3, 7, 20);
-	setup_spawnOdds(&spawnOdds_powerup[POWER_ATK_2], 1, 3, 7, 20);
-	setup_spawnOdds(&spawnOdds_powerup[POWER_ATK_3], 1, 3, 7, 20);
-	setup_spawnOdds(&spawnOdds_powerup[POWER_HP], 2, 6, 7, 20);
-	setup_spawnOdds(&spawnOdds_asteroid, 1, 5, 3, 12);
-
 	// Debug variables
 	debug_show_collision_box = false;
+	printf("-------------------------------------\n");
 }
 
 
@@ -159,6 +129,9 @@ void game_init()
 
 void game_execute()
 {
+	if (game_initialized == false) {
+		game_init();
+	}
 	game_events();
 	game_update();
 	game_render();
@@ -167,6 +140,7 @@ void game_execute()
 //=========================================================================================================================
 //	Game Events
 //=========================================================================================================================
+
 
 void game_events()
 {
@@ -180,13 +154,15 @@ void game_events()
 	if (keyEventPressed(SDL_SCANCODE_RETURN)) {
 
 		if (isTextEventEnabled()) {
-			disableTextInput();
 			if (chat_box.size > 0) {
-				sendMessage(client_player_num, chat_box.text);
+				if (runCommands(chat_box.text) == false) {
+					TCP_sendChatMsg(chat_box.text);
+					//sendMessage(client_player_num, chat_box.text);
+				}
 			}
-
 			chat_box.show = false;
 			clearTextBox(&chat_box, renderer);
+			disableTextInput();
 		}
 		else {
 			enableTextInput();
@@ -206,6 +182,8 @@ void game_events()
 
 		runInterface();
 
+		TCP_sendPlayerActions(client_player_num);
+
 		if (keyEventPressed(SDL_SCANCODE_O)) {
 			SDL_Thread *TCPThread;
 			const char *TCPThreadReturnValue;
@@ -214,59 +192,59 @@ void game_events()
 			if (NULL == TCPThread) {
 				printf("\nSDL_CreateThread failed: %s\n", SDL_GetError());
 			}
-			
 			//printf("o presssed but nothing should happen");
 		}
-		
-		for (int i = 0; i < MAX_PLAYERS; i++) {
-			player[client_player_num].shot_fired = false;
+	}
+
+	// Updates the player ship based on recieved data from server
+	SDL_Point mouse;
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+
+		player[i].shot_fired = false;			// reset sounds
+
+		mouse.x = playerActions[i].mx;			// Set mouse position from server
+		mouse.y = playerActions[i].my;
+
+		// Facing Angle
+		object_setFacingToPoint(player[i].spaceship, mouse);
+
+		// Movement
+		if (playerActions[i].w && player[i].mobile) {
+			player[i].acceleration_timestamp = time;
+			object_deaccelerateSpeedY(player[i].spaceship);
+		}
+		if (playerActions[i].s && player[i].mobile) {
+			player[i].acceleration_timestamp = time;
+			object_accelerateSpeedY(player[i].spaceship);
+		}
+		if (playerActions[i].a && player[i].mobile) {
+			player[i].acceleration_timestamp = time;
+			object_deaccelerateSpeedX(player[i].spaceship);
+		}
+		if (playerActions[i].d && player[i].mobile) {
+			player[i].acceleration_timestamp = time;
+			object_accelerateSpeedX(player[i].spaceship);
 		}
 
-		if (mouseEventHeld(SDL_BUTTON_LEFT) && player[client_player_num].alive && player[client_player_num].attack_timestamp + TIME_SHOOT < time) {
-			player[client_player_num].shot_fired = true;
+		// Shoot 
+		if (playerActions[i].shoot && player[i].alive && player[i].attack_timestamp + TIME_SHOOT < time) {
+			player[i].shot_fired = true;
 			int projType;
-			if (player[client_player_num].current_attack_type == ATK_TYPE_2) {
-				spawnShotgunProjectiles(player[client_player_num].spaceship, player[client_player_num].color);
+			if (player[i].current_attack_type == ATK_TYPE_2) {
+				spawnShotgunProjectiles(player[i].spaceship, player[i].color, mouse);
 				sound_projectile(projType = 1);			//shotgun sound
 			}
-			else if (player[client_player_num].current_attack_type == ATK_TYPE_3) {
-				spawnMineProjectiles(player[client_player_num].spaceship, player[client_player_num].color);
+			else if (player[i].current_attack_type == ATK_TYPE_3) {
+				spawnMineProjectiles(player[i].spaceship, player[i].color, mouse);
 				sound_projectile(projType = 2);			//mine placement sound
 			}
 			else {
-				spawnNormalProjectile(player[client_player_num].spaceship, player[client_player_num].color);
+				spawnNormalProjectile(player[i].spaceship, player[i].color, mouse);
 				sound_projectile(projType = 0);			//normal laser
 			}
-			player[client_player_num].attack_timestamp = time;
+			player[i].attack_timestamp = time;
 		}
-		if (keyEventHeld(SDL_SCANCODE_W) && player[client_player_num].mobile == true) {
-			player[client_player_num].acceleration_timestamp = time;
-			object_deaccelerateSpeedY(player[client_player_num].spaceship);
-		}
-		if (keyEventHeld(SDL_SCANCODE_S) && player[client_player_num].mobile) {
-			player[client_player_num].acceleration_timestamp = time;
-			object_accelerateSpeedY(player[client_player_num].spaceship);
-		}
-		if (keyEventHeld(SDL_SCANCODE_A) && player[client_player_num].mobile) {
-			player[client_player_num].acceleration_timestamp = time;
-			object_deaccelerateSpeedX(player[client_player_num].spaceship);
-		}
-		if (keyEventHeld(SDL_SCANCODE_D) && player[client_player_num].mobile) {
-			player[client_player_num].acceleration_timestamp = time;
-			object_accelerateSpeedX(player[client_player_num].spaceship);
-		}
-		if (keyEventPressed(SDL_SCANCODE_C)) {
-			int i = 0;
-			for (int i = 0; i < MAX_PLAYERS; i++) {
-				client_player_num++;
-				if (client_player_num == MAX_PLAYERS) {
-					client_player_num = 0;
-				}
-				if (player[client_player_num].alive)
-					break;
-			}
-		}
-		object_setFacingToPoint(player[client_player_num].spaceship, getMousePos());
+
 	}
 }
 
@@ -401,7 +379,9 @@ void handleSpeedBoost(int ship) {
 	object[ship].speed_max = SPEED_MAX_POWER;
 	player[p].speed_active = true;
 	player[p].rune_speed_timestamp = time;
+	/*
 	printf("player %d got a speed boost! @time: %d\n", getPlayer(ship), time);
+	*/
 	sound_powerup_speed();			//speed pickup sound
 }
 
@@ -410,7 +390,9 @@ void disableSpeedBoost(int p)
 	player[p].spaceship->acc = SPEED_ACC_DEFAULT;
 	player[p].spaceship->speed_max = SPEED_MAX_DEFAULT;
 	player[p].speed_active = false;
+	/*
 	printf("player %d speed boost expired! @time: %d\n", p, SDL_GetTicks());
+	*/
 }
 
 void handleLifePickup(int ship)
@@ -419,7 +401,9 @@ void handleLifePickup(int ship)
 	object[ship].hp += POWER_LIFE_ADDED;
 	if (object[ship].hp > LIFE_SPACESHIP)
 		object[ship].hp = LIFE_SPACESHIP;
+	/*
 	printf("player %d recieved %d life back (%d) @time: %d\n", p, POWER_LIFE_ADDED, object[ship].hp, SDL_GetTicks());
+	*/
 	sound_powerup_hp();				//hp pickup sound
 }
 
@@ -429,7 +413,9 @@ void handleAttack_2_Pickup(int ship)
 	int p = getPlayer(ship);
 	player[p].current_attack_type = ATK_TYPE_2;
 	player[p].rune_atk_timestamp = time;
+	/*
 	printf("player %d aquired attack type (%d) @time: %d\n", p, 2, time);
+	*/
 	sound_powerup_atk2();			//atk2 pickup sound
 }
 
@@ -439,14 +425,18 @@ void handleAttack_3_Pickup(int ship)
 	int p = getPlayer(ship);
 	player[p].current_attack_type = ATK_TYPE_3;
 	player[p].rune_atk_timestamp = time;
+	/*
 	printf("player %d aquired attack type (%d) @time: %d\n", p, 3, time);
+	*/
 	sound_powerup_atk3();			//atk3 pickup sound
 }
 
 void handleAttackReset(int p)
 {
 	player[p].current_attack_type = ATK_TYPE_1;
+	/*
 	printf("player %d now has a normal attack again (%d) @time: %d\n", p, 1, SDL_GetTicks());
+	*/
 }
 
 /*
@@ -459,33 +449,38 @@ void handleShipResurrection(int p)
 	player[p].mobile = true;
 	player[p].alive = true;
 	printf("Player %d's ship was resurrected (%d) @time: %d\n", p, i, time);
-	interface_attach_label(&playerNameColored[p], player[p].spaceship->ptr_center_x, player[p].spaceship->ptr_center_y, -50, -50);
-	playerNameColored[p].show = true;
+	interface_attach_label(&playerNameLabel[p], player[p].spaceship->ptr_center_x, player[p].spaceship->ptr_center_y, -50, -50);
+	playerNameLabel[p].show = true;
 }
 */
+
+void recievedShipDeath(int ship)
+{
+	int time = SDL_GetTicks();
+	int p = getPlayer(ship);
+	object[ship].show = false;
+	playerNameLabel[p].show = false;
+	/*
+	printf("Player %d's ship was destroyed (%d) @time: %d\n", p, ship, time);
+	*/
+	player[p].mobile = false;
+	player[p].alive = false;
+	player[p].death_timestamp = time;
+	world_spawnExplosionEffect(object[ship].center_x, object[ship].center_y, object[ship].w * 3, object[ship].h * 3);
+	playerNameLabel[p].show = false;
+}
 
 void handleShipDeath(int ship)
 {
 	int time = SDL_GetTicks();
 	int p = getPlayer(ship);
-	object[ship].show = false;
-	playerNameColored[p].show = false;
-	printf("Player %d's ship was destroyed (%d) @time: %d\n", p, ship, time);
-	player[p].mobile = false;
-	player[p].alive = false;
-	player[p].death_timestamp = time;
-	world_spawnExplosionEffect(object[ship].center_x, object[ship].center_y, object[ship].w * 3, object[ship].h * 3);
-	playerNameColored[p].show = false;
-}
-
-void set_spawnOddsNextRollTime(struct SpawnOdds* so)
-{
-	so->timestamp = SDL_GetTicks() + (rand() % (so->maxInterval - so->minInterval) + so->minInterval) * 1000;	// When the next roll will occour
+	char deathMsg[80];
+	sprintf(deathMsg, "has killed player %d!\n", ship);
+	TCP_sendChatMsg(deathMsg);
 }
 
 void startRound()
 {
-	printf("Round started...\n");
 	bool used[MAX_PLAYERS] = { false, false, false, false };
 	bool foundSpawn;
 	int rdm;
@@ -501,29 +496,17 @@ void startRound()
 
 	for (int p = 0; p < MAX_PLAYERS; p++) {
 		if (player[p].connected) {
-			foundSpawn = false; 
-			while (!foundSpawn) {
-				rdm = rand() % 4;
-				if (!used[rdm]) {
-					used[rdm] = true;
-					foundSpawn = true;
-					player[p].spaceship->show = true;
-					player[p].spaceship->center_x = spawn[rdm].x;
-					player[p].spaceship->center_y = spawn[rdm].y;
-					player[p].alive = true;
-					player[p].mobile = true;
-					interface_attach_label(&playerNameColored[p], player[p].spaceship->ptr_center_x, player[p].spaceship->ptr_center_y, -50, -50);
-					playerNameColored[p].show = true;
-				}
-			}
+			foundSpawn = true;
+			player[p].spaceship->show = true;
+			player[p].spaceship->center_x = spawn[p].x;
+			player[p].spaceship->center_y = spawn[p].y;
+			player[p].alive = true;
+			player[p].mobile = true;
+			interface_attach_label(&playerNameLabel[p], player[p].spaceship->ptr_center_x, player[p].spaceship->ptr_center_y, -50, -50);
+			playerNameLabel[p].show = true;
 		}
 	}
 	roundActive = true;
-	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_SPEED]);
-	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_2]);
-	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_3]);
-	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_HP]);
-	set_spawnOddsNextRollTime(&spawnOdds_asteroid);
 }
 
 bool endRoundCondition()
@@ -539,7 +522,6 @@ bool endRoundCondition()
 void endRound()
 {	
 	int i;
-	printf("Round ended...\n");
 	for (int p = 0; p < MAX_PLAYERS; p++) {
 		if (player[p].alive) {
 			printf("%s won the round...\n", player[p].name);
@@ -555,51 +537,6 @@ void endRound()
 			markForRemoval(i);
 		}
 		i = object[i].next;
-	}
-}
-
-int odds_getNum(struct SpawnOdds* so)
-{
-	return rand() % (so->maxAmount - so->minAmount) + so->minAmount;
-}
-
-void generateNeutralObjects()
-{
-	int max;
-	if (spawnOdds_powerup[POWER_SPEED].timestamp <= curTime) {
-		set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_SPEED]);
-		max = odds_getNum(&spawnOdds_powerup[POWER_SPEED]);
-		for (int i = 0; i < max; i++) {
-			spawnPowerUpType(POWER_SPEED);
-		}
-	}
-	if (spawnOdds_powerup[POWER_ATK_2].timestamp <= curTime) {
-		set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_2]);
-		max = odds_getNum(&spawnOdds_powerup[POWER_ATK_2]);
-		for (int i = 0; i < max; i++) {
-			spawnPowerUpType(POWER_ATK_2);
-		}
-	}
-	if (spawnOdds_powerup[POWER_ATK_3].timestamp <= curTime) {
-		set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_3]);
-		max = odds_getNum(&spawnOdds_powerup[POWER_ATK_3]);
-		for (int i = 0; i < max; i++) {
-			spawnPowerUpType(POWER_ATK_3);
-		}
-	}
-	if (spawnOdds_powerup[POWER_HP].timestamp <= curTime) {
-		set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_HP]);
-		max = odds_getNum(&spawnOdds_powerup[POWER_HP]);
-		for (int i = 0; i < max; i++) {
-			spawnPowerUpType(POWER_HP);
-		}
-	}
-	if (spawnOdds_asteroid.timestamp <= curTime) {
-		set_spawnOddsNextRollTime(&spawnOdds_asteroid);
-		max = odds_getNum(&spawnOdds_asteroid);
-		for (int i = 0; i < max; i++) {
-			world_spawnEnteringAsteroid();
-		}
 	}
 }
 
@@ -677,13 +614,11 @@ void game_update()
 		startRound();
 	}
 
-	generateNeutralObjects();
-
 	if (endRoundCondition()) {
 		endRound();
 	}
 
-					   // Update player activities
+	// Update player activities
 	time = SDL_GetTicks();
 	for (int i = 0; i < MAX_PLAYERS; i++) {
 		// Spped boost expired
@@ -858,27 +793,18 @@ void game_render()
 		i = object[i].next;
 	}
 
-	if (current_lines > 0)
-		renderMessageDisplay(renderer);
+	renderMessageDisplay(renderer);
 
 	if (chat_box.show)
 		interface_render_textbox(&chat_box, renderer);
 
-	//interface_render_plane(&plane_chat_box, renderer);
-	//interface_render_label(&label_chat_msg, renderer);
-
 	for (int p = 0; p < MAX_PLAYERS; p++) {
-		interface_render_label(&playerNameColored[p], renderer);
+		interface_render_label(&playerNameLabel[p], renderer);
 	}
 
 	rendererInterface();
 	scoreBoard_renderer();
 
-	// Button test
-
-	interface_render_button(&button, renderer);
-
-	//
 	interface_renderPlayerHP((double) player[client_player_num].spaceship->hp / LIFE_SPACESHIP);
 
 	SDL_RenderPresent(renderer);
