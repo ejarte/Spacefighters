@@ -257,23 +257,11 @@ int main(int argc, char **argv)
 					// Player movement related
 					else if (strncmp(s.tcp_buffer, MSG_PLAYER_ACTIONS, 4) == 0) {
 						TCP_broadcastPlayerDataRecieved();
-						// Här ska då meddelandet avläsas efter wasd tangenter, dessa ska i sin tur anropa funktionera för att accelera spelaren i logic.c
-
-						// Behövs också en move funktion som är synkroniserad till 30 FPS :d
-
-						// Sen kommer nästa problem, velocity.x och velocity.y och dess drag... 
-						/*
-						sscanf(substr, "%d", &i);
-						sscanf(substr, "%d %d %d %d %d %d %d %d", &playerId,
-							&playerActions[i].shoot,
-							&playerActions[i].w,
-							&playerActions[i].a,
-							&playerActions[i].s,
-							&playerActions[i].d,
-							&playerActions[i].mx,
-							&playerActions[i].my);
 					}
-					*/
+					else {
+						// broadcast recieved message
+						TCP_broadcast();
+					}
 				}
 			}
 		} // end of client loop
@@ -284,11 +272,12 @@ int main(int argc, char **argv)
 		generateNeutralObjects();	
 
 		// Send object data
-
+		/*
 		for (int i = 0; i < MAX_PLAYERS; i++) {
 			sprintf(s.tcp_buffer, "%s %d %d %d", SERVER_OBJECTS, object[i].pos.x, object[i].pos.y, object[i].facing);
 			TCP_broadcast();
 		}
+		*/
 	}
 	// Free our socket set 
 	SDLNet_FreeSocketSet(socketSet);

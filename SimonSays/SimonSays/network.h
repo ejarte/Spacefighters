@@ -8,6 +8,7 @@ bool validatePortEntry(char* str, Uint16* port);
 void printIpInfo(IPaddress* ip);
 bool connectToServer(char* str_host_ip, char* str_port);
 void TCP_listen();
+void TCP_sendPosition();
 void TCP_sendChatMsg(char* msg);
 void TCP_sendNameChange(char* name);
 void TCP_sendPlayerActions(int pId);

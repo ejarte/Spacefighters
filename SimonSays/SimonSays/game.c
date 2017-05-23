@@ -757,6 +757,9 @@ void game_update()
 		i = object[i].next;
 	}
 
+	// Send client position
+	TCP_sendPosition();
+
 	// Free removed objects
 	for (int i = 0; i < free_obj_size; i++) {
 		object_deindex(free_obj_index[i]);		// &thisPlayer on client NULL on server

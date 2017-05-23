@@ -113,6 +113,7 @@ void printIpInfo(IPaddress* ip)
 #define MSG_NEUTRAL_OBJ			"#9#"
 #define MSG_PLAYER_ACTIONS		"#10#"
 #define MSG_START_GAME			"#11#"
+#define MSG_POSITION			"#12#"
 
 struct Client_t {
 	bool shutdown;
@@ -240,13 +241,30 @@ void TCP_listen()
 						&playerActions[i].mx,
 						&playerActions[i].my);
 				}
+				else if (strncmp(MSG_POSITION, server.tcp_buffer, 4) == 0) {
+					int client, x, y;
+					substr = substring(server.tcp_buffer, 5, server.tcp_byte_count);
+					sscanf(substr, "%d %d %d", &client, &x, &y);
+					object[client].center_x = x;
+					object[client].center_y = y;
+				}
 				else
 				{
+					int client, x, y;
 					printf("Other message recieved: %s\n", server.tcp_buffer);
 				}
-
 			}
 		}
+	}
+}
+
+void TCP_sendPosition()
+{
+	int i = client_player_num;
+	int len = strlen(server.tcp_buffer) + 1;
+	sprintf(server.tcp_buffer, "%s %d %d %d", MSG_POSITION, i, object[i].center_x, object[i].center_y);
+	if (SDLNet_TCP_Send(client.tcp_socket, (void *)server.tcp_buffer, len) < len) {
+		return -1;	// failed to send a message
 	}
 }
 

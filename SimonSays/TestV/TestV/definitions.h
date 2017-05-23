@@ -15,6 +15,7 @@
 #define MSG_NEUTRAL_OBJ			"#9#"
 #define MSG_PLAYER_ACTIONS		"#10#"
 #define SERVER_OBJECTS			"#11#"
+#define MSG_POSITION			"#12#"
 
 // VET EJ VAD AV DETTA SOM SKA TAS BORT 
 
