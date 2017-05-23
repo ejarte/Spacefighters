@@ -17,7 +17,7 @@ void initWindow()
 		return 1;
 	}
 
-	window = SDL_CreateWindow("SimonSays", 100, 100, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);	// SDL_WINDOW_FULLSCREEN_DESKTOP);
+	window = SDL_CreateWindow("SimonSays", 1, -1, targetW, targetH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);	// SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	if (window == NULL) {
 		printf("Error, Window can't be desplayed\n");

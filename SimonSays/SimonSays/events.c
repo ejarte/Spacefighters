@@ -88,7 +88,6 @@ void disableTextInput()
 	txt_event_data.enabled = false;
 	if (SDL_IsTextInputActive() == SDL_TRUE)
 		SDL_StopTextInput();
-
 }
 
 void enableTextInput()

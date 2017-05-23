@@ -127,6 +127,11 @@ void game_init()
 //	Game Execute
 //=========================================================================================================================
 
+void clearChat()
+{
+
+}
+
 void game_execute()
 {
 	if (game_initialized == false) {
@@ -475,7 +480,7 @@ void handleShipDeath(int ship)
 	int time = SDL_GetTicks();
 	int p = getPlayer(ship);
 	char deathMsg[80];
-	sprintf(deathMsg, "has killed player %d!\n", ship);
+	sprintf(deathMsg, "has killed player %d!\n\n", ship);
 	TCP_sendChatMsg(deathMsg);
 }
 

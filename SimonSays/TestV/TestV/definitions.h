@@ -155,6 +155,8 @@ struct Client_t c[MAX_CLIENTS];
 #define SERVERIP "127.0.0.1"
 
 int curTime;
+int tempMSG[BUFFER_SIZE];
+bool startTimer;
 
 // Structs
 

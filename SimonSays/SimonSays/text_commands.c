@@ -46,10 +46,6 @@ bool runCommands(char* str)
 		return true;
 	}
 	
-	if (strcmp(str, "-start") == 0) {
-		printf("Commands: \n");
-		startTheGame = true;
-	}
 	if (strncmp(command[0].s, str, command[0].length) == 0) {
 		cmd_0(str);
 		return true;

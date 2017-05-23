@@ -23,6 +23,7 @@
 #include "network.h"
 #include "definition.h"
 #include "game.h"
+#include "text_messages.h"
 
 char ip_substr[30][30];
 
@@ -142,9 +143,11 @@ void TCP_listen()
 	while (run_program) {
 		if (SDLNet_CheckSockets(tcp_socketSet, 0) != 0) {
 			if (SDLNet_SocketReady(client.tcp_socket) != 0) {
+
 				// Recieve message
 				server.tcp_byte_count = SDLNet_TCP_Recv(client.tcp_socket, server.tcp_buffer, BUFFER_SIZE);
-				//printf("TCP_Recv: %s\n", server.tcp_buffer);
+				printf("TCP_Recv: %s\n", server.tcp_buffer);
+
 				// Connection message
 
 				if (strncmp(MSG_PLAYER_CONNECTED, server.tcp_buffer, 3) == 0 && startTheGame == true) {		
@@ -169,6 +172,7 @@ void TCP_listen()
 					if (strcmp(substr, "-start") == 0)
 					{
 						startTheGame = true;
+						printf("TEST");
 					}
 					else if (strncmp(substr, "has killed player ", 15) == 0)
 					{
@@ -235,6 +239,10 @@ void TCP_listen()
 						&playerActions[i].d,
 						&playerActions[i].mx,
 						&playerActions[i].my);
+				}
+				else
+				{
+					printf("Other message recieved: %s\n", server.tcp_buffer);
 				}
 
 			}

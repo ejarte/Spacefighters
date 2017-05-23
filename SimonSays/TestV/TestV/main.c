@@ -57,6 +57,7 @@ void TCP_broadcastPlayerDisconected(int connecting_id)
 void TCP_broadcastPlayerChatMsg(int sender_id, char *msg) 
 {
 	s.tcp_len = strlen(s.tcp_buffer) + 1;
+	printf("Message send: %s\n", s.tcp_buffer);
 	for (int i = 0; i < MAX_CLIENTS; i++) {
 		// if socket is available send the message
 		if (c[i].tcp_socket_is_free == false) {	
@@ -89,6 +90,43 @@ void TCP_broadcastPlayerDataRecieved()
 			if (SDLNet_TCP_Send(c[i].tcp_socket, (void *)s.tcp_buffer, s.tcp_len) < s.tcp_len) {
 				printf("Failed to send player data: %s\n", SDLNet_GetError());
 			}
+		}
+	}
+}
+
+void timerToStart(char * tcpHead, int senderId)
+{
+	int currTime = SDL_GetTicks();
+	int timeToS = 3;
+
+	memset(s.tcp_buffer, 0, strlen(s.tcp_buffer));
+	sprintf(s.tcp_buffer, "%s%d....", tcpHead, timeToS);
+	TCP_broadcastPlayerChatMsg(senderId, s.tcp_buffer);
+
+	while (timeToS != 0)
+	{
+		if ((SDL_GetTicks() - currTime) == 2000 && timeToS == 2)
+		{
+			timeToS = 1;
+			printf("2...\n");
+			memset(s.tcp_buffer, 0, strlen(s.tcp_buffer));
+			sprintf(s.tcp_buffer, "%s%d....", tcpHead, timeToS);
+			TCP_broadcastPlayerChatMsg(senderId, s.tcp_buffer);
+		} else if ((SDL_GetTicks() - currTime) == 1000 && timeToS == 3)
+		{
+			timeToS = 2;
+			printf("1...\n");
+			memset(s.tcp_buffer, 0, strlen(s.tcp_buffer));
+			sprintf(s.tcp_buffer, "%s%d....", tcpHead, timeToS);
+			TCP_broadcastPlayerChatMsg(senderId, s.tcp_buffer);
+		}
+		else if ((SDL_GetTicks() - currTime) == 3000)
+		{	
+			timeToS = 0;
+			printf("0...\n");
+			memset(s.tcp_buffer, 0, strlen(s.tcp_buffer));
+			sprintf(s.tcp_buffer, "%s-start", tcpHead);
+			TCP_broadcastPlayerChatMsg(senderId, s.tcp_buffer);
 		}
 	}
 }
@@ -223,21 +261,38 @@ int main(int argc, char **argv)
 				}
 				else {	// if we read data from the client socket
 
-					printf("TCP_Recieved: %s (from client %d).\n", s.tcp_buffer, i);
-
 					// Send back player number
 					if (strncmp(MSG_CLIENT_NUM, s.tcp_buffer, 3) == 0) {
 						TCP_sendClientNumber(i);
 					}
-					else if (strncmp(MSG_CHAT_MSG, s.tcp_buffer, 3) == 0) {
-						TCP_broadcastPlayerChatMsg(i, s.tcp_buffer);
+					else if ((strncmp(MSG_CHAT_MSG, s.tcp_buffer, 3) == 0) && startTimer == false) {
+						strncpy(tempMSG, s.tcp_buffer + 5, strlen(s.tcp_buffer));
+						if (strcmp(tempMSG, "-start") == 0)
+						{
+							memset(tempMSG, 0, strlen(tempMSG));
+							strncpy(tempMSG, s.tcp_buffer, 5);
+
+							if (clientCount <= 0)
+							{
+								sprintf(s.tcp_buffer, "%s %d more players have to connect before you can start the game!", tempMSG, 4- clientCount);
+							} else
+							{
+								startTimer = true;
+								timerToStart(tempMSG, i);
+								startTimer = false;
+							}
+						}
+						else
+						{
+							TCP_broadcastPlayerChatMsg(i, s.tcp_buffer);
+						}
 					}
 					else if (strncmp(MSG_CHANGE_NAME, s.tcp_buffer, 3) == 0) {
 						TCP_broadcastPlayerNameChange();
 					}
 					else if (strncmp(s.tcp_buffer, MSG_SHUTDOWN_SERVER, 3) == 0) {
 						s.running = false;
-						printf("Shuting down server...\n");
+						printf("Shutting down server...\n");
 					}
 
 					else if (strncmp(s.tcp_buffer, MSG_PLAYER_ACTIONS, 4) == 0) {

@@ -34,7 +34,6 @@ StdAfx.h, StdAfx.cpp
 /////////////////////////////////////////////////////////////////////////////
 Other notes:
 
-AppWizard uses "TODO:" comments to indicate parts of the source code you
-should add to or customize.
+AppWizard uses "TODO:" Add color to the player name chatmode.
 
 /////////////////////////////////////////////////////////////////////////////
