@@ -200,57 +200,6 @@ void game_events()
 			//printf("o presssed but nothing should happen");
 		}
 	}
-
-	// Updates the player ship based on recieved data from server
-	SDL_Point mouse;
-	for (int i = 0; i < MAX_PLAYERS; i++) {
-
-		player[i].shot_fired = false;			// reset sounds
-
-		mouse.x = playerActions[i].mx;			// Set mouse position from server
-		mouse.y = playerActions[i].my;
-
-		// Facing Angle
-		object_setFacingToPoint(player[i].spaceship, mouse);
-
-		// Movement
-		if (playerActions[i].w && player[i].mobile) {
-			player[i].acceleration_timestamp = time;
-			object_deaccelerateSpeedY(player[i].spaceship);
-		}
-		if (playerActions[i].s && player[i].mobile) {
-			player[i].acceleration_timestamp = time;
-			object_accelerateSpeedY(player[i].spaceship);
-		}
-		if (playerActions[i].a && player[i].mobile) {
-			player[i].acceleration_timestamp = time;
-			object_deaccelerateSpeedX(player[i].spaceship);
-		}
-		if (playerActions[i].d && player[i].mobile) {
-			player[i].acceleration_timestamp = time;
-			object_accelerateSpeedX(player[i].spaceship);
-		}
-
-		// Shoot 
-		if (playerActions[i].shoot && player[i].alive && player[i].attack_timestamp + TIME_SHOOT < time) {
-			player[i].shot_fired = true;
-			int projType;
-			if (player[i].current_attack_type == ATK_TYPE_2) {
-				spawnShotgunProjectiles(player[i].spaceship, player[i].color, mouse);
-				sound_projectile(projType = 1);			//shotgun sound
-			}
-			else if (player[i].current_attack_type == ATK_TYPE_3) {
-				spawnMineProjectiles(player[i].spaceship, player[i].color, mouse);
-				sound_projectile(projType = 2);			//mine placement sound
-			}
-			else {
-				spawnNormalProjectile(player[i].spaceship, player[i].color, mouse);
-				sound_projectile(projType = 0);			//normal laser
-			}
-			player[i].attack_timestamp = time;
-		}
-
-	}
 }
 
 void handleWallCollision(int i, int side)
@@ -625,7 +574,54 @@ void game_update()
 
 	// Update player activities
 	time = SDL_GetTicks();
+	SDL_Point mouse;
 	for (int i = 0; i < MAX_PLAYERS; i++) {
+
+		player[i].shot_fired = false;			// reset sounds
+
+		mouse.x = playerActions[i].mx;			// Set mouse position from server
+		mouse.y = playerActions[i].my;
+
+		// Facing Angle
+		object_setFacingToPoint(player[i].spaceship, mouse);
+
+		// Movement
+		if (playerActions[i].w && player[i].mobile) {
+			player[i].acceleration_timestamp = time;
+			object_deaccelerateSpeedY(player[i].spaceship);
+		}
+		if (playerActions[i].s && player[i].mobile) {
+			player[i].acceleration_timestamp = time;
+			object_accelerateSpeedY(player[i].spaceship);
+		}
+		if (playerActions[i].a && player[i].mobile) {
+			player[i].acceleration_timestamp = time;
+			object_deaccelerateSpeedX(player[i].spaceship);
+		}
+		if (playerActions[i].d && player[i].mobile) {
+			player[i].acceleration_timestamp = time;
+			object_accelerateSpeedX(player[i].spaceship);
+		}
+
+		// Shoot 
+		if (playerActions[i].shoot && player[i].alive && player[i].attack_timestamp + TIME_SHOOT < time) {
+			player[i].shot_fired = true;
+			int projType;
+			if (player[i].current_attack_type == ATK_TYPE_2) {
+				spawnShotgunProjectiles(player[i].spaceship, player[i].color, mouse);
+				sound_projectile(projType = 1);			//shotgun sound
+			}
+			else if (player[i].current_attack_type == ATK_TYPE_3) {
+				spawnMineProjectiles(player[i].spaceship, player[i].color, mouse);
+				sound_projectile(projType = 2);			//mine placement sound
+			}
+			else {
+				spawnNormalProjectile(player[i].spaceship, player[i].color, mouse);
+				sound_projectile(projType = 0);			//normal laser
+			}
+			player[i].attack_timestamp = time;
+		}
+
 		// Spped boost expired
 		if (player[i].speed_active && player[i].rune_speed_timestamp + TIME_SPEED < time) {
 			disableSpeedBoost(i);

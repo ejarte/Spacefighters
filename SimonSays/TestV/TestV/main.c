@@ -18,14 +18,8 @@ void TCP_sendClientNumber(int i)
 	SDLNet_TCP_Send(c[i].tcp_socket, (void *)s.tcp_buffer, s.tcp_len);
 }
 
-void TCP_broadcastPlayerConnected(int connecting_id)
+void TCP_broadcast()
 {
-	char number = connecting_id + 48;
-	s.tcp_buffer[0] = '\0';
-	strcpy(s.tcp_buffer, MSG_PLAYER_CONNECTED);
-	s.tcp_len = strlen(s.tcp_buffer);
-	s.tcp_buffer[s.tcp_len] = number;
-	s.tcp_buffer[s.tcp_len + 1] = '\0';
 	s.tcp_len = strlen(s.tcp_buffer) + 1;
 	for (int i = 0; i < MAX_CLIENTS; i++) {
 		if (c[i].tcp_socket_is_free == false) {
@@ -36,6 +30,17 @@ void TCP_broadcastPlayerConnected(int connecting_id)
 	}
 }
 
+void TCP_broadcastPlayerConnected(int connecting_id)
+{
+	char number = connecting_id + 48;
+	s.tcp_buffer[0] = '\0';
+	strcpy(s.tcp_buffer, MSG_PLAYER_CONNECTED);
+	s.tcp_len = strlen(s.tcp_buffer);
+	s.tcp_buffer[s.tcp_len] = number;
+	s.tcp_buffer[s.tcp_len + 1] = '\0';
+	TCP_broadcast();
+}
+
 void TCP_broadcastPlayerDisconected(int connecting_id)
 {
 	char number = connecting_id + 48;
@@ -44,54 +49,23 @@ void TCP_broadcastPlayerDisconected(int connecting_id)
 	s.tcp_len = strlen(s.tcp_buffer);
 	s.tcp_buffer[s.tcp_len] = number;
 	s.tcp_buffer[s.tcp_len + 1] = '\0';
-	s.tcp_len = strlen(s.tcp_buffer) + 1;
-	for (int i = 0; i < MAX_CLIENTS; i++) {
-		if (c[i].tcp_socket_is_free == false) {
-			if (SDLNet_TCP_Send(c[i].tcp_socket, (void *)s.tcp_buffer, s.tcp_len) < s.tcp_len) {
-				printf("Failed to send player disconnected: %s\n", SDLNet_GetError());
-			}
-		}
-	}
+	TCP_broadcast();
 }
 
 void TCP_broadcastPlayerChatMsg(int sender_id, char *msg) 
 {
-	s.tcp_len = strlen(s.tcp_buffer) + 1;
 	printf("Message send: %s\n", s.tcp_buffer);
-	for (int i = 0; i < MAX_CLIENTS; i++) {
-		// if socket is available send the message
-		if (c[i].tcp_socket_is_free == false) {	
-			if (SDLNet_TCP_Send(c[i].tcp_socket, (void *)s.tcp_buffer, s.tcp_len) < s.tcp_len) {
-				printf("Failed to send chat: %s\n", SDLNet_GetError());
-			}
-		}
-	}
+	TCP_broadcast();
 }
 
 void TCP_broadcastPlayerNameChange()
 {
-	s.tcp_len = strlen(s.tcp_buffer) + 1;
-	for (int i = 0; i < MAX_CLIENTS; i++) {
-		// if socket is available send the message
-		if (c[i].tcp_socket_is_free == false) {
-			if (SDLNet_TCP_Send(c[i].tcp_socket, (void *)s.tcp_buffer, s.tcp_len) < s.tcp_len) {
-				printf("Failed to send name change: %s\n", SDLNet_GetError());
-			}
-		}
-	}
+	TCP_broadcast();
 }
 
 void TCP_broadcastPlayerDataRecieved()
 {
-	s.tcp_len = strlen(s.tcp_buffer) + 1;
-	for (int i = 0; i < MAX_CLIENTS; i++) {
-		// if socket is available send the message
-		if (c[i].tcp_socket_is_free == false) {
-			if (SDLNet_TCP_Send(c[i].tcp_socket, (void *)s.tcp_buffer, s.tcp_len) < s.tcp_len) {
-				printf("Failed to send player data: %s\n", SDLNet_GetError());
-			}
-		}
-	}
+	TCP_broadcast();
 }
 
 void timerToStart(char * tcpHead, int senderId)
@@ -175,21 +149,6 @@ int main(int argc, char **argv)
 
 	// Add our server socket ot the socket set.
 	SDLNet_TCP_AddSocket(socketSet, s.tcp_socket);
-
-	/*
-	// Unstable part of code
-	char* host = SDLNet_ResolveIP(&s.ip);
-
-	if (host == NULL)
-	{
-		printf("Failed to resolve the server IP address: %s.\n", SDLNet_GetError());
-	}
-	else
-	{
-		printf("Succesfully resolved server host: %s\n", host);
-	}
-	// End of ustable part of code
-	*/
 
 	init_logic();
 
@@ -295,9 +254,26 @@ int main(int argc, char **argv)
 						printf("Shutting down server...\n");
 					}
 
+					// Player movement related
 					else if (strncmp(s.tcp_buffer, MSG_PLAYER_ACTIONS, 4) == 0) {
 						TCP_broadcastPlayerDataRecieved();
+						// Här ska då meddelandet avläsas efter wasd tangenter, dessa ska i sin tur anropa funktionera för att accelera spelaren i logic.c
+
+						// Behövs också en move funktion som är synkroniserad till 30 FPS :d
+
+						// Sen kommer nästa problem, velocity.x och velocity.y och dess drag... 
+						/*
+						sscanf(substr, "%d", &i);
+						sscanf(substr, "%d %d %d %d %d %d %d %d", &playerId,
+							&playerActions[i].shoot,
+							&playerActions[i].w,
+							&playerActions[i].a,
+							&playerActions[i].s,
+							&playerActions[i].d,
+							&playerActions[i].mx,
+							&playerActions[i].my);
 					}
+					*/
 				}
 			}
 		} // end of client loop
@@ -307,6 +283,12 @@ int main(int argc, char **argv)
 		// Generates neutral objects when ready
 		generateNeutralObjects();	
 
+		// Send object data
+
+		for (int i = 0; i < MAX_PLAYERS; i++) {
+			sprintf(s.tcp_buffer, "%s %d %d %d", SERVER_OBJECTS, object[i].pos.x, object[i].pos.y, object[i].facing);
+			TCP_broadcast();
+		}
 	}
 	// Free our socket set 
 	SDLNet_FreeSocketSet(socketSet);

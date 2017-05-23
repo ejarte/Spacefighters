@@ -14,6 +14,7 @@
 #define MSG_CHANGE_NAME			"#8#"
 #define MSG_NEUTRAL_OBJ			"#9#"
 #define MSG_PLAYER_ACTIONS		"#10#"
+#define SERVER_OBJECTS			"#11#"
 
 // VET EJ VAD AV DETTA SOM SKA TAS BORT 
 
@@ -147,93 +148,9 @@ struct Client_t c[MAX_CLIENTS];
 // Chat
 #define MSG_DURATION				20		// Chat message duration seconds
 
-// TCP information
-#define SENDPORT 5000
-#define RECVPORT 6000
-#define INITPORT 1234
-#define CONNECTPORT 7000
-#define SERVERIP "127.0.0.1"
+
 
 int curTime;
 int tempMSG[BUFFER_SIZE];
 bool startTimer;
 
-// Structs
-
-struct Collision {
-	int w;
-	int h;
-	int r;
-	int type;
-	bool enabled;
-};
-
-struct Object {
-	int center_y; //skickas
-	int center_x; //skickas
-	int prev_x;
-	int prev_y;
-	int w;
-	int h;
-
-	int* ptr_center_x;
-	int* ptr_center_y;
-
-	int id_type;
-	int id_index;
-	int source_id;		// used by projectiles
-	int power_id;		// used to distinguish different powerups
-
-	double delta_x;
-	double delta_y;
-	int speed_x; // int nu
-	int speed_y;
-	int speed_max;
-	double drag;
-	double acc;
-
-	double facing;
-	double IMG_facingOffset;
-	int hp;
-	int dmg_on_impact;
-	bool show;					// show/hide the object and the collision from the world
-
-	struct Collision collision;
-
-	// node
-	int next;
-};
-
-struct Player {
-	char* name;
-	int color;
-	//SDL_Color sdl_color;
-	bool alive;
-	bool mobile;
-	bool connected;
-	struct Object* spaceship;
-	int death_timestamp;
-	int attack_timestamp;
-	int rune_speed_timestamp;
-	int rune_atk_timestamp;
-	int acceleration_timestamp;
-	bool speed_active;
-	int current_attack_type;
-	int shipIndex;
-
-	int	shot_fired; // sends flag if shot was fired to server
-
-	int killstreak_tot;
-	int killstreak_round;
-	int kills;
-	int deaths;
-	int won_rounds;
-};
-
-bool run_program;
-
-// DEBUG Variables
-bool debug_show_collision_box;
-
-struct Player player[MAX_PLAYERS];
-struct Object object[MAX_NUM_OBJ];

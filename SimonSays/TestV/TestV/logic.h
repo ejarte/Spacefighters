@@ -18,6 +18,17 @@ struct NeutralObject {
 	int dy;
 };
 
+struct Object {
+	SDL_Point pos;
+	SDL_Point speed;
+	int max_speed;
+	int acc;
+	int drag;
+	SDL_Point velocity;
+	int facing;
+};
+
+struct Object object[MAX_NUM_OBJ];
 
 struct SpawnOdds spawnOdds_powerup[NUM_OF_POWERS];
 struct SpawnOdds spawnOdds_asteroid;
@@ -29,13 +40,10 @@ int worldWidth;
 int worldHeight;
 
 void init_logic();
-
+void respawnShips();
 void setup_spawnOdds(struct SpawnOdds* so, int minAmount, int maxAmount, int minInterval, int maxInterval);
-
 void set_spawnOddsNextRollTime(struct SpawnOdds* so);
-
 void set_worldDimensions(int w, int h);
-
 void generateNeutralObjects();
 
 void TCP_broadcastCreatedNeutralObject(int obj_type, SDL_Point spawn, SDL_Point velocity, int facing);

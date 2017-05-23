@@ -11,6 +11,46 @@ struct SpawnOdds spawnOdds_asteroid;
 int worldHeight;
 int worldWidth;
 
+// ================= OBJECT
+void object_accelerateSpeedX(struct Object* o)
+{
+	if (o->pos.x < o->max_speed) {
+		o->speed.x += o->acc;
+		if (o->speed.x > o->max_speed)
+			o->speed.x = o->max_speed;
+	}
+}
+
+void object_accelerateSpeedY(struct Object* o)
+{
+	if (o->speed.y < o->max_speed) {
+		o->speed.y += o->acc;
+		if (o->speed.y > o->max_speed)
+			o->speed.y = o->speed.y;
+	}
+}
+
+void object_deaccelerateSpeedX(struct Object* o)
+{
+	if (o->speed.x > o->max_speed * -1) {
+		o->speed.x -= o->acc;
+		if (o->speed.x < -1 * o->max_speed)
+			o->speed.x = -1 * o->max_speed;
+	}
+}
+
+void object_deaccelerateSpeedY(struct Object* o)
+{
+	if (o->speed.y > o->max_speed * -1) {
+		o->speed.y -= o->acc;
+		if (o->speed.y < -1 * o->max_speed)
+			o->speed.y = -1 * o->max_speed;
+	}
+}
+
+// =================
+
+
 
 void setup_spawnOdds(struct SpawnOdds* so, int minAmount, int maxAmount, int minInterval, int maxInterval)
 {
@@ -53,6 +93,40 @@ void init_logic()
 	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_ATK_3]);
 	set_spawnOddsNextRollTime(&spawnOdds_powerup[POWER_HP]);
 	set_spawnOddsNextRollTime(&spawnOdds_asteroid);
+
+	// spawn ship outside world
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		object[i].pos.x = -200;				
+		object[i].pos.y = -200;
+		object[i].facing = 0;
+		object[i].speed.x = 0;
+		object[i].speed.y = 0;
+		object[i].velocity.x = 0;
+		object[i].velocity.y = 0;
+		//object[i].max_speed
+		//object[i].acc =
+		//object[i].drag = 
+	}
+	// When a new round starts you can use this function to respawn them
+	respawnShips();
+}
+
+void respawnShips()
+{
+	SDL_Point spawn[MAX_PLAYERS];
+	spawn[0].x = 100;
+	spawn[0].y = 100;
+	spawn[1].x = worldWidth - 100;
+	spawn[1].y = 100;
+	spawn[2].x = 100;
+	spawn[2].y = worldHeight - 100;
+	spawn[3].x = worldWidth - 100;
+	spawn[3].y = worldHeight - 100;
+
+	for (int p = 0; p < MAX_PLAYERS; p++) {
+		object[p].pos.x = spawn[p].x;
+		object[p].pos.x = spawn[p].x;
+	}
 }
 
 double angleBetweenPointsRad(SDL_Point p1, SDL_Point p2)
