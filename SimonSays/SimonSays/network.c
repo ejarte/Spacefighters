@@ -250,7 +250,6 @@ void TCP_listen()
 				}
 				else
 				{
-					int client, x, y;
 					printf("Other message recieved: %s\n", server.tcp_buffer);
 				}
 			}

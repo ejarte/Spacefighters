@@ -758,7 +758,7 @@ void game_update()
 	}
 
 	// Send client position
-	TCP_sendPosition();
+	//TCP_sendPosition();
 
 	// Free removed objects
 	for (int i = 0; i < free_obj_size; i++) {
