@@ -69,3 +69,5 @@ void removeLastFromTextBox(struct TextBox* tb, SDL_Renderer* r);
 
 void interface_setup_button(struct Button* btn, SDL_Renderer* rend, int x, int y, SDL_Texture* txt_mouse_over, SDL_Texture* txt_selected, SDL_Texture* txt_unselected, char* text, TTF_Font* font, SDL_Color text_color);
 void interface_render_button(struct Button* btn, SDL_Renderer* rend);
+
+bool *isSoundMuted;

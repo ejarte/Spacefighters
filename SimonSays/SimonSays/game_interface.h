@@ -12,6 +12,8 @@ bool button_option_pressed;
 //bool settingsButton_pressed = false;
 //bool hotkeys_pressed = false;
 
+bool isSoundMuted = false;
+
 void initInterface();
 void all_button_positions_Interface();
 

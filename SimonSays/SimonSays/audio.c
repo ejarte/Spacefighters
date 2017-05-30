@@ -20,19 +20,22 @@ struct Sound sound;
 Mix_Chunk *suicide[4];
 Mix_Chunk *doubleKill[2];
 Mix_Chunk *firstBlood[3];
-Mix_Chunk *flawlessVictory;
 Mix_Chunk *multiKill;
+Mix_Chunk *dominating;
+Mix_Chunk *godlike;
+Mix_Chunk *holyshit;
 
-//Find sound for these, HP, Speed, Atk2 and Atk3 !!
 Mix_Chunk *powerupSpeed;
 Mix_Chunk *powerupHP;
 Mix_Chunk *powerupAtk2;
 Mix_Chunk *powerupAtk3;
-Mix_Chunk *laser[4];	//för många??			 Nej bra? Det finns dock bara två olika typer
+Mix_Chunk *laser[3];
+Mix_Chunk *collision;
+Mix_Chunk *explosion;
+Mix_Chunk *thrusters;
+Mix_Chunk *hitShip;
 
-
-
-Mix_Music *gameMusic;				//game music?? 
+Mix_Music *gameMusic[3];
 
 void initAudio()
 {
@@ -54,19 +57,28 @@ void initAudio()
 	firstBlood[0] = Mix_LoadWAV("audio/sounds/QuakeSounds/firstblood.wav");
 	firstBlood[1] = Mix_LoadWAV("audio/sounds/QuakeSounds/firstblood2.wav");
 	firstBlood[2] = Mix_LoadWAV("audio/sounds/QuakeSounds/firstblood3.wav");
-	flawlessVictory = Mix_LoadWAV("audio/sounds/QuakeSounds/flawless.wav");
 	multiKill = Mix_LoadWAV("audio/sounds/QuakeSounds/multikill.wav");
+	dominating = Mix_LoadWAV("audio/sounds/QuakeSounds/dominating.wav");
+	godlike = Mix_LoadWAV("audio/sounds/QuakeSounds/godlike.wav");
+	holyshit = Mix_LoadWAV("audio/sounds/QuakeSounds/holyshit.wav");
 
-	//ADD FILEPATHS !!
-	powerupSpeed = Mix_LoadWAV("audio/sound/powerupSpeed.wav");
+	powerupSpeed = Mix_LoadWAV("audio/sounds/powerupSpeed1.wav");
 	powerupHP = Mix_LoadWAV("audio/sounds/powerupHealth.wav");
-	powerupAtk2 = Mix_LoadWAV("audio/sounds/powerup2.wav");							//hitta bättre ljud
-	powerupAtk3 = Mix_LoadWAV("audio/sounds/powerup2.wav");
+	powerupAtk2 = Mix_LoadWAV("audio/sounds/powerupAtk.wav");
+	powerupAtk3 = Mix_LoadWAV("audio/sounds/powerupAtk.wav");
 	laser[0] = Mix_LoadWAV("audio/sounds/projectiles/laserNormal.wav");				//normal laser pew
-	laser[1] = Mix_LoadWAV("audio/sounds/projectiles/laserShotgun1.wav");			//shotgun laser, maybe change sound
+	laser[1] = Mix_LoadWAV("audio/sounds/projectiles/laserNormal.wav");				//shotgun laser, maybe change sound
 	laser[2] = Mix_LoadWAV("audio/sounds/projectiles/minePlacement.wav");			//mine placement sound, maybe change sound?
+	collision = Mix_LoadWAV("audio/sounds/collision1.wav");
+	explosion = Mix_LoadWAV("audio/sounds/explosion1.wav");
+	thrusters = Mix_LoadWAV("audio/sounds/thrusters.wav");
+	Mix_PlayChannel(5, thrusters, -1);								//channel 100
+	Mix_Pause(5);
+	hitShip = Mix_LoadWAV("audio/sounds/collision1.wav");
 
-	gameMusic = Mix_LoadMUS("audio/music/SPACE.mp3");
+	gameMusic[0] = Mix_LoadMUS("audio/music/music1.mp3");
+	gameMusic[1] = Mix_LoadMUS("audio/music/music2.mp3");
+	gameMusic[2] = Mix_LoadMUS("audio/music/music3.mp3");
 }
 
 void playMusic(char *filepath, int repeats)
@@ -97,56 +109,120 @@ void playMusic(char *filepath, int repeats)
 	}
 }
 
-void sound_quake_roundStart()			//kanske inte kommer användas?
+void sound_quake_roundStart()			//this is not used.
 {
 
 }
 
-void sound_quake_firstblood()
+void sound_quake_firstblood(bool muted)
 {
-	Mix_PlayChannel(-1, firstBlood[rand() % 4], 0);
+	if (muted != true)
+		Mix_PlayChannel(-1, firstBlood[rand() % 3], 0);
 }
 
-void sound_quake_doublekill()
+void sound_quake_doublekill(bool muted)
 {
-	Mix_PlayChannel(-1, doubleKill[rand() % 2], 0);				//random sound
+	if (muted != true)
+		Mix_PlayChannel(-1, doubleKill[rand() % 2], 0);						//random sound
+}
+void sound_quake_suicide(bool muted)									//call when player commits suicide, for appropriate sound
+{
+	if (muted != true)
+		Mix_PlayChannel(-1, suicide[rand() % 4], 0);					//random sound
+}
+void sound_quake_multikill(bool muted)									//multi kill sound
+{
+	if (muted != true)
+		Mix_PlayChannel(-1, multiKill, 0);
+}
+void sound_quake_dominating(bool muted)
+{
+	if (muted != true)
+		Mix_PlayChannel(-1, dominating, 0);
+}
+void sound_quake_godlike(bool muted)
+{
+	if (muted != true)
+		Mix_PlayChannel(-1, godlike, 0);
+}
+void sound_quake_holyshit(bool muted)
+{
+	if (muted != true)
+		Mix_PlayChannel(-1, holyshit, 0);
 }
 
-void sound_quake_suicide()										//call when player commits suicide, for appropriate sound
-{
-	Mix_PlayChannel(-1, suicide[rand() % 4], 0);					//random sound
-}
-void sound_quake_flawlessVictory()								//flawless victory = kill every other oponent
-{
-	Mix_PlayChannel(-1, flawlessVictory, 0);
-}
-void sound_quake_multikill()									//multi kill sound
-{
-	Mix_PlayChannel(-1, multiKill, 0);
-}
 
-void sound_powerup_speed()
+
+void sound_powerup_speed(bool muted)
 {
-	Mix_PlayChannel(-1, powerupSpeed, 0);
+	if (muted != true)
+		Mix_PlayChannel(-1, powerupSpeed, 0);
 }
-void sound_powerup_hp()
+void sound_powerup_hp(bool muted)
 {
-	Mix_PlayChannel(-1, powerupHP, 0);
+	if (muted != true)
+		Mix_PlayChannel(-1, powerupHP, 0);
 }
-void sound_powerup_atk2()
+void sound_powerup_atk2(bool muted)
 {
-	Mix_PlayChannel(-1, powerupAtk2, 0);
+	if (muted != true)
+		Mix_PlayChannel(-1, powerupAtk2, 0);
 }
-void sound_powerup_atk3()
+void sound_powerup_atk3(bool muted)
 {
-	Mix_PlayChannel(-1, powerupAtk3, 0);
+	if (muted != true)
+		Mix_PlayChannel(-1, powerupAtk3, 0);
 }
-void sound_projectile(int type)			//flerval??
+void sound_projectile(int type, bool muted)
 {
+	if (muted != true)
 		Mix_PlayChannel(-1, laser[type], 0);
 }
-void sound_game_music()
+void sound_game_music(int song)								//fixa med pointers så song++
 {
-	Mix_PlayMusic(gameMusic, -1);
+	Mix_PlayMusic(gameMusic[1], -1);
+	//song++;
+}
+void sound_music_finished(int song, int timeSinceStart)
+{
+	int musicLengths[3];
+	musicLengths[0] = 18;						//music1 in milliseconds
+	musicLengths[1] = 270;						//music2 milliseconds
+	int time = (timeSinceStart / 1000);
+
+	if (time >= musicLengths[song])
+	{
+		printf("Song %d is over.\n", song);
+		//song++;
+		sound_game_music(song);
+	}
+	else
+		printf("Song is not over.\n");
+}
+void sound_collision(bool muted)
+{
+	if (muted != true)
+		Mix_PlayChannel(-1, collision, 0);
+}
+void sound_explosion(bool muted)
+{
+	SDL_Delay(50);
+	if (muted != true)
+		Mix_PlayChannel(-1, explosion, 0);
+}
+void sound_thrusters(bool muted, bool thrusting)						//INTE BRA
+{
+	if (muted != true && thrusting != false)
+	{
+		Mix_Resume(5);
+		//Mix_PlayChannel(100, thrusters, -1);								//channel 100
+	}
+	else if (thrusting != true)
+		Mix_Pause(5);
+}
+void sound_hitShip(bool muted)
+{
+	if (muted != true)
+		Mix_PlayChannel(-1, hitShip, 0);
 }
 

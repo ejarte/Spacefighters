@@ -30,6 +30,7 @@ struct Button button;
 
 bool game_initialized = false;
 bool roundActive;
+int *musicNumber = 0;
 
 void game_init()
 {
@@ -45,7 +46,7 @@ void game_init()
 	stars_rect.x = stars_rect.y = 0;
 	stars_rect.w = stars_rect.h = 800;
 
-	sound_game_music();						//game music
+	sound_game_music(musicNumber);						//game music
 	particle_init();
 
 	world_init();
@@ -258,11 +259,13 @@ bool resolveCollisionProjSpaceship(int i, int j, int* ptr_proj, int* ptr_ship)
 	if (object[i].id_type == OBJ_TYPE_PROJECTILE && object[j].id_type == OBJ_TYPE_SPACESHIP && object[i].source_id != j) {
 		*ptr_proj = i;
 		*ptr_ship = j;
+		sound_hitShip(isSoundMuted);
 		return true;
 	}
 	if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_PROJECTILE && object[j].source_id != i) {
 		*ptr_proj = j;
 		*ptr_ship = i;
+		sound_hitShip(isSoundMuted);
 		return true;
 	}
 	return false;
@@ -273,11 +276,13 @@ bool resolveCollisionProjAsteroid(int i, int j, int* ptr_proj, int* ptr_asteroid
 	if (object[i].id_type == OBJ_TYPE_PROJECTILE && object[j].id_type == OBJ_TYPE_ASTEROID) {
 		*ptr_proj = i;
 		*ptr_asteroid = j;
+		sound_collision(isSoundMuted);
 		return true;
 	}
 	if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_PROJECTILE) {
 		*ptr_proj = j;
 		*ptr_asteroid = i;
+		sound_collision(isSoundMuted);
 		return true;
 	}
 	return false;
@@ -288,11 +293,13 @@ bool resolveCollisionSpaceshipAsteroid(int i, int j, int* ptr_asteroid, int* ptr
 	if (object[i].id_type == OBJ_TYPE_SPACESHIP && object[j].id_type == OBJ_TYPE_ASTEROID) {
 		*ptr_ship = i;
 		*ptr_asteroid = j;
+		sound_collision(isSoundMuted);
 		return true;
 	}
 	if (object[i].id_type == OBJ_TYPE_ASTEROID && object[j].id_type == OBJ_TYPE_SPACESHIP) {
 		*ptr_ship = j;
 		*ptr_asteroid = i;
+		sound_collision(isSoundMuted);
 		return true;
 	}
 	return false;
@@ -336,7 +343,7 @@ void handleSpeedBoost(int ship) {
 	/*
 	printf("player %d got a speed boost! @time: %d\n", getPlayer(ship), time);
 	*/
-	sound_powerup_speed();			//speed pickup sound
+	sound_powerup_speed(isSoundMuted);			//speed pickup sound
 }
 
 void disableSpeedBoost(int p)
@@ -358,7 +365,7 @@ void handleLifePickup(int ship)
 	/*
 	printf("player %d recieved %d life back (%d) @time: %d\n", p, POWER_LIFE_ADDED, object[ship].hp, SDL_GetTicks());
 	*/
-	sound_powerup_hp();				//hp pickup sound
+	sound_powerup_hp(isSoundMuted);				//hp pickup sound
 }
 
 void handleAttack_2_Pickup(int ship)
@@ -370,7 +377,7 @@ void handleAttack_2_Pickup(int ship)
 	/*
 	printf("player %d aquired attack type (%d) @time: %d\n", p, 2, time);
 	*/
-	sound_powerup_atk2();			//atk2 pickup sound
+	sound_powerup_atk2(isSoundMuted);			//atk2 pickup sound
 }
 
 void handleAttack_3_Pickup(int ship)
@@ -382,7 +389,7 @@ void handleAttack_3_Pickup(int ship)
 	/*
 	printf("player %d aquired attack type (%d) @time: %d\n", p, 3, time);
 	*/
-	sound_powerup_atk3();			//atk3 pickup sound
+	sound_powerup_atk3(isSoundMuted);			//atk3 pickup sound
 }
 
 void handleAttackReset(int p)
@@ -506,35 +513,39 @@ void handlePlayerKillsAndDeaths(int killer, int victim)
 		printf("%s killed %s\n", player[killer].name, player[victim].name);
 	if (killer == victim) {
 		printf("%s took his own life.\n", player[victim]);
-		sound_quake_suicide();
+		sound_quake_suicide(isSoundMuted);
 	}
 	if (player[killer].killstreak_tot == 2)					//doublekill sound
-		sound_quake_doublekill();
-	if (player[killer].killstreak_tot == 3)					//multi kill, kom på att det inte är nödvändigt här? med bara 4 players
-		sound_quake_multikill();
-	if (player[killer].killstreak_tot == 3)					//flawless victory = kill all three oponents
-		sound_quake_flawlessVictory();
+		sound_quake_doublekill(isSoundMuted);
+	if (player[killer].killstreak_tot == 3)					//multi kill
+		sound_quake_multikill(isSoundMuted);
+	if (player[killer].killstreak_tot == 4)					//dominating
+		sound_quake_dominating(isSoundMuted);
+	if (player[killer].killstreak_tot == 5)					//holyshit
+		sound_quake_holyshit(isSoundMuted);
+	if (player[killer].killstreak_tot == 6)					//godlike
+		sound_quake_godlike(isSoundMuted);
 
 	//first blood
 	if (killer == 0)
 	{
 		if (player[killer].kills == 1 && player[1].kills == 0 && player[2].kills == 0 && player[3].kills == 0)
-			sound_quake_firstblood();
+			sound_quake_firstblood(isSoundMuted);
 	}
 	else if (killer == 1)
 	{
 		if (player[killer].kills == 1 && player[0].kills == 0 && player[2].kills == 0 && player[3].kills == 0)
-		sound_quake_firstblood();
+			sound_quake_firstblood(isSoundMuted);
 	}
 	else if (killer == 2)
 	{
 		if (player[killer].kills == 1 && player[0].kills == 0 && player[1].kills == 0 && player[3].kills == 0)
-			sound_quake_firstblood();
+			sound_quake_firstblood(isSoundMuted);
 	}
 	else if (killer == 3)
 	{
 		if (player[killer].kills == 1 && player[0].kills == 0 && player[1].kills == 0 && player[2].kills == 0)
-			sound_quake_firstblood();
+			sound_quake_firstblood(isSoundMuted);
 	}
 }
 
@@ -691,6 +702,7 @@ void game_update()
 					object[i_ship].hp -= object[i_projectile].dmg_on_impact;
 					// Death
 					if (object[i_ship].hp <= 0) {
+						sound_explosion(isSoundMuted);
 						handleShipDeath(i_ship);
 						victim = getPlayer(i_ship);
 						killer = getPlayerFromSource(i_projectile);
